@@ -1,5 +1,5 @@
-#ifndef REFLANG_TYPES_H
-#define REFLANG_TYPES_H
+#ifndef REFLANG_TYPES_HPP
+#define REFLANG_TYPES_HPP
 
 #include <string>
 #include <vector>
@@ -39,4 +39,4 @@ namespace reflang
 	};
 }
 
-#endif //REFLANG_TYPES_H
+#endif //REFLANG_TYPES_HPP

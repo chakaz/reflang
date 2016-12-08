@@ -1,5 +1,5 @@
-#ifndef REFLANG_PARSER_H
-#define REFLANG_PARSER_H
+#ifndef REFLANG_PARSER_HPP
+#define REFLANG_PARSER_HPP
 
 #include <memory>
 #include <string>
@@ -19,4 +19,4 @@ namespace reflang
 	};
 }
 
-#endif //REFLANG_PARSER_H
+#endif //REFLANG_PARSER_HPP
