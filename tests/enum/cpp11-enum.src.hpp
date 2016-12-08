@@ -1,6 +1,5 @@
 namespace MyNamespace
 {
-
 	class MyClass
 	{
 	public:
@@ -15,16 +14,5 @@ namespace MyNamespace
 			Value5 = 0,
 			Value6 = 12
 		};
-
-		// Empty enum.
-		enum class EmptyEnum
-		{
-		};
-
-		// C-style enum.
-		enum CEnum
-		{
-		};
 	};
-
 }

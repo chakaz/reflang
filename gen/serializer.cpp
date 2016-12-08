@@ -55,11 +55,11 @@ struct Enum<)" << name << R"(>
 			{
 				const auto& prev = values[i - 1];
 				const auto& it = values[i];
-				o << "			case " << prev << ":\n";
-				o << "				value_ = " << it << ":\n";
+				o << "			case EnumType::" << prev << ":\n";
+				o << "				value_ = EnumType::" << it << ";\n";
 				o << "				break;\n";
 			}
-			o << "			case " << values.back() << ":\n";
+			o << "			case EnumType::" << values.back() << ":\n";
 			o << R"(				last_ = true;
 				break;
 			}
@@ -68,7 +68,7 @@ struct Enum<)" << name << R"(>
 		o << R"(			return *this;
 		}
 
-		ConstIterator& operator++(int)
+		ConstIterator operator++(int)
 		{
 			auto tmp = *this;
 			operator++();
@@ -88,22 +88,22 @@ struct Enum<)" << name << R"(>
 			{
 				last_ = false;
 				)";
-				o << "value_ = " << values.back() << ";\n";
+				o << "value_ = EnumType::" << values.back() << ";\n";
 			o << R"(			}
 			else
 			{
 				switch (value_)
 				{
 )";
-			o << "				case " << values.front() << ":\n";
+			o << "				case EnumType::" << values.front() << ":\n";
 			o << "					assert(false);\n";
 			o << "					break;\n";
 			for (int i = 1; i < values.size(); ++i)
 			{
 				const auto& prev = values[i - 1];
 				const auto& it = values[i];
-				o << "				case " << it << ":\n";
-				o << "					value_ = " << prev << ":\n";
+				o << "				case EnumType::" << it << ":\n";
+				o << "					value_ = EnumType::" << prev << ";\n";
 				o << "					break;\n";
 			}
 			o << "				}\n";
@@ -112,7 +112,7 @@ struct Enum<)" << name << R"(>
 		o << R"(			return *this;
 		}
 
-		ConstIterator& operator--(int)
+		ConstIterator operator--(int)
 		{
 			auto tmp = *this;
 			operator--();
@@ -146,7 +146,9 @@ struct Enum<)" << name << R"(>
 		{
 			o << R"(			ConstIterator it;
 			it.last_ = false;
-			it.value_ = )" << values.front() << ";\n";
+			it.value_ = EnumType::)" << values.front() << R"(;
+			return it;
+)";
 		}
 		o << R"(		}
 
@@ -161,12 +163,12 @@ struct Enum<)" << name << R"(>
 		return IteratorContainer();
 	}
 
-	static std::optional<EnumType> Translate(const std::string& s)
+	static bool TryTranslate(const std::string& s, EnumType& value)
 	{
 )";
 		if (values.empty())
 		{
-			o << "		return std::nullopt_t;\n";
+			o << "		return false;\n";
 		}
 		else
 		{
@@ -179,12 +181,13 @@ struct Enum<)" << name << R"(>
 				}
 				o << "if (s == \"" << values[i] << "\")\n";
 				o << "		{\n";
-				o << "			return EnumValue::" << values[i] <<";\n";
+				o << "			value = EnumType::" << values[i] <<";\n";
+				o << "			return true;\n";
 				o << "		}\n";
 			}
 			o << R"(		else
 		{
-			return std::nullopt_t;
+			return false;
 		}
 )";
 		}
@@ -203,8 +206,8 @@ struct Enum<)" << name << R"(>
 			o << "		{\n";
 			for (const auto& value : values)
 			{
-				o << "			case EnumValue::" << value << ":\n";
-				o << "				\"" << value <<"\";\n";
+				o << "			case EnumType::" << value << ":\n";
+				o << "				return \"" << value <<"\";\n";
 				o << "				break;\n";
 			}
 			o << "		}\n";
@@ -218,7 +221,7 @@ struct Enum<)" << name << R"(>
 void serializer::Begin(ostream& o)
 {
 	o << R"(#include <cassert>
-#include <optional>
+#include <string>
 
 namespace reflang
 {

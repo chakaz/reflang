@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 2.8.11)
 project (reflang)
+enable_testing()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 find_package(LibClang REQUIRED)
@@ -15,3 +16,5 @@ add_executable(
 	gen/serializer.cpp gen/serializer.hpp
 	gen/parser.cpp gen/parser.hpp)
 target_link_libraries(reflang ${CLANG_LIBS})
+
+add_subdirectory(tests)
