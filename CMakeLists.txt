@@ -4,7 +4,9 @@ enable_testing()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 find_package(LibClang REQUIRED)
+
 include_directories(${CLANG_INCLUDEDIR})
+include_directories(${CMAKE_SOURCE_DIR})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++14 -stdlib=libc++")
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")

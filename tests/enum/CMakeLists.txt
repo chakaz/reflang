@@ -14,3 +14,5 @@ add_custom_command(
 
 add_executable(
 	cpp11-enum cpp11-enum.test.cpp cpp11-enum.gen.hpp)
+
+add_test(cpp11-enum-test cpp11-enum)
