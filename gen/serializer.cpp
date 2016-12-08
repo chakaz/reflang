@@ -192,7 +192,24 @@ struct Enum<)" << name << R"(>
 
 	static std::string Translate(EnumType e)
 	{
-	}
+)";
+		if (values.empty())
+		{
+			o << "		return std::string();\n";
+		}
+		else
+		{
+			o << "		switch (e)\n";
+			o << "		{\n";
+			for (const auto& value : values)
+			{
+				o << "			case EnumValue::" << value << ":\n";
+				o << "				\"" << value <<"\";\n";
+				o << "				break;\n";
+			}
+			o << "		}\n";
+		}
+		o << R"(	}
 };
 )";
 	}

@@ -147,6 +147,24 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum>
 
 	static std::string Translate(EnumType e)
 	{
+		switch (e)
+		{
+			case EnumValue::Value1:
+				"Value1";
+				break;
+			case EnumValue::Value2:
+				"Value2";
+				break;
+			case EnumValue::Value3:
+				"Value3";
+				break;
+			case EnumValue::Value5:
+				"Value5";
+				break;
+			case EnumValue::Value6:
+				"Value6";
+				break;
+		}
 	}
 };
 
@@ -224,6 +242,7 @@ struct Enum<MyNamespace::MyClass::EmptyEnum>
 
 	static std::string Translate(EnumType e)
 	{
+		return std::string();
 	}
 };
 
@@ -301,6 +320,7 @@ struct Enum<MyNamespace::MyClass::CEnum>
 
 	static std::string Translate(EnumType e)
 	{
+		return std::string();
 	}
 };
 }  // namespace reflang
