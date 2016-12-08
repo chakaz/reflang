@@ -12,5 +12,6 @@ add_executable(
 	reflang
 	gen/main.cpp
 	gen/types.cpp gen/types.hpp
+	gen/serializer.cpp gen/serializer.hpp
 	gen/parser.cpp gen/parser.hpp)
 target_link_libraries(reflang ${CLANG_LIBS})

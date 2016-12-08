@@ -9,7 +9,10 @@ namespace MyNamespace
 		{
 			Value1 = 4,
 			Value2,
-			Value3 = 12
+			Value3,
+			Value4 = Value3,
+			Value5 = 0,
+			Value6 = 12
 		};
 
 	};

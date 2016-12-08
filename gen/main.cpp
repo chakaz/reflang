@@ -2,7 +2,9 @@
 #include <string>
 
 #include "parser.hpp"
+#include "serializer.hpp"
 
+using namespace reflang;
 using namespace std;
 
 const string CMakeStartArg = "--";
@@ -26,7 +28,7 @@ int main(int argc, char *argv[])
 
 	if (arg == ListTypesArg)
 	{
-		auto names = reflang::parser::GetSupportedTypeNames(
+		auto names = parser::GetSupportedTypeNames(
 				argc - 4, &argv[4], regex);
 		for (const auto& it : names)
 		{
@@ -35,7 +37,11 @@ int main(int argc, char *argv[])
 	}
 	else if (arg == GenArg)
 	{
-		reflang::parser::GetTypes(argc - 4, &argv[4], regex);
+		auto types = parser::GetTypes(argc - 4, &argv[4], regex);
+		for (const auto& type : types)
+		{
+			serializer::Serialize(cout, *type);
+		}
 	}
 	else
 	{
