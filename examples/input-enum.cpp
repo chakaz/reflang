@@ -6,7 +6,7 @@ namespace MyNamespace {
 		enum class MyEnum {
 			Value1 = 4,
 			Value2,
-			Value3 = 12,
+			Value3 = 12
 		};
 
 	};
