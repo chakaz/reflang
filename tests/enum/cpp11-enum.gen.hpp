@@ -135,6 +135,11 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum>
 			value = EnumType::Value3;
 			return true;
 		}
+		else if (s == "Value4")
+		{
+			value = EnumType::Value4;
+			return true;
+		}
 		else if (s == "Value5")
 		{
 			value = EnumType::Value5;

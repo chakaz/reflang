@@ -24,9 +24,22 @@ namespace
 		return results;
 	}
 
+	vector<string> GetEnumValues(const Enum& the_enum)
+	{
+		vector<string> results;
+
+		for (const auto& it : the_enum.Values)
+		{
+			results.push_back(it.first);
+		}
+
+		return results;
+	}
+
 	void SerializeEnum(ostream& o, const Enum& the_enum)
 	{
-		vector<string> values = GetEnumUniqueValues(the_enum);
+		vector<string> unique_values = GetEnumUniqueValues(the_enum);
+		vector<string> values = GetEnumValues(the_enum);
 
 		const string& name = the_enum.GetFullName();
 		o << R"(
@@ -42,7 +55,7 @@ struct Enum<)" << name << R"(>
 		ConstIterator& operator++()
 		{
 )";
-		if (values.empty())
+		if (unique_values.empty())
 		{
 			o << "			assert(false);\n";
 		}
@@ -51,15 +64,15 @@ struct Enum<)" << name << R"(>
 			o << R"(			switch (value_)
 			{
 )";
-			for (int i = 1; i < values.size(); ++i)
+			for (int i = 1; i < unique_values.size(); ++i)
 			{
-				const auto& prev = values[i - 1];
-				const auto& it = values[i];
+				const auto& prev = unique_values[i - 1];
+				const auto& it = unique_values[i];
 				o << "			case EnumType::" << prev << ":\n";
 				o << "				value_ = EnumType::" << it << ";\n";
 				o << "				break;\n";
 			}
-			o << "			case EnumType::" << values.back() << ":\n";
+			o << "			case EnumType::" << unique_values.back() << ":\n";
 			o << R"(				last_ = true;
 				break;
 			}
@@ -78,7 +91,7 @@ struct Enum<)" << name << R"(>
 		ConstIterator& operator--()
 		{
 )";
-		if (values.empty())
+		if (unique_values.empty())
 		{
 			o << "			assert(false);\n";
 		}
@@ -88,20 +101,20 @@ struct Enum<)" << name << R"(>
 			{
 				last_ = false;
 				)";
-				o << "value_ = EnumType::" << values.back() << ";\n";
+				o << "value_ = EnumType::" << unique_values.back() << ";\n";
 			o << R"(			}
 			else
 			{
 				switch (value_)
 				{
 )";
-			o << "				case EnumType::" << values.front() << ":\n";
+			o << "				case EnumType::" << unique_values.front() << ":\n";
 			o << "					assert(false);\n";
 			o << "					break;\n";
-			for (int i = 1; i < values.size(); ++i)
+			for (int i = 1; i < unique_values.size(); ++i)
 			{
-				const auto& prev = values[i - 1];
-				const auto& it = values[i];
+				const auto& prev = unique_values[i - 1];
+				const auto& it = unique_values[i];
 				o << "				case EnumType::" << it << ":\n";
 				o << "					value_ = EnumType::" << prev << ";\n";
 				o << "					break;\n";
@@ -138,7 +151,7 @@ struct Enum<)" << name << R"(>
 		ConstIterator begin() const
 		{
 )";
-		if (values.empty())
+		if (unique_values.empty())
 		{
 			o << "			return end();\n";
 		}
@@ -146,7 +159,7 @@ struct Enum<)" << name << R"(>
 		{
 			o << R"(			ConstIterator it;
 			it.last_ = false;
-			it.value_ = EnumType::)" << values.front() << R"(;
+			it.value_ = EnumType::)" << unique_values.front() << R"(;
 			return it;
 )";
 		}
@@ -196,7 +209,7 @@ struct Enum<)" << name << R"(>
 	static std::string Translate(EnumType e)
 	{
 )";
-		if (values.empty())
+		if (unique_values.empty())
 		{
 			o << "		return std::string();\n";
 		}
@@ -204,7 +217,7 @@ struct Enum<)" << name << R"(>
 		{
 			o << "		switch (e)\n";
 			o << "		{\n";
-			for (const auto& value : values)
+			for (const auto& value : unique_values)
 			{
 				o << "			case EnumType::" << value << ":\n";
 				o << "				return \"" << value <<"\";\n";
