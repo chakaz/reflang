@@ -1,25 +1,27 @@
 #include "types.hpp"
 using namespace reflang;
+using namespace std;
 
-TypeBase::TypeBase(std::string full_name)
-:	full_name_(std::move(full_name))
+TypeBase::TypeBase(string file, string full_name)
+:	full_name_(move(full_name))
+,	file_(move(file))
 {
 }
 
 TypeBase::~TypeBase() = default;
 
-const std::string& TypeBase::GetFullName() const
+const string& TypeBase::GetFullName() const
 {
 	return full_name_;
 }
 
-const std::string& TypeBase::GetName() const
+const string& TypeBase::GetName() const
 {
 	return full_name_;
 }
 
-Enum::Enum(std::string full_name)
-:	TypeBase(std::move(full_name))
+Enum::Enum(string file, string full_name)
+:	TypeBase(move(file), move(full_name))
 {
 }
 

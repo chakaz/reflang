@@ -15,14 +15,17 @@ namespace reflang
 		};
 
 	public:
-		TypeBase(std::string full_name);
+		TypeBase(std::string file, std::string full_name);
 		virtual ~TypeBase();
 
 		virtual Type GetType() const = 0;
 		const std::string& GetFullName() const;
 		const std::string& GetName() const;
 
+		const std::string& GetFile() const;
+
 	private:
+		std::string file_;
 		std::string full_name_;
 	};
 
@@ -32,7 +35,7 @@ namespace reflang
 		using ValueList = std::vector<std::pair<std::string, int>>;
 		
 	public:
-		Enum(std::string full_name);
+		Enum(std::string file, std::string full_name);
 		Type GetType() const override;
 
 		ValueList Values;

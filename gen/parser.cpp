@@ -43,6 +43,14 @@ namespace
 		return name;
 	}
 
+	string GetFile(const CXCursor& cursor)
+	{
+		auto location = clang_getCursorLocation(cursor);
+		CXFile file;
+		clang_getSpellingLocation(location, &file, nullptr, nullptr, nullptr);
+		return Convert(clang_getFileName(file));
+	}
+
 	CXTranslationUnit Parse(CXIndex& index, int argc, char* argv[])
 	{
 		CXTranslationUnit unit;
@@ -119,9 +127,9 @@ namespace
 		auto* types = static_cast<vector<unique_ptr<TypeBase>>*>(client_data);
 		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
 		{
-			auto type = std::make_unique<Enum>(GetFullName(cursor));
+			auto type = make_unique<Enum>(GetFile(cursor), GetFullName(cursor));
 			type->Values = GetEnumValues(cursor);
-			types->push_back(std::move(type));
+			types->push_back(move(type));
 		}
 		return CXChildVisit_Recurse;
 	}

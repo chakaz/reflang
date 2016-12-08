@@ -9,7 +9,11 @@ namespace reflang
 {
 	namespace serializer
 	{
-		std::ostream& Serialize(std::ostream& o, const TypeBase& type);
+		void Begin(std::ostream& o);
+
+		void Serialize(std::ostream& o, const TypeBase& type);
+
+		void End(std::ostream& o);
 	}
 }
 

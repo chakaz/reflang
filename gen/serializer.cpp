@@ -41,25 +41,31 @@ struct Enum<)" << name << R"(>
 
 		ConstIterator& operator++()
 		{
-			switch (value_)
+)";
+		if (values.empty())
+		{
+			o << "			assert(false);\n";
+		}
+		else
+		{
+			o << R"(			switch (value_)
 			{
 )";
-		for (int i = 1; i < values.size(); ++i)
-		{
-			const auto& prev = values[i - 1];
-			const auto& it = values[i];
-			o << "			case " << prev << ":\n";
-			o << "				value_ = " << it << ":\n";
-			o << "				break;\n";
-		}
-		if (!values.empty())
-		{
+			for (int i = 1; i < values.size(); ++i)
+			{
+				const auto& prev = values[i - 1];
+				const auto& it = values[i];
+				o << "			case " << prev << ":\n";
+				o << "				value_ = " << it << ":\n";
+				o << "				break;\n";
+			}
 			o << "			case " << values.back() << ":\n";
-			o << "				last_ = true;\n";
-			o << "				break;\n";
+			o << R"(				last_ = true;
+				break;
+			}
+)";
 		}
-		o << R"(			}
-			return *this;
+		o << R"(			return *this;
 		}
 
 		ConstIterator& operator++(int)
@@ -71,20 +77,39 @@ struct Enum<)" << name << R"(>
 
 		ConstIterator& operator--()
 		{
-			last_ = false;
-			switch (value_)
-			{
 )";
-		for (int i = 1; i < values.size(); ++i)
+		if (values.empty())
 		{
-			const auto& prev = values[i - 1];
-			const auto& it = values[i];
-			o << "			case " << it << ":\n";
-			o << "				value_ = " << prev << ":\n";
-			o << "				break;\n";
+			o << "			assert(false);\n";
 		}
-		o << R"(			}
-			return *this;
+		else
+		{
+			o << R"(			if (last_)
+			{
+				last_ = false;
+				)";
+				o << "value_ = " << values.back() << ";\n";
+			o << R"(			}
+			else
+			{
+				switch (value_)
+				{
+)";
+			o << "				case " << values.front() << ":\n";
+			o << "					assert(false);\n";
+			o << "					break;\n";
+			for (int i = 1; i < values.size(); ++i)
+			{
+				const auto& prev = values[i - 1];
+				const auto& it = values[i];
+				o << "				case " << it << ":\n";
+				o << "					value_ = " << prev << ":\n";
+				o << "					break;\n";
+			}
+			o << "				}\n";
+			o << "			}\n";
+		}
+		o << R"(			return *this;
 		}
 
 		ConstIterator& operator--(int)
@@ -94,18 +119,53 @@ struct Enum<)" << name << R"(>
 			return tmp;
 		}
 
-	private:
+		bool operator==(const ConstIterator& o) const
+		{
+			return ((last_ && o.last_) || (value_ == o.value_));
+		}
+
+		bool operator!=(const ConstIterator& o) const
+		{
+			return !(*this == o);
+		}
+
 		EnumType value_;
 		bool last_ = true;
 	};
 
 	struct IteratorContainer
 	{
-		ConstIterator begin() const;
-		ConstIterator end() const;
+		ConstIterator begin() const
+		{
+)";
+		if (values.empty())
+		{
+			o << "			return end();\n";
+		}
+		else
+		{
+			o << R"(			ConstIterator it;
+			it.last_ = false;
+			it.value_ = )" << values.front() << ";\n";
+		}
+		o << R"(		}
+
+		ConstIterator end() const
+		{
+			return ConstIterator();
+		}
 	};
 
 	static IteratorContainer Iterate()
+	{
+		return IteratorContainer();
+	}
+
+	static std::optional<EnumType> Translate(const std::string& s)
+	{
+	}
+
+	static std::string Translate(EnumType e)
 	{
 	}
 };
@@ -113,21 +173,29 @@ struct Enum<)" << name << R"(>
 	}
 }  // namespace
 
-ostream& serializer::Serialize(ostream& o, const TypeBase& type)
+void serializer::Begin(ostream& o)
 {
-	o << R"(namespace reflang
+	o << R"(#include <cassert>
+#include <optional>
+
+namespace reflang
 {
 
 template <typename T> class Enum;
 )";
+}
 
+void serializer::Serialize(ostream& o, const TypeBase& type)
+{
 	switch (type.GetType())
 	{
 		case TypeBase::Type::Enum:
 			SerializeEnum(o, static_cast<const Enum&>(type));
 			break;
 	}
+}
 
+void serializer::End(ostream& o)
+{
 	o << "}  // namespace reflang\n";
-	return o;
 }

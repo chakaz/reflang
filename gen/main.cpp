@@ -38,10 +38,13 @@ int main(int argc, char *argv[])
 	else if (arg == GenArg)
 	{
 		auto types = parser::GetTypes(argc - 4, &argv[4], regex);
+
+		serializer::Begin(cout);
 		for (const auto& type : types)
 		{
 			serializer::Serialize(cout, *type);
 		}
+		serializer::End(cout);
 	}
 	else
 	{

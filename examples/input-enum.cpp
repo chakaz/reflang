@@ -15,6 +15,9 @@ namespace MyNamespace
 			Value6 = 12
 		};
 
+		enum class MyEnum2
+		{
+		};
 	};
 
 }
