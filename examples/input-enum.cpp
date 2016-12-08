@@ -5,7 +5,8 @@ namespace MyNamespace
 	{
 	public:
 
-		enum class MyEnum
+		// C++11 enum with repetitions, not continuous, etc.
+		enum class Cpp11Enum
 		{
 			Value1 = 4,
 			Value2,
@@ -15,7 +16,13 @@ namespace MyNamespace
 			Value6 = 12
 		};
 
-		enum class MyEnum2
+		// Empty enum.
+		enum class EmptyEnum
+		{
+		};
+
+		// C-style enum.
+		enum CEnum
 		{
 		};
 	};

@@ -163,7 +163,32 @@ struct Enum<)" << name << R"(>
 
 	static std::optional<EnumType> Translate(const std::string& s)
 	{
-	}
+)";
+		if (values.empty())
+		{
+			o << "		return std::nullopt_t;\n";
+		}
+		else
+		{
+			for (size_t i = 0; i < values.size(); ++i)
+			{
+				o << "		";
+				if (i != 0)
+				{
+					o << "else ";
+				}
+				o << "if (s == \"" << values[i] << "\")\n";
+				o << "		{\n";
+				o << "			return EnumValue::" << values[i] <<";\n";
+				o << "		}\n";
+			}
+			o << R"(		else
+		{
+			return std::nullopt_t;
+		}
+)";
+		}
+		o << R"(	}
 
 	static std::string Translate(EnumType e)
 	{

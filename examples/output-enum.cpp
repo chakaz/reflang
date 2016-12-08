@@ -7,9 +7,9 @@ namespace reflang
 template <typename T> class Enum;
 
 template <>
-struct Enum<MyNamespace::MyClass::MyEnum>
+struct Enum<MyNamespace::MyClass::Cpp11Enum>
 {
-	using EnumType = MyNamespace::MyClass::MyEnum;
+	using EnumType = MyNamespace::MyClass::Cpp11Enum;
 
 	struct ConstIterator
 	{
@@ -119,6 +119,30 @@ struct Enum<MyNamespace::MyClass::MyEnum>
 
 	static std::optional<EnumType> Translate(const std::string& s)
 	{
+		if (s == "Value1")
+		{
+			return EnumValue::Value1;
+		}
+		else if (s == "Value2")
+		{
+			return EnumValue::Value2;
+		}
+		else if (s == "Value3")
+		{
+			return EnumValue::Value3;
+		}
+		else if (s == "Value5")
+		{
+			return EnumValue::Value5;
+		}
+		else if (s == "Value6")
+		{
+			return EnumValue::Value6;
+		}
+		else
+		{
+			return std::nullopt_t;
+		}
 	}
 
 	static std::string Translate(EnumType e)
@@ -127,9 +151,9 @@ struct Enum<MyNamespace::MyClass::MyEnum>
 };
 
 template <>
-struct Enum<MyNamespace::MyClass::MyEnum2>
+struct Enum<MyNamespace::MyClass::EmptyEnum>
 {
-	using EnumType = MyNamespace::MyClass::MyEnum2;
+	using EnumType = MyNamespace::MyClass::EmptyEnum;
 
 	struct ConstIterator
 	{
@@ -195,6 +219,84 @@ struct Enum<MyNamespace::MyClass::MyEnum2>
 
 	static std::optional<EnumType> Translate(const std::string& s)
 	{
+		return std::nullopt_t;
+	}
+
+	static std::string Translate(EnumType e)
+	{
+	}
+};
+
+template <>
+struct Enum<MyNamespace::MyClass::CEnum>
+{
+	using EnumType = MyNamespace::MyClass::CEnum;
+
+	struct ConstIterator
+	{
+		EnumType operator*() { return value_; }
+
+		ConstIterator& operator++()
+		{
+			assert(false);
+			return *this;
+		}
+
+		ConstIterator& operator++(int)
+		{
+			auto tmp = *this;
+			operator++();
+			return tmp;
+		}
+
+		ConstIterator& operator--()
+		{
+			assert(false);
+			return *this;
+		}
+
+		ConstIterator& operator--(int)
+		{
+			auto tmp = *this;
+			operator--();
+			return tmp;
+		}
+
+		bool operator==(const ConstIterator& o) const
+		{
+			return ((last_ && o.last_) || (value_ == o.value_));
+		}
+
+		bool operator!=(const ConstIterator& o) const
+		{
+			return !(*this == o);
+		}
+
+		EnumType value_;
+		bool last_ = true;
+	};
+
+	struct IteratorContainer
+	{
+		ConstIterator begin() const
+		{
+			return end();
+		}
+
+		ConstIterator end() const
+		{
+			return ConstIterator();
+		}
+	};
+
+	static IteratorContainer Iterate()
+	{
+		return IteratorContainer();
+	}
+
+	static std::optional<EnumType> Translate(const std::string& s)
+	{
+		return std::nullopt_t;
 	}
 
 	static std::string Translate(EnumType e)
