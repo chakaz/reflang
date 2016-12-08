@@ -1,9 +1,12 @@
-namespace MyNamespace {
+namespace MyNamespace
+{
 
-	class MyClass {
+	class MyClass
+	{
 	public:
 
-		enum class MyEnum {
+		enum class MyEnum
+		{
 			Value1 = 4,
 			Value2,
 			Value3 = 12

@@ -17,7 +17,8 @@ namespace
 		return result;
 	}
 
-	ostream& operator<<(ostream& s, const CXString& str) {
+	ostream& operator<<(ostream& s, const CXString& str)
+	{
 		s << Convert(str);
 		return s;
 	}
@@ -69,7 +70,8 @@ namespace
 		return unit;
 	}
 
-	struct GetSupportedTypeNamesStruct {
+	struct GetSupportedTypeNamesStruct
+	{
 		vector<string>* results;
 		regex* filter;
 	};
@@ -81,7 +83,8 @@ namespace
 		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
 		{
 			string name = GetFullName(cursor);
-			if (regex_match(name, *tmp->filter)) {
+			if (regex_match(name, *tmp->filter))
+			{
 				tmp->results->push_back(name);
 			}
 		}

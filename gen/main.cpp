@@ -28,7 +28,8 @@ int main(int argc, char *argv[])
 	{
 		auto names = reflang::parser::GetSupportedTypeNames(
 				argc - 4, &argv[4], regex);
-		for (const auto& it : names) {
+		for (const auto& it : names)
+		{
 			cout << it << endl;
 		}
 	}
