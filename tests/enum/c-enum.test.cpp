@@ -9,20 +9,42 @@ using namespace std;
 
 TEST_CASE("iterate")
 {
+	int i = 0;
 	for (const auto& it : Enum<CEnum>::Iterate())
 	{
-		REQUIRE(false);
+		switch (i)
+		{
+			case 0:
+				REQUIRE(it == CEnum::Value0);
+				break;
+			case 1:
+				REQUIRE(it == CEnum::Value1);
+				break;
+			default:
+				REQUIRE(false);
+				break;
+		}
+		++i;
 	}
 }
 
 TEST_CASE("to string")
 {
-	REQUIRE(Enum<CEnum>::Translate(CEnum()) == "");
+	REQUIRE(Enum<CEnum>::Translate(CEnum::Value0) == "Value0");
+	REQUIRE(Enum<CEnum>::Translate(CEnum::Value1) == "Value1");
 }
 
 TEST_CASE("from string")
 {
-	CEnum e1;
-	REQUIRE(!Enum<CEnum>::TryTranslate("", e1));
-	REQUIRE(!Enum<CEnum>::TryTranslate("Hi", e1));
+	auto FromString = [](const string& s)
+	{
+		CEnum e;
+		REQUIRE(Enum<CEnum>::TryTranslate(s, e));
+		return e;
+	};
+	REQUIRE(FromString("Value0") == CEnum::Value0);
+	REQUIRE(FromString("Value1") == CEnum::Value1);
+
+	CEnum e;
+	REQUIRE(!Enum<CEnum>::TryTranslate("UnknownString", e));
 }
