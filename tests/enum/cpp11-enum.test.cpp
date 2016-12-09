@@ -63,4 +63,7 @@ TEST_CASE("from string")
 	REQUIRE(FromString("Value4") == TestEnum::Value4);
 	REQUIRE(FromString("Value5") == TestEnum::Value5);
 	REQUIRE(FromString("Value6") == TestEnum::Value6);
+
+	TestEnum e;
+	REQUIRE(!Enum<TestEnum>::TryTranslate("UnknownString", e));
 }
