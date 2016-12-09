@@ -121,15 +121,24 @@ namespace
 		return result;
 	}
 
+	struct GetTypesStruct
+	{
+		vector<unique_ptr<TypeBase>>* types;
+		regex* filter;
+	};
+
 	CXChildVisitResult GetTypesVisitor(
 			CXCursor cursor, CXCursor parent, CXClientData client_data)
 	{
-		auto* types = static_cast<vector<unique_ptr<TypeBase>>*>(client_data);
+		auto* tmp = reinterpret_cast<GetTypesStruct*>(client_data);
 		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
 		{
 			auto type = make_unique<Enum>(GetFile(cursor), GetFullName(cursor));
 			type->Values = GetEnumValues(cursor);
-			types->push_back(move(type));
+			if (regex_match(type->GetFullName(), *tmp->filter))
+			{
+				tmp->types->push_back(move(type));
+			}
 		}
 		return CXChildVisit_Recurse;
 	}
@@ -144,8 +153,8 @@ vector<string> parser::GetSupportedTypeNames(
 	auto cursor = clang_getTranslationUnitCursor(unit);
 
 	vector<string> results;
-	regex r(regex_str.c_str());
-	GetSupportedTypeNamesStruct tmp{ &results, &r };
+	regex filter(regex_str.c_str());
+	GetSupportedTypeNamesStruct tmp = { &results, &filter };
 	clang_visitChildren(cursor, GetSupportedTypeNamesVisitor, &tmp);
 
 	clang_disposeTranslationUnit(unit);
@@ -154,17 +163,19 @@ vector<string> parser::GetSupportedTypeNames(
 }
 
 vector<unique_ptr<TypeBase>> parser::GetTypes(
-		int argc, char* argv[], const string& regex)
+		int argc, char* argv[], const string& regex_str)
 {
 	CXIndex index = clang_createIndex(0, 0);
 	CXTranslationUnit unit = Parse(index, argc, argv);
 
 	auto cursor = clang_getTranslationUnitCursor(unit);
 
-	vector<unique_ptr<TypeBase>> types;
-	clang_visitChildren(cursor, GetTypesVisitor, &types);
+	vector<unique_ptr<TypeBase>> results;
+	regex filter(regex_str.c_str());
+	GetTypesStruct tmp = { &results, &filter };
+	clang_visitChildren(cursor, GetTypesVisitor, &tmp);
 
 	clang_disposeTranslationUnit(unit);
 	clang_disposeIndex(index);
-	return types;
+	return results;
 }
