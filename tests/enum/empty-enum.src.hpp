@@ -4,6 +4,6 @@ enum class EmptyEnum
 };
 
 // C-style enum.
-enum CEmptyEnum
+enum EmptyCEnum
 {
 };
