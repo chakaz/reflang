@@ -16,7 +16,7 @@ looks like this:
 	};
 ```
 
-Using reflang you could do:
+Using Reflang you could do:
 
 ```cpp
 	for (auto it : reflang::Enum<MyEnum>::Iterate())
@@ -43,9 +43,18 @@ Reflang is made of 2 components:
 * Support library, which allows generic and abstract coding ("find class by
   name", "invoke method by name", etc).
 
-Reflang understands your code exactly like clang does, so by combining reflang
+Reflang understands your code exactly like clang does, so by integrating Reflang
 in your build process you can get always updated reflection information with no
 effort.
+
+## Examples
+Check out the tests/ directory, which shows pretty much all features supported
+by Reflang.
+
+Each test is made of 3 files:
+* X.src.hpp -- this is the source code which will be used for reflection;
+* X.gen.hpp -- this is the generated reflection code (try reading it!);
+* X.test.cpp -- this is the test code which uses the 2 above.
 
 ## Using
 Please check this section later.
