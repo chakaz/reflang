@@ -5,50 +5,18 @@
 
 #include <clang-c/Index.h>
 
+#include "parser.util.hpp"
+#include "parser.enum.hpp"
+
 using namespace reflang;
 using namespace std;
 
 namespace
 {
-	string Convert(const CXString& s)
-	{
-		string result = clang_getCString(s);
-		clang_disposeString(s);
-		return result;
-	}
-
 	ostream& operator<<(ostream& s, const CXString& str)
 	{
-		s << Convert(str);
+		s << parser::Convert(str);
 		return s;
-	}
-
-	string GetFullName(CXCursor cursor)
-	{
-		string name;
-		while (clang_isDeclaration(clang_getCursorKind(cursor)) != 0)
-		{
-			string cur = Convert(clang_getCursorDisplayName(cursor));
-			if (name.empty())
-			{
-				name = cur;
-			}
-			else
-			{
-				name = cur + "::" + name;
-			}
-			cursor = clang_getCursorSemanticParent(cursor);
-		}
-
-		return name;
-	}
-
-	string GetFile(const CXCursor& cursor)
-	{
-		auto location = clang_getCursorLocation(cursor);
-		CXFile file;
-		clang_getSpellingLocation(location, &file, nullptr, nullptr, nullptr);
-		return Convert(clang_getFileName(file));
 	}
 
 	CXTranslationUnit Parse(CXIndex& index, int argc, char* argv[])
@@ -90,7 +58,7 @@ namespace
 		auto* tmp = reinterpret_cast<GetSupportedTypeNamesStruct*>(client_data);
 		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
 		{
-			string name = GetFullName(cursor);
+			string name = parser::GetFullName(cursor);
 			if (regex_match(name, *tmp->filter))
 			{
 				tmp->results->push_back(name);
@@ -99,27 +67,6 @@ namespace
 		return CXChildVisit_Recurse;
 	}
 
-	CXChildVisitResult VisitEnum(
-			CXCursor cursor, CXCursor parent, CXClientData client_data)
-	{
-		if (clang_getCursorKind(cursor) == CXCursor_EnumConstantDecl)
-		{
-			string name = Convert(clang_getCursorSpelling(cursor));
-			int value = clang_getEnumConstantDeclValue(cursor);
-			reinterpret_cast<Enum::ValueList*>(client_data)->emplace_back(
-					name, value);
-		}
-		return CXChildVisit_Continue;
-	}
-
-	Enum::ValueList GetEnumValues(const CXCursor& cursor)
-	{
-		Enum::ValueList result;
-
-		clang_visitChildren(cursor, VisitEnum, &result);
-
-		return result;
-	}
 
 	struct GetTypesStruct
 	{
@@ -133,12 +80,15 @@ namespace
 		auto* tmp = reinterpret_cast<GetTypesStruct*>(client_data);
 		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
 		{
-			auto type = make_unique<Enum>(GetFile(cursor), GetFullName(cursor));
-			type->Values = GetEnumValues(cursor);
-			if (regex_match(type->GetFullName(), *tmp->filter))
+			auto e = parser::GetEnum(cursor);
+			if (regex_match(e.GetFullName(), *tmp->filter))
 			{
-				tmp->types->push_back(move(type));
+				tmp->types->push_back(make_unique<Enum>(e));
 			}
+		}
+		else if (clang_getCursorKind(cursor) == CXCursor_ClassDecl)
+		{
+			cout << "Found class " << parser::GetFullName(cursor) << " at " << parser::GetFile(cursor) << endl;
 		}
 		return CXChildVisit_Recurse;
 	}
