@@ -18,7 +18,8 @@ add_executable(
 	gen/serializer.cpp gen/serializer.hpp
 	gen/parser.cpp gen/parser.hpp
 	gen/parser.util.cpp gen/parser.util.hpp
-	gen/parser.enum.cpp gen/parser.enum.hpp)
+	gen/parser.enum.cpp gen/parser.enum.hpp
+	gen/parser.class.cpp gen/parser.class.hpp)
 target_link_libraries(reflang ${CLANG_LIBS})
 
 add_subdirectory(tests)

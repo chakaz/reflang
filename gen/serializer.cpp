@@ -42,8 +42,7 @@ namespace
 		vector<string> values = GetEnumValues(the_enum);
 
 		const string& name = the_enum.GetFullName();
-		o << R"(
-template <>
+		o << R"(template <>
 struct Enum<)" << name << R"(>
 {
 	using EnumType = )" << name << R"(;
@@ -229,6 +228,17 @@ struct Enum<)" << name << R"(>
 };
 )";
 	}
+
+	void SerializeClass(ostream& o, const Class& c)
+	{
+		o << "/*\n";
+		o << "Class '" << c.GetFullName() << "' with:\n";
+		for (const auto& method : c.Methods)
+		{
+			o << "> " << method << "()\n";
+		}
+		o << "*/\n";
+	}
 }  // namespace
 
 void serializer::Begin(ostream& o)
@@ -240,6 +250,8 @@ namespace reflang
 {
 
 template <typename T> class Enum;
+template <typename T> class Class;
+
 )";
 }
 
@@ -249,6 +261,9 @@ void serializer::Serialize(ostream& o, const TypeBase& type)
 	{
 		case TypeBase::Type::Enum:
 			SerializeEnum(o, static_cast<const Enum&>(type));
+			break;
+		case TypeBase::Type::Class:
+			SerializeClass(o, static_cast<const Class&>(type));
 			break;
 	}
 }

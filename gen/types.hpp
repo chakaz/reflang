@@ -12,6 +12,7 @@ namespace reflang
 		enum class Type
 		{
 			Enum,
+			Class,
 		};
 
 	public:
@@ -39,6 +40,18 @@ namespace reflang
 		Type GetType() const override;
 
 		ValueList Values;
+	};
+
+	class Class : public TypeBase
+	{
+	public:
+		using MethodList = std::vector<std::string>;
+		
+	public:
+		Class(std::string file, std::string full_name);
+		Type GetType() const override;
+
+		MethodList Methods;
 	};
 }
 

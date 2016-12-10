@@ -7,6 +7,7 @@
 
 #include "parser.util.hpp"
 #include "parser.enum.hpp"
+#include "parser.class.hpp"
 
 using namespace reflang;
 using namespace std;
@@ -78,18 +79,21 @@ namespace
 			CXCursor cursor, CXCursor parent, CXClientData client_data)
 	{
 		auto* tmp = reinterpret_cast<GetTypesStruct*>(client_data);
+		std::unique_ptr<TypeBase> type;
 		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
 		{
-			auto e = parser::GetEnum(cursor);
-			if (regex_match(e.GetFullName(), *tmp->filter))
-			{
-				tmp->types->push_back(make_unique<Enum>(e));
-			}
+			type = std::make_unique<Enum>(parser::GetEnum(cursor));
 		}
 		else if (clang_getCursorKind(cursor) == CXCursor_ClassDecl)
 		{
-			cout << "Found class " << parser::GetFullName(cursor) << " at " << parser::GetFile(cursor) << endl;
+			type = std::make_unique<Class>(parser::GetClass(cursor));
 		}
+
+		if (type && regex_match(type->GetFullName(), *tmp->filter))
+		{
+			tmp->types->push_back(std::move(type));
+		}
+
 		return CXChildVisit_Recurse;
 	}
 }  // namespace
