@@ -16,6 +16,8 @@ add_executable(
 	gen/main.cpp
 	gen/types.cpp gen/types.hpp
 	gen/serializer.cpp gen/serializer.hpp
+	gen/serializer.enum.cpp gen/serializer.enum.hpp
+	gen/serializer.class.cpp gen/serializer.class.hpp
 	gen/parser.cpp gen/parser.hpp
 	gen/parser.util.cpp gen/parser.util.hpp
 	gen/parser.enum.cpp gen/parser.enum.hpp
