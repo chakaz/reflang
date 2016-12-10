@@ -1,5 +1,7 @@
 #include "serializer.hpp"
 
+#include <fstream>
+#include <memory>
 #include <unordered_set>
 
 using namespace std;
@@ -239,11 +241,10 @@ struct Enum<)" << name << R"(>
 		}
 		o << "*/\n";
 	}
-}  // namespace
 
-void serializer::Begin(ostream& o)
-{
-	o << R"(#include <cassert>
+	void Begin(ostream& o)
+	{
+		o << R"(#include <cassert>
 #include <string>
 
 namespace reflang
@@ -253,22 +254,39 @@ template <typename T> class Enum;
 template <typename T> class Class;
 
 )";
-}
-
-void serializer::Serialize(ostream& o, const TypeBase& type)
-{
-	switch (type.GetType())
-	{
-		case TypeBase::Type::Enum:
-			SerializeEnum(o, static_cast<const Enum&>(type));
-			break;
-		case TypeBase::Type::Class:
-			SerializeClass(o, static_cast<const Class&>(type));
-			break;
 	}
-}
 
-void serializer::End(ostream& o)
+	void End(ostream& o)
+	{
+		o << "}  // namespace reflang\n";
+	}
+}  // namespace
+
+void serializer::Serialize(
+	const std::vector<std::unique_ptr<TypeBase>>& types,
+	const Options& options)
 {
-	o << "}  // namespace reflang\n";
+	std::unique_ptr<ofstream> fout;
+	ostream* o = &cout;
+
+	if (!options.out_hpp_path.empty())
+	{
+		fout = make_unique<ofstream>(options.out_hpp_path.c_str());
+		o = fout.get();
+	}
+
+	Begin(*o);
+	for (const auto& type : types)
+	{
+		switch (type->GetType())
+		{
+			case TypeBase::Type::Enum:
+				SerializeEnum(*o, static_cast<const Enum&>(*type));
+				break;
+			case TypeBase::Type::Class:
+				SerializeClass(*o, static_cast<const Class&>(*type));
+				break;
+		}
+	}
+	End(*o);
 }

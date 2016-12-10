@@ -5,6 +5,7 @@ namespace reflang
 {
 
 template <typename T> class Enum;
+template <typename T> class Class;
 
 template <>
 struct Enum<EmptyEnum>
@@ -83,7 +84,6 @@ struct Enum<EmptyEnum>
 		return std::string();
 	}
 };
-
 template <>
 struct Enum<EmptyCEnum>
 {

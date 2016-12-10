@@ -5,7 +5,11 @@ namespace reflang
 {
 
 template <typename T> class Enum;
+template <typename T> class Class;
 
+/*
+Class 'MyNamespace::MyClass' with:
+*/
 template <>
 struct Enum<MyNamespace::MyClass::Cpp11Enum>
 {

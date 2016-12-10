@@ -9,11 +9,16 @@ namespace reflang
 {
 	namespace serializer
 	{
-		void Begin(std::ostream& o);
+		struct Options
+		{
+			std::string include_path = R"(#include "reflang.h")";
+			std::string out_hpp_path;
+			bool standalone = false;
+		};
 
-		void Serialize(std::ostream& o, const TypeBase& type);
-
-		void End(std::ostream& o);
+		void Serialize(
+			const std::vector<std::unique_ptr<TypeBase>>& types,
+			const Options& options = Options());
 	}
 }
 
