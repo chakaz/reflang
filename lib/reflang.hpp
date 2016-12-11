@@ -1,6 +1,9 @@
 #ifndef REFLANG_TYPES_HPP
 #define REFLANG_TYPES_HPP
 
+#include <functional>
+#include <memory>
+#include <stdexcept>
 #include <vector>
 
 namespace reflang
@@ -11,12 +14,18 @@ namespace reflang
 		template <typename T>
 		Object(T&& t)
 		:	id_(GetTypeId<T>())
-			//TODO: save value
+		,	data_(new T(std::forward<T>(t)))
+		,	deleter_(
+				[this]()
+				{
+					delete static_cast<T*>(data_);
+				})
 		{
 		}
 
 		Object()
 		:	id_(GetTypeId<void>())
+		,	deleter_([]() {})
 		{
 		}
 
@@ -31,9 +40,9 @@ namespace reflang
 		{
 			if (GetTypeId<T>() != id_)
 			{
-				throw 1; //TODO: throw reflang exception
+				throw std::invalid_argument("Can't cast to T.");
 			}
-			return T(); //TODO: return saved value
+			return T(*static_cast<T*>(data_));
 		}
 
 		bool is_void() const;
@@ -49,6 +58,8 @@ namespace reflang
 		}
 
 		const int id_;
+		void* data_ = nullptr;
+		std::function<void()> deleter_;
 	};
 
 	class IFunction
@@ -57,6 +68,7 @@ namespace reflang
 		virtual ~IFunction() = default;
 
 		virtual int num_args() const = 0;
+
 		virtual Object operator()(const std::vector<Object>& args) = 0;
 	};
 

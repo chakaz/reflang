@@ -26,7 +26,7 @@ class Function<decltype()" << f.GetFullName() << "), " << f.GetFullName() << R"(
 	}
 	else
 	{
-		o << "		return Object()" << f.GetFullName() << "());\n";
+		o << "		return Object(" << f.GetFullName() << "());\n";
 	}
 	o << R"(	}
 };
