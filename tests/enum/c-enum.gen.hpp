@@ -3,6 +3,7 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #include <cassert>
+#include <stdexcept>
 #include <string>
 
 #include "lib/reflang.hpp"
@@ -135,4 +136,6 @@ struct Enum<CEnum>
 		}
 	}
 };
+
+
 }  // namespace reflang

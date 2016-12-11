@@ -7,7 +7,6 @@ This file is intended for Reflang author.
 * Nicer serializers - some kind of framework
 
 ## Functions
-* Invoke functions of type void()
 * Invoke functions with parameters
 * Retrieve return value
 * Overloads

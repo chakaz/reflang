@@ -3,6 +3,7 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #include <cassert>
+#include <stdexcept>
 #include <string>
 
 #include "lib/reflang.hpp"
@@ -13,6 +14,8 @@ namespace reflang
 /*
 Class 'MyNamespace::MyClass' with:
 */
+
+
 template <>
 struct Enum<MyNamespace::MyClass::Cpp11Enum>
 {
@@ -185,4 +188,6 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum>
 		}
 	}
 };
+
+
 }  // namespace reflang

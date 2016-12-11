@@ -14,7 +14,7 @@ string parser::GetFullName(CXCursor cursor)
 	string name;
 	while (clang_isDeclaration(clang_getCursorKind(cursor)) != 0)
 	{
-		string cur = Convert(clang_getCursorDisplayName(cursor));
+		string cur = Convert(clang_getCursorSpelling(cursor));
 		if (name.empty())
 		{
 			name = cur;

@@ -11,6 +11,8 @@ include_directories(${CMAKE_SOURCE_DIR})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++14 -stdlib=libc++")
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
+add_library(libreflang STATIC lib/reflang.hpp lib/reflang.cpp)
+
 add_executable(
 	reflang
 	gen/cmdargs.cpp gen/cmdargs.hpp

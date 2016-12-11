@@ -3,6 +3,7 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #include <cassert>
+#include <stdexcept>
 #include <string>
 
 #include "lib/reflang.hpp"
@@ -10,12 +11,44 @@
 namespace reflang
 {
 
-/*
-Function 'ns::NamespacedFunction()':
-> void NamespacedFunction();
-*/
-/*
-Function 'GlobalFunction()':
-> void GlobalFunction();
-*/
+template <>
+class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
+{
+	int num_args() const override
+	{
+		return 0;
+	}
+
+	Object operator()(const std::vector<Object>& args) override
+	{
+		if (args.size() != this->num_args())
+		{
+			throw std::invalid_argument("count");
+		}
+		ns::NamespacedFunction();
+		return Object();
+	}
+};
+
+
+template <>
+class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
+{
+	int num_args() const override
+	{
+		return 0;
+	}
+
+	Object operator()(const std::vector<Object>& args) override
+	{
+		if (args.size() != this->num_args())
+		{
+			throw std::invalid_argument("count");
+		}
+		GlobalFunction();
+		return Object();
+	}
+};
+
+
 }  // namespace reflang

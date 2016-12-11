@@ -3,6 +3,7 @@
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #include <cassert>
+#include <stdexcept>
 #include <string>
 
 #include "lib/reflang.hpp"
@@ -87,6 +88,8 @@ struct Enum<EmptyEnum>
 		return std::string();
 	}
 };
+
+
 template <>
 struct Enum<EmptyCEnum>
 {
@@ -164,4 +167,6 @@ struct Enum<EmptyCEnum>
 		return std::string();
 	}
 };
+
+
 }  // namespace reflang

@@ -18,6 +18,7 @@ namespace
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #include <cassert>
+#include <stdexcept>
 #include <string>
 
 )";
@@ -64,6 +65,7 @@ void serializer::Serialize(
 				SerializeClass(*o, static_cast<const Class&>(*type));
 				break;
 		}
+		*o << "\n\n";
 	}
 	End(*o);
 }

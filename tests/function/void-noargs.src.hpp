@@ -1,6 +1,14 @@
+const char* global_string = nullptr;
+
 namespace ns
 {
-	void NamespacedFunction();
+	void NamespacedFunction()
+	{
+		global_string = "NamespacedFunction()";
+	}
 }
 
-void GlobalFunction();
+void GlobalFunction()
+{
+	global_string = "GlobalFunction()";
+}

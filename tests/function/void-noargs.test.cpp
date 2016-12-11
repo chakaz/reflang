@@ -7,7 +7,21 @@
 using namespace reflang;
 using namespace std;
 
-TEST_CASE("simple")
+TEST_CASE("global")
 {
-	REQUIRE(true);
+	global_string = nullptr;
+	std::unique_ptr<IFunction> func =
+		std::make_unique<Function<decltype(GlobalFunction), GlobalFunction>>();
+	(*func)({});
+	REQUIRE(global_string == "GlobalFunction()");
+}
+
+TEST_CASE("namespace")
+{
+	global_string = nullptr;
+	std::unique_ptr<IFunction> func = std::make_unique<Function<
+		decltype(ns::NamespacedFunction),
+		ns::NamespacedFunction>>();
+	(*func)({});
+	REQUIRE(global_string == "NamespacedFunction()");
 }

@@ -16,6 +16,7 @@ macro(reflang_test TEST)
 
 	add_executable(
 		${TEST} ${SOURCE} ${INPUT} "${CMAKE_CURRENT_SOURCE_DIR}/${OUTPUT}")
+	target_link_libraries(${TEST} libreflang)
 
 	add_test("${TEST}-test" ${TEST})
 endmacro()

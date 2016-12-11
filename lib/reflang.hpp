@@ -5,10 +5,6 @@
 
 namespace reflang
 {
-	template <typename T> class Enum;
-	template <typename T> class Class;
-	template <typename T> class Function;
-
 	class Object final
 	{
 	public:
@@ -16,6 +12,11 @@ namespace reflang
 		Object(T&& t)
 		:	id_(GetTypeId<T>())
 			//TODO: save value
+		{
+		}
+
+		Object()
+		:	id_(GetTypeId<void>())
 		{
 		}
 
@@ -41,7 +42,7 @@ namespace reflang
 		static int global_id;
 
 		template <typename T>
-		int GetTypeId()
+		static int GetTypeId()
 		{
 			static int t_id = global_id++;
 			return t_id;
@@ -58,6 +59,19 @@ namespace reflang
 		virtual int num_args() const = 0;
 		virtual Object operator()(const std::vector<Object>& args) = 0;
 	};
+
+	// Below is implementation helpers.
+	template <typename T> class Enum;
+	template <typename T> class Class;
+
+	template <typename R, typename... Args>
+	struct FunctionIdWrapper
+	{
+		template <R F(Args...)>
+		struct FunctionId {};
+	};
+	template <typename T, T t> class Function;
+
 }
 
 #endif //REFLANG_TYPES_HPP
