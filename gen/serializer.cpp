@@ -10,10 +10,14 @@ using namespace reflang;
 
 namespace
 {
-	void Begin(ostream& o)
+	void Begin(ostream& o, const serializer::Options& options)
 	{
 		o << R"(#include <cassert>
 #include <string>
+
+)";
+		o << options.include_path;
+		o << R"(
 
 namespace reflang
 {
@@ -43,7 +47,7 @@ void serializer::Serialize(
 		o = fout.get();
 	}
 
-	Begin(*o);
+	Begin(*o, options);
 	for (const auto& type : types)
 	{
 		switch (type->GetType())

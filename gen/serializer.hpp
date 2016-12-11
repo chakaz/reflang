@@ -11,7 +11,7 @@ namespace reflang
 	{
 		struct Options
 		{
-			std::string include_path = R"(#include "reflang.h")";
+			std::string include_path;
 			std::string out_hpp_path;
 			//TODO: bool standalone = false;
 		};

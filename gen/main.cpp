@@ -23,6 +23,10 @@ int main(int argc, char *argv[])
 			"--exclude",
 			"regex for which types to exclude from reflection generation",
 			"std::.*");
+	auto reflang_include = cmd_args.Register<string>(
+			"--reflang-include",
+			"Complete #include line for reflang for generated code.",
+			R"(#include "reflang.h")");
 
 	bool wtf = false;
 	int consumed = 0;
@@ -38,7 +42,7 @@ int main(int argc, char *argv[])
 		wtf = true;
 	}
 
-	if (wtf)
+	if (wtf || consumed == 0)
 	{
 		cout << "Reflang tool to generate reflection metadata." << endl;
 		cout << "Usage:" << endl;
@@ -65,6 +69,8 @@ int main(int argc, char *argv[])
 	else
 	{
 		auto types = parser::GetTypes(clang_argc, clang_argv, options);
-		serializer::Serialize(types);
+		serializer::Options options;
+		options.include_path = reflang_include->Get();
+		serializer::Serialize(types, options);
 	}
 }
