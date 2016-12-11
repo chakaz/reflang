@@ -26,12 +26,16 @@ namespace
 					NamedObject arg;
 					arg.Name = parser::Convert(
 							clang_getCursorSpelling(arg_cursor));
+					if (arg.Name.empty())
+					{
+						arg.Name = "nameless";
+					}
 					auto arg_type = clang_getArgType(type, i);
 					arg.Type = parser::GetName(arg_type);
 					f.Arguments.push_back(arg);
 				}
 
-				auto return_type = clang_getResultType(type);
+				f.ReturnType = parser::GetName(clang_getResultType(type));
 
 				data->push_back(f);
 			}
