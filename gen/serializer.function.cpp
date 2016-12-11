@@ -12,7 +12,7 @@ class Function<decltype()" << f.GetFullName() << "), " << f.GetFullName() << R"(
 		return )" << f.Arguments.size() << R"(;
 	}
 
-	Object operator()(const std::vector<Object>& args) override
+	Object Invoke(const std::vector<Object>& args) override
 	{
 		if (args.size() != this->num_args())
 		{

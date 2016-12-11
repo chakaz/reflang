@@ -8,7 +8,6 @@ This file is intended for Reflang author.
 
 ## Functions
 * Invoke functions with parameters
-* Retrieve return value
 * Overloads
 
 ## Classes

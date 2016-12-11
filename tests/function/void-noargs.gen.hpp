@@ -19,7 +19,7 @@ class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : publi
 		return 0;
 	}
 
-	Object operator()(const std::vector<Object>& args) override
+	Object Invoke(const std::vector<Object>& args) override
 	{
 		if (args.size() != this->num_args())
 		{
@@ -39,7 +39,7 @@ class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 		return 0;
 	}
 
-	Object operator()(const std::vector<Object>& args) override
+	Object Invoke(const std::vector<Object>& args) override
 	{
 		if (args.size() != this->num_args())
 		{

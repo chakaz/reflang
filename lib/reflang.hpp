@@ -69,7 +69,13 @@ namespace reflang
 
 		virtual int num_args() const = 0;
 
-		virtual Object operator()(const std::vector<Object>& args) = 0;
+		template <typename... Ts>
+		Object operator()(Ts&&... ts)
+		{
+			return this->Invoke({ Object(ts)... });
+		}
+
+		virtual Object Invoke(const std::vector<Object>& args) = 0;
 	};
 
 	// Below is implementation helpers.
