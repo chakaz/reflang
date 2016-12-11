@@ -31,8 +31,8 @@ template <typename T> class Class;
 }  // namespace
 
 void serializer::Serialize(
-	const std::vector<std::unique_ptr<TypeBase>>& types,
-	const Options& options)
+		const std::vector<std::unique_ptr<TypeBase>>& types,
+		const Options& options)
 {
 	std::unique_ptr<ofstream> fout;
 	ostream* o = &cout;

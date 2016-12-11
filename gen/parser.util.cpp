@@ -29,6 +29,13 @@ string parser::GetFullName(CXCursor cursor)
 	return name;
 }
 
+string parser::GetName(const CXType& type)
+{
+	//TODO: unfortunately, this isn't good enough. It only works as long as the
+	// type is fully qualified.
+	return Convert(clang_getTypeSpelling(type));
+}
+
 string parser::GetFile(const CXCursor& cursor)
 {
 	auto location = clang_getCursorLocation(cursor);

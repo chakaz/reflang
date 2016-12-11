@@ -42,16 +42,31 @@ namespace reflang
 		ValueList Values;
 	};
 
+	struct NamedObject
+	{
+		std::string Name;
+		std::string Type;
+	};
+
+	struct Function
+	{
+		std::string Name;
+		std::vector<NamedObject> Arguments;
+		std::string ReturnType;
+	};
+
 	class Class : public TypeBase
 	{
 	public:
-		using MethodList = std::vector<std::string>;
+		using MethodList = std::vector<Function>;
+		using MemberList = std::vector<NamedObject>;
 		
 	public:
 		Class(std::string file, std::string full_name);
 		Type GetType() const override;
 
 		MethodList Methods;
+		MemberList Members;
 	};
 }
 

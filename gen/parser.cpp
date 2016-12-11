@@ -89,7 +89,9 @@ namespace
 			type = std::make_unique<Class>(parser::GetClass(cursor));
 		}
 
-		if (type && regex_match(type->GetFullName(), *tmp->filter))
+		const string& name = type->GetFullName();
+		if (type && !name.empty() && !(name.back() == ':')
+				&& regex_match(type->GetFullName(), *tmp->filter))
 		{
 			tmp->types->push_back(std::move(type));
 		}

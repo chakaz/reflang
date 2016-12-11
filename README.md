@@ -65,6 +65,7 @@ Please check this section later.
 ## Limitations
 * `reflang::Object`, the type used for function arguments, return values, etc
   only supports types which are copy-cosntructible.
+* No `template` classes / functions support.
 
 ## Bugs, pull requests, feedback
 Please check this section later.

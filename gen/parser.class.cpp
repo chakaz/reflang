@@ -15,8 +15,25 @@ namespace
 		{
 			if (clang_getCXXAccessSpecifier(cursor) == CX_CXXPublic)
 			{
-				string name = parser::Convert(clang_getCursorSpelling(cursor));
-				data->push_back(std::move(name));
+				auto type = clang_getCursorType(cursor);
+
+				Function f;
+				f.Name = parser::Convert(clang_getCursorSpelling(cursor));
+				int num_args = clang_Cursor_getNumArguments(cursor);
+				for (int i = 0; i < num_args; ++i)
+				{
+					auto arg_cursor = clang_Cursor_getArgument(cursor, i);
+					NamedObject arg;
+					arg.Name = parser::Convert(
+							clang_getCursorSpelling(arg_cursor));
+					auto arg_type = clang_getArgType(type, i);
+					arg.Type = parser::GetName(arg_type);
+					f.Arguments.push_back(arg);
+				}
+
+				auto return_type = clang_getResultType(type);
+
+				data->push_back(f);
 			}
 		}
 		return CXChildVisit_Continue;

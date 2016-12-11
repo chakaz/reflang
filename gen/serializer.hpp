@@ -13,12 +13,12 @@ namespace reflang
 		{
 			std::string include_path = R"(#include "reflang.h")";
 			std::string out_hpp_path;
-			bool standalone = false;
+			//TODO: bool standalone = false;
 		};
 
 		void Serialize(
-			const std::vector<std::unique_ptr<TypeBase>>& types,
-			const Options& options = Options());
+				const std::vector<std::unique_ptr<TypeBase>>& types,
+				const Options& options = Options());
 	}
 }
 

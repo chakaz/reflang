@@ -11,6 +11,7 @@ namespace reflang
 	{
 		std::string Convert(const CXString& s);
 		std::string GetFullName(CXCursor cursor);
+		std::string GetName(const CXType& type);
 		std::string GetFile(const CXCursor& cursor);
 	}
 }
