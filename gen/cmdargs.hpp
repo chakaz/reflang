@@ -21,6 +21,9 @@ namespace reflang
 			std::string error_;
 		};
 
+		template <typename U>
+		inline static U Convert(const std::string& s);
+
 		template <typename T>
 		class Arg
 		{
@@ -32,8 +35,7 @@ namespace reflang
 
 			void Set(const std::string& value)
 			{
-				std::stringstream s(value);
-				s >> value_;
+				value_ = Convert<T>(value);
 			}
 
 		private:
@@ -82,6 +84,35 @@ namespace reflang
 		using Args = std::unordered_map<std::string, InternalArg>;
 		Args args_;
 	};
+
+	template <>
+	inline std::string CmdArgs::Convert<std::string>(const std::string& s)
+	{
+		return s;
+	}
+
+	template <>
+	inline int CmdArgs::Convert<int>(const std::string& s)
+	{
+		return std::stoi(s);
+	}
+
+	template <>
+	inline bool CmdArgs::Convert<bool>(const std::string& s)
+	{
+		if (s == "true")
+		{
+			return true;
+		}
+		else if (s == "false")
+		{
+			return false;
+		}
+		else
+		{
+			throw Exception("Unable to parse bool value " + s + ".");
+		}
+	}
 }
 
 #endif //REFLANG_CMDARGS_HPP

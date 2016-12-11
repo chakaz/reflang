@@ -26,9 +26,6 @@ namespace
 namespace reflang
 {
 
-template <typename T> class Enum;
-template <typename T> class Class;
-
 )";
 	}
 

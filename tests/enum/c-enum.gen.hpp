@@ -5,13 +5,10 @@
 #include <cassert>
 #include <string>
 
-//
+#include "lib/reflang.hpp"
 
 namespace reflang
 {
-
-template <typename T> class Enum;
-template <typename T> class Class;
 
 template <>
 struct Enum<CEnum>

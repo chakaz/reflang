@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	auto reflang_include = cmd_args.Register<string>(
 			"--reflang-include",
 			"Complete #include line for reflang for generated code.",
-			R"(#include "reflang.h")");
+			R"(#include "reflang.hpp")");
 
 	bool wtf = false;
 	int consumed = 0;
