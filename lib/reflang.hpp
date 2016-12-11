@@ -81,13 +81,6 @@ namespace reflang
 	// Below is implementation helpers.
 	template <typename T> class Enum;
 	template <typename T> class Class;
-
-	template <typename R, typename... Args>
-	struct FunctionIdWrapper
-	{
-		template <R F(Args...)>
-		struct FunctionId {};
-	};
 	template <typename T, T t> class Function;
 
 }
