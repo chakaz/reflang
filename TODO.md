@@ -11,11 +11,13 @@ This file is intended for Reflang author.
 * Invoke functions of type void()
 * Invoke functions with parameters
 * Retrieve return value
-* Overloads!
-* Central registry
+* Overloads
 
 ## Classes
 * Methods
 * Members
 * Constructors (construct by name with arguments)
-* Central registry
+
+## Central registry
+* Interface for all types (IEnum, IClass, ...)
+* Find all types by name, regex
