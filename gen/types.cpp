@@ -30,6 +30,16 @@ Enum::Type Enum::GetType() const
 	return Type::Enum;
 }
 
+Function::Function(std::string file, std::string full_name)
+:	TypeBase(move(file), move(full_name))
+{
+}
+
+Function::Type Function::GetType() const
+{
+	return Type::Function;
+}
+
 Class::Class(string file, string full_name)
 :	TypeBase(move(file), move(full_name))
 {

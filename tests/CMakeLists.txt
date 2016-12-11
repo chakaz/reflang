@@ -21,3 +21,4 @@ macro(reflang_test TEST)
 endmacro()
 
 add_subdirectory(enum)
+add_subdirectory(function)

@@ -12,6 +12,7 @@ namespace reflang
 		enum class Type
 		{
 			Enum,
+			Function,
 			Class,
 		};
 
@@ -48,8 +49,12 @@ namespace reflang
 		std::string Type;
 	};
 
-	struct Function
+	class Function : public TypeBase
 	{
+	public:
+		Function(std::string file, std::string full_name);
+		Type GetType() const override;
+
 		std::string Name;
 		std::vector<NamedObject> Arguments;
 		std::string ReturnType;

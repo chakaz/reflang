@@ -13,16 +13,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
 add_executable(
 	reflang
-	gen/main.cpp
 	gen/cmdargs.cpp gen/cmdargs.hpp
-	gen/types.cpp gen/types.hpp
+	gen/main.cpp
+	gen/parser.class.cpp gen/parser.class.hpp
+	gen/parser.cpp gen/parser.hpp
+	gen/parser.enum.cpp gen/parser.enum.hpp
+	gen/parser.function.cpp gen/parser.function.hpp
+	gen/parser.util.cpp gen/parser.util.hpp
+	gen/serializer.class.cpp gen/serializer.class.hpp
 	gen/serializer.cpp gen/serializer.hpp
 	gen/serializer.enum.cpp gen/serializer.enum.hpp
-	gen/serializer.class.cpp gen/serializer.class.hpp
-	gen/parser.cpp gen/parser.hpp
-	gen/parser.util.cpp gen/parser.util.hpp
-	gen/parser.enum.cpp gen/parser.enum.hpp
-	gen/parser.class.cpp gen/parser.class.hpp)
+	gen/serializer.function.cpp gen/serializer.function.hpp
+	gen/types.cpp gen/types.hpp)
 target_link_libraries(reflang ${CLANG_LIBS})
 
 add_subdirectory(tests)

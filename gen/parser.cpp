@@ -4,9 +4,10 @@
 
 #include <clang-c/Index.h>
 
-#include "parser.util.hpp"
-#include "parser.enum.hpp"
 #include "parser.class.hpp"
+#include "parser.enum.hpp"
+#include "parser.function.hpp"
+#include "parser.util.hpp"
 
 using namespace reflang;
 using namespace std;
@@ -81,13 +82,19 @@ namespace
 	{
 		auto* data = reinterpret_cast<GetTypesStruct*>(client_data);
 		std::unique_ptr<TypeBase> type;
-		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
+		switch (clang_getCursorKind(cursor))
 		{
-			type = std::make_unique<Enum>(parser::GetEnum(cursor));
-		}
-		else if (clang_getCursorKind(cursor) == CXCursor_ClassDecl)
-		{
-			type = std::make_unique<Class>(parser::GetClass(cursor));
+			case CXCursor_EnumDecl:
+				type = std::make_unique<Enum>(parser::GetEnum(cursor));
+				break;
+			case CXCursor_ClassDecl:
+				type = std::make_unique<Class>(parser::GetClass(cursor));
+				break;
+			case CXCursor_FunctionDecl:
+				type = std::make_unique<Function>(parser::GetFunction(cursor));
+				break;
+			default:
+				break;
 		}
 
 		const string& name = type->GetFullName();

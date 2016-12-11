@@ -17,7 +17,8 @@ namespace
 			{
 				auto type = clang_getCursorType(cursor);
 
-				Function f;
+				Function f(
+						parser::GetFile(cursor), parser::GetFullName(cursor));
 				f.Name = parser::Convert(clang_getCursorSpelling(cursor));
 				int num_args = clang_Cursor_getNumArguments(cursor);
 				for (int i = 0; i < num_args; ++i)

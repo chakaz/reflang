@@ -2,8 +2,9 @@
 
 #include <fstream>
 
-#include "serializer.enum.hpp"
 #include "serializer.class.hpp"
+#include "serializer.enum.hpp"
+#include "serializer.function.hpp"
 
 using namespace std;
 using namespace reflang;
@@ -55,6 +56,9 @@ void serializer::Serialize(
 		{
 			case TypeBase::Type::Enum:
 				SerializeEnum(*o, static_cast<const Enum&>(*type));
+				break;
+			case TypeBase::Type::Function:
+				SerializeFunction(*o, static_cast<const Function&>(*type));
 				break;
 			case TypeBase::Type::Class:
 				SerializeClass(*o, static_cast<const Class&>(*type));
