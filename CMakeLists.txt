@@ -14,6 +14,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 add_executable(
 	reflang
 	gen/main.cpp
+	gen/cmdargs.cpp gen/cmdargs.hpp
 	gen/types.cpp gen/types.hpp
 	gen/serializer.cpp gen/serializer.hpp
 	gen/serializer.enum.cpp gen/serializer.enum.hpp

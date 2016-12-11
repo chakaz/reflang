@@ -1,48 +1,70 @@
 #include <iostream>
 #include <string>
 
+#include "cmdargs.hpp"
 #include "parser.hpp"
 #include "serializer.hpp"
 
 using namespace reflang;
 using namespace std;
 
-const string CMakeStartArg = "--";
-const string ListTypesArg = "--list-types";
-const string GenArg = "--gen";
-
 int main(int argc, char *argv[])
 {
-	if (argc <= 4 || argv[3] != CMakeStartArg)
+	CmdArgs cmd_args;
+	auto list_only = cmd_args.Register<bool>(
+			"--list-only",
+			"Only list type names, don't generate",
+			false);
+	auto filter_include = cmd_args.Register<string>(
+			"--include",
+			"regex for which types to include in reflection generation",
+			".*");
+	auto filter_exclude = cmd_args.Register<string>(
+			"--exclude",
+			"regex for which types to exclude from reflection generation",
+			"std::.*");
+
+	bool wtf = false;
+	int consumed = 0;
+	try
 	{
-		cout << "Usage:" << endl;
-		cout << argv[0] << " " << ListTypesArg << " <regex> " << CMakeStartArg
-			<< " <cmake arguments>" << endl;
-		cout << argv[0] << " " << GenArg << " <regex> " << CMakeStartArg
-			<< " <cmake arguments>" << endl;
-		exit(0);
+		--argc;
+		++argv;
+		consumed = cmd_args.Consume(argc, argv);
+	}
+	catch (const CmdArgs::Exception& error)
+	{
+		cerr << "Error: " << error.GetError() << endl;
+		wtf = true;
 	}
 
-	string arg = argv[1];
-	string regex = argv[2];
+	if (wtf)
+	{
+		cout << "Reflang tool to generate reflection metadata." << endl;
+		cout << "Usage:" << endl;
+		cmd_args.PrintHelp();
+		exit(-1);
+	}
 
-	if (arg == ListTypesArg)
+	int clang_argc = argc - consumed;
+	char** clang_argv = &argv[consumed];
+
+	parser::Options options;
+	options.include = filter_include->Get();
+	options.exclude = filter_exclude->Get();
+
+	if (list_only->Get())
 	{
 		auto names = parser::GetSupportedTypeNames(
-				argc - 4, &argv[4], regex);
+				clang_argc, clang_argv, options);
 		for (const auto& it : names)
 		{
 			cout << it << endl;
 		}
 	}
-	else if (arg == GenArg)
-	{
-		auto types = parser::GetTypes(argc - 4, &argv[4], regex);
-		serializer::Serialize(types);
-	}
 	else
 	{
-		cout << "Invalid argument " << arg << endl;
-		exit(-1);
+		auto types = parser::GetTypes(clang_argc, clang_argv, options);
+		serializer::Serialize(types);
 	}
 }

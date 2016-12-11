@@ -2,7 +2,6 @@
 This file is intended for Reflang author.
 
 ## General
-* Cmd line arguments helper
 * Support header-only or header+cpp
 * Library for base types, registry, etc
 * Nicer serializers - some kind of framework
