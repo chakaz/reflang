@@ -27,3 +27,18 @@ TEST_CASE("namespace")
 	REQUIRE(!result.is_t<int>());
 	REQUIRE(result.get_t<const char*>() == "NamespacedFunction()");
 }
+
+TEST_CASE("with-classes")
+{
+	std::unique_ptr<IFunction> func = std::make_unique<Function<
+		decltype(ReturnByValue),
+		ReturnByValue>>();
+	auto result = (*func)();
+	REQUIRE(result.is_t<DummyClass>());
+
+	func = std::make_unique<Function<
+		decltype(ReturnByReference),
+		ReturnByReference>>();
+	result = (*func)();
+	REQUIRE(result.is_t<DummyClass>());
+}

@@ -11,6 +11,11 @@
 namespace reflang
 {
 
+/*
+Class 'DummyClass' with:
+*/
+
+
 template <>
 class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
 {
@@ -45,6 +50,44 @@ class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 			throw std::invalid_argument("count");
 		}
 		return Object(GlobalFunction());
+	}
+};
+
+
+template <>
+class Function<decltype(ReturnByValue), ReturnByValue> : public IFunction
+{
+	int num_args() const override
+	{
+		return 0;
+	}
+
+	Object Invoke(const std::vector<Object>& args) override
+	{
+		if (args.size() != this->num_args())
+		{
+			throw std::invalid_argument("count");
+		}
+		return Object(ReturnByValue());
+	}
+};
+
+
+template <>
+class Function<decltype(ReturnByReference), ReturnByReference> : public IFunction
+{
+	int num_args() const override
+	{
+		return 0;
+	}
+
+	Object Invoke(const std::vector<Object>& args) override
+	{
+		if (args.size() != this->num_args())
+		{
+			throw std::invalid_argument("count");
+		}
+		return Object(ReturnByReference());
 	}
 };
 

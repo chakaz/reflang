@@ -1,3 +1,5 @@
+class DummyClass {};
+
 namespace ns
 {
 	const char* NamespacedFunction()
@@ -9,4 +11,15 @@ namespace ns
 const char* GlobalFunction()
 {
 	return "GlobalFunction()";
+}
+
+DummyClass ReturnByValue()
+{
+	return DummyClass();
+}
+
+const DummyClass& ReturnByReference()
+{
+	static DummyClass dc;
+	return dc;
 }
