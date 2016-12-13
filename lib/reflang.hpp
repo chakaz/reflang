@@ -4,6 +4,7 @@
 #include <functional>
 #include <memory>
 #include <stdexcept>
+#include <type_traits>
 #include <vector>
 
 namespace reflang
@@ -11,23 +12,26 @@ namespace reflang
 	class Object final
 	{
 	public:
+		Object();
+
 		template <typename T>
-		Object(T&& t)
-		:	id_(GetTypeId<T>())
-		,	data_(new T(std::forward<T>(t)))
+		explicit Object(T&& t)
+		:	id_(GetTypeId<std::decay_t<T>>())
+		,	data_(new std::decay_t<T>(std::forward<T>(t)))
 		,	deleter_(
 				[this]()
 				{
-					delete static_cast<T*>(data_);
+					delete static_cast<std::decay_t<T>*>(data_);
 				})
 		{
 		}
 
-		Object()
-		:	id_(GetTypeId<void>())
-		,	deleter_([]() {})
-		{
-		}
+		Object(Object&& o);
+		Object& operator=(Object&& o);
+		Object(const Object& o) = delete;
+		Object& operator=(const Object& o) = delete;
+
+		~Object();
 
 		template <typename T>
 		bool is_t() const
@@ -57,7 +61,7 @@ namespace reflang
 			return t_id;
 		}
 
-		const int id_;
+		int id_;
 		void* data_ = nullptr;
 		std::function<void()> deleter_;
 	};

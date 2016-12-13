@@ -21,5 +21,7 @@ macro(reflang_test TEST)
 	add_test("${TEST}-test" ${TEST})
 endmacro()
 
+add_subdirectory(lib)
+
 add_subdirectory(enum)
 add_subdirectory(function)
