@@ -4,7 +4,6 @@ This file is intended for Reflang author.
 ## General
 * Support header-only or header+cpp
 * Library for base types, registry, etc
-* Nicer serializers - some kind of framework - replace with regex?
 * Consistent style for names of functions, methods, variables, members, ...
 
 ## Functions

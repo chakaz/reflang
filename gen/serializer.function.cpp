@@ -1,25 +1,26 @@
 #include "serializer.function.hpp"
+
+#include <sstream>
+
+#include "serializer.util.hpp"
+
 using namespace std;
 using namespace reflang;
 
 void serializer::SerializeFunction(ostream& o, const Function& f)
 {
-	string name_without_colons = f.GetFullName();
-	std::replace(
-			name_without_colons.begin(), name_without_colons.end(), ':', '_');
-
-	o << R"(template <>
-class Function<decltype()" << f.GetFullName() << "), " << f.GetFullName()
-		<< R"(> : public IFunction
+	stringstream tmpl;
+	tmpl << R"(template <>
+class Function<decltype(%name%), %name%> : public IFunction
 {
 	int num_args() const override
 	{
-		return )" << f.Arguments.size() << R"(;
+		return %arg_count%;
 	}
 
 	const std::string& GetName() override
 	{
-		static std::string name = ")" << f.GetFullName() << R"(";
+		static std::string name = "%name%";
 		return name;
 	}
 
@@ -28,34 +29,47 @@ class Function<decltype()" << f.GetFullName() << "), " << f.GetFullName()
 		if (args.size() != this->num_args())
 		{
 			throw std::invalid_argument("count");
-		}
-)";
+		})";
 	if (f.ReturnType == "void")
 	{
-		o << "		" << f.GetFullName() << "();\n";
-		o << "		return Object();\n";
+		tmpl << R"(
+		%name%();
+		return Object();)";
 	}
 	else
 	{
-		o << "		return Object(" << f.GetFullName() << "());\n";
+		tmpl << R"(
+		return Object(%name%());)";
 	}
-	o << R"(	}
+	tmpl << R"(
+	}
 };
 
 namespace
 {
-	// Object to auto-register )" << f.GetFullName() << R"(.
-	struct )" << name_without_colons << R"(_registrar
+	// Object to auto-register %name%.
+	struct %name_without_colons%_registrar
 	{
-		)" << name_without_colons << R"(_registrar()
+		%name_without_colons%_registrar()
 		{
 			::reflang::registry::internal::Register(
 				std::make_unique<
 					Function<
-						decltype()" << f.GetFullName() << R"(),
-						)" << f.GetFullName() << R"(>>());
+						decltype(%name%),
+						%name%>>());
 		}
-	} )" << name_without_colons << R"(_instance;
+	} %name_without_colons%_instance;
 }
 )";
+	string name_without_colons = f.GetFullName();
+	std::replace(
+			name_without_colons.begin(), name_without_colons.end(), ':', '_');
+
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", f.GetFullName()},
+				{"%arg_count%", to_string(f.Arguments.size())},
+				{"%name_without_colons%", name_without_colons}
+			});
 }

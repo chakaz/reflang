@@ -26,6 +26,7 @@ add_executable(
 	gen/serializer.cpp gen/serializer.hpp
 	gen/serializer.enum.cpp gen/serializer.enum.hpp
 	gen/serializer.function.cpp gen/serializer.function.hpp
+	gen/serializer.util.cpp gen/serializer.util.hpp
 	gen/types.cpp gen/types.hpp)
 target_link_libraries(reflang ${CLANG_LIBS})
 

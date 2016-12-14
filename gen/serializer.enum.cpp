@@ -1,8 +1,11 @@
 #include "serializer.enum.hpp"
 
 #include <memory>
+#include <sstream>
 #include <unordered_set>
 #include <vector>
+
+#include "serializer.util.hpp"
 
 using namespace std;
 using namespace reflang;
@@ -46,10 +49,11 @@ void serializer::SerializeEnum(ostream& o, const Enum& the_enum)
 	vector<string> values = GetEnumValues(the_enum);
 
 	const string& name = the_enum.GetFullName();
-	o << R"(template <>
-struct Enum<)" << name << R"(>
+	stringstream tmpl;
+	tmpl << R"(template <>
+struct Enum<%name%>
 {
-	using EnumType = )" << name << R"(;
+	using EnumType = %name%;
 
 	struct ConstIterator
 	{
@@ -60,28 +64,28 @@ struct Enum<)" << name << R"(>
 )";
 	if (unique_values.empty())
 	{
-		o << "			assert(false);\n";
+		tmpl << "			assert(false);\n";
 	}
 	else
 	{
-		o << R"(			switch (value_)
+		tmpl << R"(			switch (value_)
 			{
 )";
 		for (int i = 1; i < unique_values.size(); ++i)
 		{
 			const auto& prev = unique_values[i - 1];
 			const auto& it = unique_values[i];
-			o << "			case EnumType::" << prev << ":\n";
-			o << "				value_ = EnumType::" << it << ";\n";
-			o << "				break;\n";
+			tmpl << "			case EnumType::" << prev << ":\n";
+			tmpl << "				value_ = EnumType::" << it << ";\n";
+			tmpl << "				break;\n";
 		}
-		o << "			case EnumType::" << unique_values.back() << ":\n";
-		o << R"(				last_ = true;
+		tmpl << "			case EnumType::" << unique_values.back() << ":\n";
+		tmpl << R"(				last_ = true;
 				break;
 			}
 )";
 	}
-	o << R"(			return *this;
+	tmpl << R"(			return *this;
 		}
 
 		ConstIterator operator++(int)
@@ -96,36 +100,36 @@ struct Enum<)" << name << R"(>
 )";
 	if (unique_values.empty())
 	{
-		o << "			assert(false);\n";
+		tmpl << "			assert(false);\n";
 	}
 	else
 	{
-		o << R"(			if (last_)
+		tmpl << R"(			if (last_)
 			{
 				last_ = false;
 				)";
-		o << "value_ = EnumType::" << unique_values.back() << ";\n";
-		o << R"(			}
+		tmpl << "value_ = EnumType::" << unique_values.back() << ";\n";
+		tmpl << R"(			}
 			else
 			{
 				switch (value_)
 				{
 )";
-		o << "				case EnumType::" << unique_values.front() << ":\n";
-		o << "					assert(false);\n";
-		o << "					break;\n";
+		tmpl << "				case EnumType::" << unique_values.front() << ":\n";
+		tmpl << "					assert(false);\n";
+		tmpl << "					break;\n";
 		for (int i = 1; i < unique_values.size(); ++i)
 		{
 			const auto& prev = unique_values[i - 1];
 			const auto& it = unique_values[i];
-			o << "				case EnumType::" << it << ":\n";
-			o << "					value_ = EnumType::" << prev << ";\n";
-			o << "					break;\n";
+			tmpl << "				case EnumType::" << it << ":\n";
+			tmpl << "					value_ = EnumType::" << prev << ";\n";
+			tmpl << "					break;\n";
 		}
-		o << "				}\n";
-		o << "			}\n";
+		tmpl << "				}\n";
+		tmpl << "			}\n";
 	}
-	o << R"(			return *this;
+	tmpl << R"(			return *this;
 		}
 
 		ConstIterator operator--(int)
@@ -156,17 +160,17 @@ struct Enum<)" << name << R"(>
 )";
 	if (unique_values.empty())
 	{
-		o << "			return end();\n";
+		tmpl << "			return end();\n";
 	}
 	else
 	{
-		o << R"(			ConstIterator it;
+		tmpl << R"(			ConstIterator it;
 			it.last_ = false;
 			it.value_ = EnumType::)" << unique_values.front() << R"(;
 			return it;
 )";
 	}
-	o << R"(		}
+	tmpl << R"(		}
 
 		ConstIterator end() const
 		{
@@ -184,51 +188,52 @@ struct Enum<)" << name << R"(>
 )";
 	if (values.empty())
 	{
-		o << "		return false;\n";
+		tmpl << "		return false;\n";
 	}
 	else
 	{
 		for (size_t i = 0; i < values.size(); ++i)
 		{
-			o << "		";
+			tmpl << "		";
 			if (i != 0)
 			{
-				o << "else ";
+				tmpl << "else ";
 			}
-			o << "if (s == \"" << values[i] << "\")\n";
-			o << "		{\n";
-			o << "			value = EnumType::" << values[i] <<";\n";
-			o << "			return true;\n";
-			o << "		}\n";
+			tmpl << "if (s == \"" << values[i] << "\")\n";
+			tmpl << "		{\n";
+			tmpl << "			value = EnumType::" << values[i] <<";\n";
+			tmpl << "			return true;\n";
+			tmpl << "		}\n";
 		}
-		o << R"(		else
+		tmpl << R"(		else
 		{
 			return false;
 		}
 )";
 	}
-	o << R"(	}
+	tmpl << R"(	}
 
 	static std::string Translate(EnumType e)
 	{
 )";
 	if (unique_values.empty())
 	{
-		o << "		return std::string();\n";
+		tmpl << "		return std::string();\n";
 	}
 	else
 	{
-		o << "		switch (e)\n";
-		o << "		{\n";
+		tmpl << "		switch (e)\n";
+		tmpl << "		{\n";
 		for (const auto& value : unique_values)
 		{
-			o << "			case EnumType::" << value << ":\n";
-			o << "				return \"" << value <<"\";\n";
-			o << "				break;\n";
+			tmpl << "			case EnumType::" << value << ":\n";
+			tmpl << "				return \"" << value <<"\";\n";
+			tmpl << "				break;\n";
 		}
-		o << "		}\n";
+		tmpl << "		}\n";
 	}
-	o << R"(	}
+	tmpl << R"(	}
 };
 )";
+	o << ReplaceAll(tmpl.str(), { {"%name%", the_enum.GetFullName()} });
 }
