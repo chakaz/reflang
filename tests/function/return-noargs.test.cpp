@@ -9,8 +9,9 @@ using namespace std;
 
 TEST_CASE("global")
 {
-	std::unique_ptr<IFunction> func =
-		std::make_unique<Function<decltype(GlobalFunction), GlobalFunction>>();
+	auto functions = registry::GetFunctionByName("GlobalFunction");
+	REQUIRE(functions.size() == 1);
+	auto func = functions[0];
 	auto result = (*func)();
 	REQUIRE(result.is_t<const char*>());
 	REQUIRE(!result.is_t<int>());
@@ -19,9 +20,9 @@ TEST_CASE("global")
 
 TEST_CASE("namespace")
 {
-	std::unique_ptr<IFunction> func = std::make_unique<Function<
-		decltype(ns::NamespacedFunction),
-		ns::NamespacedFunction>>();
+	auto functions = registry::GetFunctionByName("ns::NamespacedFunction");
+	REQUIRE(functions.size() == 1);
+	auto func = functions[0];
 	auto result = (*func)();
 	REQUIRE(result.is_t<const char*>());
 	REQUIRE(!result.is_t<int>());
@@ -30,15 +31,15 @@ TEST_CASE("namespace")
 
 TEST_CASE("with-classes")
 {
-	std::unique_ptr<IFunction> func = std::make_unique<Function<
-		decltype(ReturnByValue),
-		ReturnByValue>>();
+	auto functions = registry::GetFunctionByName("ReturnByValue");
+	REQUIRE(functions.size() == 1);
+	auto func = functions[0];
 	auto result = (*func)();
 	REQUIRE(result.is_t<DummyClass>());
 
-	func = std::make_unique<Function<
-		decltype(ReturnByReference),
-		ReturnByReference>>();
+	functions = registry::GetFunctionByName("ReturnByReference");
+	REQUIRE(functions.size() == 1);
+	func = functions[0];
 	result = (*func)();
 	REQUIRE(result.is_t<DummyClass>());
 }

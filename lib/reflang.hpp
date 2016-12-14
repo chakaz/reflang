@@ -71,6 +71,8 @@ namespace reflang
 	public:
 		virtual ~IFunction() = default;
 
+		virtual const std::string& GetName() = 0;
+
 		virtual int num_args() const = 0;
 
 		template <typename... Ts>
@@ -80,6 +82,16 @@ namespace reflang
 		}
 
 		virtual Object Invoke(const std::vector<Object>& args) = 0;
+	};
+
+	namespace registry
+	{
+		std::vector<IFunction*> GetFunctionByName(const std::string& name);
+
+		namespace internal
+		{
+			void Register(std::unique_ptr<IFunction>&& function);
+		}
 	};
 
 	// Below is implementation helpers.

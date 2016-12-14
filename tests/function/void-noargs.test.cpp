@@ -10,8 +10,9 @@ using namespace std;
 TEST_CASE("global")
 {
 	global_string = nullptr;
-	std::unique_ptr<IFunction> func =
-		std::make_unique<Function<decltype(GlobalFunction), GlobalFunction>>();
+	auto functions = registry::GetFunctionByName("GlobalFunction");
+	REQUIRE(functions.size() == 1);
+	auto func = functions[0];
 	Object result = (*func)();
 	REQUIRE(result.is_void());
 	REQUIRE(result.is_t<void>());
@@ -21,11 +22,17 @@ TEST_CASE("global")
 TEST_CASE("namespace")
 {
 	global_string = nullptr;
-	std::unique_ptr<IFunction> func = std::make_unique<Function<
-		decltype(ns::NamespacedFunction),
-		ns::NamespacedFunction>>();
+	auto functions = registry::GetFunctionByName("ns::NamespacedFunction");
+	REQUIRE(functions.size() == 1);
+	auto func = functions[0];
 	Object result = (*func)();
 	REQUIRE(result.is_void());
 	REQUIRE(result.is_t<void>());
 	REQUIRE(global_string == "NamespacedFunction()");
+}
+
+TEST_CASE("non-existent")
+{
+	auto functions = registry::GetFunctionByName("waaaaaaat");
+	REQUIRE(functions.size() == 0);
 }
