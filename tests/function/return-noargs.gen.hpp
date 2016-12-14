@@ -25,9 +25,9 @@ class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : publi
 		return 0;
 	}
 
-	const std::string& GetName() override
+	const std::string& GetName() const override
 	{
-		static std::string name = "ns::NamespacedFunction";
+		static const std::string name = "ns::NamespacedFunction";
 		return name;
 	}
 
@@ -66,9 +66,9 @@ class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 		return 0;
 	}
 
-	const std::string& GetName() override
+	const std::string& GetName() const override
 	{
-		static std::string name = "GlobalFunction";
+		static const std::string name = "GlobalFunction";
 		return name;
 	}
 
@@ -107,9 +107,9 @@ class Function<decltype(ReturnByValue), ReturnByValue> : public IFunction
 		return 0;
 	}
 
-	const std::string& GetName() override
+	const std::string& GetName() const override
 	{
-		static std::string name = "ReturnByValue";
+		static const std::string name = "ReturnByValue";
 		return name;
 	}
 
@@ -148,9 +148,9 @@ class Function<decltype(ReturnByReference), ReturnByReference> : public IFunctio
 		return 0;
 	}
 
-	const std::string& GetName() override
+	const std::string& GetName() const override
 	{
-		static std::string name = "ReturnByReference";
+		static const std::string name = "ReturnByReference";
 		return name;
 	}
 

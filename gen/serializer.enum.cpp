@@ -51,7 +51,7 @@ void serializer::SerializeEnum(ostream& o, const Enum& the_enum)
 	const string& name = the_enum.GetFullName();
 	stringstream tmpl;
 	tmpl << R"(template <>
-struct Enum<%name%>
+struct Enum<%name%> : public IEnum
 {
 	using EnumType = %name%;
 
@@ -233,7 +233,71 @@ struct Enum<%name%>
 		tmpl << "		}\n";
 	}
 	tmpl << R"(	}
+	
+	const std::string& GetName() const override
+	{
+		static const std::string name = "%name%";
+		return name;
+	}
+
+	std::vector<std::string> GetStringValues() const override
+	{
+		std::vector<std::string> values;
+		values.reserve(%unique_values_count%);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(this->Translate(value));
+		}
+		return values;
+	}
+
+	std::vector<int> GetIntValues() const override
+	{
+		std::vector<int> values;
+		values.reserve(%unique_values_count%);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(static_cast<int>(value));
+		}
+		return values;
+	}
+
+	bool TryTranslate(const std::string& value, int& out) override
+	{
+		EnumType tmp;
+		bool result = this->TryTranslate(value, tmp);
+		if (result)
+		{
+			out = static_cast<int>(tmp);
+		}
+		return result;
+	}
+
+	bool TryTranslate(int value, std::string& out) override
+	{
+		switch (static_cast<EnumType>(value))
+		{
+)";
+		for (const auto& value : unique_values)
+		{
+			tmpl << "		case EnumType::" << value << ":\n";
+		}
+		if (!unique_values.empty())
+		{
+			tmpl << R"(			out = Translate(static_cast<EnumType>(value));
+			return true;
+)";
+		}
+		tmpl << R"(		default:
+			return false;
+		}
+	}
 };
 )";
-	o << ReplaceAll(tmpl.str(), { {"%name%", the_enum.GetFullName()} });
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", the_enum.GetFullName()},
+				{"%unique_values_count%", to_string(unique_values.size())}
+			});
 }

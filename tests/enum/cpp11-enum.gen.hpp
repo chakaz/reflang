@@ -18,7 +18,7 @@ Class 'MyNamespace::MyClass' with:
 
 
 template <>
-struct Enum<MyNamespace::MyClass::Cpp11Enum>
+struct Enum<MyNamespace::MyClass::Cpp11Enum> : public IEnum
 {
 	using EnumType = MyNamespace::MyClass::Cpp11Enum;
 
@@ -186,6 +186,61 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum>
 			case EnumType::Value6:
 				return "Value6";
 				break;
+		}
+	}
+	
+	const std::string& GetName() const override
+	{
+		static const std::string name = "MyNamespace::MyClass::Cpp11Enum";
+		return name;
+	}
+
+	std::vector<std::string> GetStringValues() const override
+	{
+		std::vector<std::string> values;
+		values.reserve(5);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(this->Translate(value));
+		}
+		return values;
+	}
+
+	std::vector<int> GetIntValues() const override
+	{
+		std::vector<int> values;
+		values.reserve(5);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(static_cast<int>(value));
+		}
+		return values;
+	}
+
+	bool TryTranslate(const std::string& value, int& out) override
+	{
+		EnumType tmp;
+		bool result = this->TryTranslate(value, tmp);
+		if (result)
+		{
+			out = static_cast<int>(tmp);
+		}
+		return result;
+	}
+
+	bool TryTranslate(int value, std::string& out) override
+	{
+		switch (static_cast<EnumType>(value))
+		{
+		case EnumType::Value1:
+		case EnumType::Value2:
+		case EnumType::Value3:
+		case EnumType::Value5:
+		case EnumType::Value6:
+			out = Translate(static_cast<EnumType>(value));
+			return true;
+		default:
+			return false;
 		}
 	}
 };

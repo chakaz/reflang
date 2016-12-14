@@ -66,12 +66,25 @@ namespace reflang
 		std::function<void()> deleter_;
 	};
 
+	class IEnum
+	{
+	public:
+		virtual ~IEnum() = default;
+
+		virtual const std::string& GetName() const = 0;
+
+		virtual std::vector<std::string> GetStringValues() const = 0;
+		virtual std::vector<int> GetIntValues() const = 0;
+		virtual bool TryTranslate(const std::string& value, int& out) = 0;
+		virtual bool TryTranslate(int value, std::string& out) = 0;
+	};
+
 	class IFunction
 	{
 	public:
 		virtual ~IFunction() = default;
 
-		virtual const std::string& GetName() = 0;
+		virtual const std::string& GetName() const = 0;
 
 		virtual int num_args() const = 0;
 

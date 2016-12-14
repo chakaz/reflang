@@ -18,9 +18,9 @@ class Function<decltype(%name%), %name%> : public IFunction
 		return %arg_count%;
 	}
 
-	const std::string& GetName() override
+	const std::string& GetName() const override
 	{
-		static std::string name = "%name%";
+		static const std::string name = "%name%";
 		return name;
 	}
 

@@ -13,7 +13,7 @@ namespace reflang
 {
 
 template <>
-struct Enum<EmptyEnum>
+struct Enum<EmptyEnum> : public IEnum
 {
 	using EnumType = EmptyEnum;
 
@@ -88,11 +88,59 @@ struct Enum<EmptyEnum>
 	{
 		return std::string();
 	}
+	
+	const std::string& GetName() const override
+	{
+		static const std::string name = "EmptyEnum";
+		return name;
+	}
+
+	std::vector<std::string> GetStringValues() const override
+	{
+		std::vector<std::string> values;
+		values.reserve(0);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(this->Translate(value));
+		}
+		return values;
+	}
+
+	std::vector<int> GetIntValues() const override
+	{
+		std::vector<int> values;
+		values.reserve(0);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(static_cast<int>(value));
+		}
+		return values;
+	}
+
+	bool TryTranslate(const std::string& value, int& out) override
+	{
+		EnumType tmp;
+		bool result = this->TryTranslate(value, tmp);
+		if (result)
+		{
+			out = static_cast<int>(tmp);
+		}
+		return result;
+	}
+
+	bool TryTranslate(int value, std::string& out) override
+	{
+		switch (static_cast<EnumType>(value))
+		{
+		default:
+			return false;
+		}
+	}
 };
 
 
 template <>
-struct Enum<EmptyCEnum>
+struct Enum<EmptyCEnum> : public IEnum
 {
 	using EnumType = EmptyCEnum;
 
@@ -166,6 +214,54 @@ struct Enum<EmptyCEnum>
 	static std::string Translate(EnumType e)
 	{
 		return std::string();
+	}
+	
+	const std::string& GetName() const override
+	{
+		static const std::string name = "EmptyCEnum";
+		return name;
+	}
+
+	std::vector<std::string> GetStringValues() const override
+	{
+		std::vector<std::string> values;
+		values.reserve(0);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(this->Translate(value));
+		}
+		return values;
+	}
+
+	std::vector<int> GetIntValues() const override
+	{
+		std::vector<int> values;
+		values.reserve(0);
+		for (const auto& value : this->Iterate())
+		{
+			values.push_back(static_cast<int>(value));
+		}
+		return values;
+	}
+
+	bool TryTranslate(const std::string& value, int& out) override
+	{
+		EnumType tmp;
+		bool result = this->TryTranslate(value, tmp);
+		if (result)
+		{
+			out = static_cast<int>(tmp);
+		}
+		return result;
+	}
+
+	bool TryTranslate(int value, std::string& out) override
+	{
+		switch (static_cast<EnumType>(value))
+		{
+		default:
+			return false;
+		}
 	}
 };
 
