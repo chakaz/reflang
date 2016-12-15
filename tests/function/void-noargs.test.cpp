@@ -16,7 +16,7 @@ TEST_CASE("global")
 	Object result = (*func)();
 	REQUIRE(result.is_void());
 	REQUIRE(result.is_t<void>());
-	REQUIRE(global_string == "GlobalFunction()");
+	REQUIRE(global_string == string("GlobalFunction()"));
 }
 
 TEST_CASE("namespace")
@@ -28,7 +28,7 @@ TEST_CASE("namespace")
 	Object result = (*func)();
 	REQUIRE(result.is_void());
 	REQUIRE(result.is_t<void>());
-	REQUIRE(global_string == "NamespacedFunction()");
+	REQUIRE(global_string == string("NamespacedFunction()"));
 }
 
 TEST_CASE("non-existent")

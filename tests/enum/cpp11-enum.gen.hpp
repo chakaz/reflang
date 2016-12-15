@@ -187,6 +187,7 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum> : public IEnum
 				return "Value6";
 				break;
 		}
+		return std::string();
 	}
 	
 	const std::string& GetName() const override

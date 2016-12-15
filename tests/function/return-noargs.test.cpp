@@ -15,7 +15,7 @@ TEST_CASE("global")
 	auto result = (*func)();
 	REQUIRE(result.is_t<const char*>());
 	REQUIRE(!result.is_t<int>());
-	REQUIRE(result.get_t<const char*>() == "GlobalFunction()");
+	REQUIRE(result.get_t<const char*>() == string("GlobalFunction()"));
 }
 
 TEST_CASE("namespace")
@@ -26,7 +26,7 @@ TEST_CASE("namespace")
 	auto result = (*func)();
 	REQUIRE(result.is_t<const char*>());
 	REQUIRE(!result.is_t<int>());
-	REQUIRE(result.get_t<const char*>() == "NamespacedFunction()");
+	REQUIRE(result.get_t<const char*>() == string("NamespacedFunction()"));
 }
 
 TEST_CASE("with-classes")

@@ -2,6 +2,7 @@
 #define REFLANG_SERIALIZER_HPP
 
 #include <iostream>
+#include <memory>
 
 #include "types.hpp"
 

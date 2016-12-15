@@ -2,13 +2,21 @@ cmake_minimum_required (VERSION 2.8.11)
 project (reflang)
 enable_testing()
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-find_package(LibClang REQUIRED)
-
-include_directories(${CLANG_INCLUDEDIR})
 include_directories(${CMAKE_SOURCE_DIR})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++14 -stdlib=libc++")
+if (MSVC)
+	# Hack to get to work without compiling clang locally.
+	set(LLVM_CONFIG true)
+	set(CLANG_INCLUDEDIR "C:/Program Files (x86)/LLVM/include")
+	set(CLANG_LIBDIR "C:/Program Files (x86)/LLVM/lib")
+else()
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++14 -stdlib=libc++")
+endif()
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+find_package(LibClang REQUIRED)
+include_directories(${CLANG_INCLUDEDIR})
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
 add_library(libreflang STATIC lib/reflang.hpp lib/reflang.cpp)

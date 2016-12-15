@@ -1,6 +1,7 @@
 #ifndef REFLANG_CMDARGS_HPP
 #define REFLANG_CMDARGS_HPP
 
+#include <functional>
 #include <memory>
 #include <sstream>
 #include <unordered_map>

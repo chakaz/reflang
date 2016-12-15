@@ -135,6 +135,7 @@ struct Enum<CEnum> : public IEnum
 				return "Value1";
 				break;
 		}
+		return std::string();
 	}
 	
 	const std::string& GetName() const override

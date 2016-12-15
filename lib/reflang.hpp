@@ -18,12 +18,14 @@ namespace reflang
 		explicit Object(T&& t)
 		:	id_(GetTypeId<std::decay_t<T>>())
 		,	data_(new std::decay_t<T>(std::forward<T>(t)))
-		,	deleter_(
+		{
+			// This is not part of the initializer list because it
+			// doesn't compile on VC.
+			deleter_ =
 				[this]()
 				{
 					delete static_cast<std::decay_t<T>*>(data_);
-				})
-		{
+				};
 		}
 
 		Object(Object&& o);

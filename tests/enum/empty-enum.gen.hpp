@@ -130,11 +130,7 @@ struct Enum<EmptyEnum> : public IEnum
 
 	bool TryTranslate(int value, std::string& out) override
 	{
-		switch (static_cast<EnumType>(value))
-		{
-		default:
-			return false;
-		}
+		return false;
 	}
 };
 
@@ -257,11 +253,7 @@ struct Enum<EmptyCEnum> : public IEnum
 
 	bool TryTranslate(int value, std::string& out) override
 	{
-		switch (static_cast<EnumType>(value))
-		{
-		default:
-			return false;
-		}
+		return false;
 	}
 };
 

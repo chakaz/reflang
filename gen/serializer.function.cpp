@@ -1,5 +1,6 @@
 #include "serializer.function.hpp"
 
+#include <algorithm>
 #include <sstream>
 
 #include "serializer.util.hpp"

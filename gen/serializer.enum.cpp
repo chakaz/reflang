@@ -71,7 +71,7 @@ struct Enum<%name%> : public IEnum
 		tmpl << R"(			switch (value_)
 			{
 )";
-		for (int i = 1; i < unique_values.size(); ++i)
+		for (size_t i = 1; i < unique_values.size(); ++i)
 		{
 			const auto& prev = unique_values[i - 1];
 			const auto& it = unique_values[i];
@@ -118,7 +118,7 @@ struct Enum<%name%> : public IEnum
 		tmpl << "				case EnumType::" << unique_values.front() << ":\n";
 		tmpl << "					assert(false);\n";
 		tmpl << "					break;\n";
-		for (int i = 1; i < unique_values.size(); ++i)
+		for (size_t i = 1; i < unique_values.size(); ++i)
 		{
 			const auto& prev = unique_values[i - 1];
 			const auto& it = unique_values[i];
@@ -231,6 +231,7 @@ struct Enum<%name%> : public IEnum
 			tmpl << "				break;\n";
 		}
 		tmpl << "		}\n";
+		tmpl << "		return std::string();\n";
 	}
 	tmpl << R"(	}
 	
@@ -275,7 +276,14 @@ struct Enum<%name%> : public IEnum
 
 	bool TryTranslate(int value, std::string& out) override
 	{
-		switch (static_cast<EnumType>(value))
+)";
+	if (unique_values.empty())
+	{
+		tmpl << "		return false;\n";
+	}
+	else
+	{
+		tmpl << R"(		switch (static_cast<EnumType>(value))
 		{
 )";
 		for (const auto& value : unique_values)
@@ -291,7 +299,9 @@ struct Enum<%name%> : public IEnum
 		tmpl << R"(		default:
 			return false;
 		}
+)";
 	}
+	tmpl << R"(	}
 };
 )";
 	o << ReplaceAll(
