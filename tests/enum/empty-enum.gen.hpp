@@ -49,7 +49,8 @@ struct Enum<EmptyEnum> : public IEnum
 
 		bool operator==(const ConstIterator& o) const
 		{
-			return ((last_ && o.last_) || (value_ == o.value_));
+			return ((last_ && o.last_) ||
+				(!last_ && !o.last_ && value_ == o.value_));
 		}
 
 		bool operator!=(const ConstIterator& o) const
@@ -88,7 +89,7 @@ struct Enum<EmptyEnum> : public IEnum
 	{
 		return std::string();
 	}
-	
+
 	const std::string& GetName() const override
 	{
 		static const std::string name = "EmptyEnum";
@@ -134,6 +135,18 @@ struct Enum<EmptyEnum> : public IEnum
 	}
 };
 
+namespace
+{
+	struct EmptyEnum_registrar
+	{
+		EmptyEnum_registrar()
+		{
+			::reflang::registry::internal::Register(
+				std::make_unique<Enum<EmptyEnum>>());
+		}
+	} EmptyEnum_instance;
+}
+
 
 template <>
 struct Enum<EmptyCEnum> : public IEnum
@@ -172,7 +185,8 @@ struct Enum<EmptyCEnum> : public IEnum
 
 		bool operator==(const ConstIterator& o) const
 		{
-			return ((last_ && o.last_) || (value_ == o.value_));
+			return ((last_ && o.last_) ||
+				(!last_ && !o.last_ && value_ == o.value_));
 		}
 
 		bool operator!=(const ConstIterator& o) const
@@ -211,7 +225,7 @@ struct Enum<EmptyCEnum> : public IEnum
 	{
 		return std::string();
 	}
-	
+
 	const std::string& GetName() const override
 	{
 		static const std::string name = "EmptyCEnum";
@@ -256,6 +270,18 @@ struct Enum<EmptyCEnum> : public IEnum
 		return false;
 	}
 };
+
+namespace
+{
+	struct EmptyCEnum_registrar
+	{
+		EmptyCEnum_registrar()
+		{
+			::reflang::registry::internal::Register(
+				std::make_unique<Enum<EmptyCEnum>>());
+		}
+	} EmptyCEnum_instance;
+}
 
 
 }  // namespace reflang

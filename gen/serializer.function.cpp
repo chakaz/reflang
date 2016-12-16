@@ -1,6 +1,5 @@
 #include "serializer.function.hpp"
 
-#include <algorithm>
 #include <sstream>
 
 #include "serializer.util.hpp"
@@ -62,15 +61,12 @@ namespace
 	} %name_without_colons%_instance;
 }
 )";
-	string name_without_colons = f.GetFullName();
-	std::replace(
-			name_without_colons.begin(), name_without_colons.end(), ':', '_');
 
 	o << ReplaceAll(
 			tmpl.str(),
 			{
 				{"%name%", f.GetFullName()},
 				{"%arg_count%", to_string(f.Arguments.size())},
-				{"%name_without_colons%", name_without_colons}
+				{"%name_without_colons%", GetNameWithoutColons(f.GetFullName())}
 			});
 }

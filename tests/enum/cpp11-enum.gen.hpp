@@ -96,7 +96,8 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum> : public IEnum
 
 		bool operator==(const ConstIterator& o) const
 		{
-			return ((last_ && o.last_) || (value_ == o.value_));
+			return ((last_ && o.last_) ||
+				(!last_ && !o.last_ && value_ == o.value_));
 		}
 
 		bool operator!=(const ConstIterator& o) const
@@ -189,7 +190,7 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum> : public IEnum
 		}
 		return std::string();
 	}
-	
+
 	const std::string& GetName() const override
 	{
 		static const std::string name = "MyNamespace::MyClass::Cpp11Enum";
@@ -245,6 +246,18 @@ struct Enum<MyNamespace::MyClass::Cpp11Enum> : public IEnum
 		}
 	}
 };
+
+namespace
+{
+	struct MyNamespace__MyClass__Cpp11Enum_registrar
+	{
+		MyNamespace__MyClass__Cpp11Enum_registrar()
+		{
+			::reflang::registry::internal::Register(
+				std::make_unique<Enum<MyNamespace::MyClass::Cpp11Enum>>());
+		}
+	} MyNamespace__MyClass__Cpp11Enum_instance;
+}
 
 
 }  // namespace reflang

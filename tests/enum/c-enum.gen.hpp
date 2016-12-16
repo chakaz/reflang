@@ -73,7 +73,8 @@ struct Enum<CEnum> : public IEnum
 
 		bool operator==(const ConstIterator& o) const
 		{
-			return ((last_ && o.last_) || (value_ == o.value_));
+			return ((last_ && o.last_) ||
+				(!last_ && !o.last_ && value_ == o.value_));
 		}
 
 		bool operator!=(const ConstIterator& o) const
@@ -137,7 +138,7 @@ struct Enum<CEnum> : public IEnum
 		}
 		return std::string();
 	}
-	
+
 	const std::string& GetName() const override
 	{
 		static const std::string name = "CEnum";
@@ -190,6 +191,18 @@ struct Enum<CEnum> : public IEnum
 		}
 	}
 };
+
+namespace
+{
+	struct CEnum_registrar
+	{
+		CEnum_registrar()
+		{
+			::reflang::registry::internal::Register(
+				std::make_unique<Enum<CEnum>>());
+		}
+	} CEnum_instance;
+}
 
 
 }  // namespace reflang

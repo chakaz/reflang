@@ -12,12 +12,12 @@ using namespace reflang;
 
 namespace
 {
-	vector<string> GetEnumUniqueValues(const Enum& the_enum)
+	vector<string> GetEnumUniqueValues(const Enum& e)
 	{
 		vector<string> results;
 		unordered_set<int> used_values;
 
-		for (const auto& it : the_enum.Values)
+		for (const auto& it : e.Values)
 		{
 			if (used_values.find(it.second) == used_values.end())
 			{
@@ -29,11 +29,11 @@ namespace
 		return results;
 	}
 
-	vector<string> GetEnumValues(const Enum& the_enum)
+	vector<string> GetEnumValues(const Enum& e)
 	{
 		vector<string> results;
 
-		for (const auto& it : the_enum.Values)
+		for (const auto& it : e.Values)
 		{
 			results.push_back(it.first);
 		}
@@ -43,12 +43,12 @@ namespace
 
 }
 
-void serializer::SerializeEnum(ostream& o, const Enum& the_enum)
+void serializer::SerializeEnum(ostream& o, const Enum& e)
 {
-	vector<string> unique_values = GetEnumUniqueValues(the_enum);
-	vector<string> values = GetEnumValues(the_enum);
+	vector<string> unique_values = GetEnumUniqueValues(e);
+	vector<string> values = GetEnumValues(e);
 
-	const string& name = the_enum.GetFullName();
+	const string& name = e.GetFullName();
 	stringstream tmpl;
 	tmpl << R"(template <>
 struct Enum<%name%> : public IEnum
@@ -141,7 +141,8 @@ struct Enum<%name%> : public IEnum
 
 		bool operator==(const ConstIterator& o) const
 		{
-			return ((last_ && o.last_) || (value_ == o.value_));
+			return ((last_ && o.last_) ||
+				(!last_ && !o.last_ && value_ == o.value_));
 		}
 
 		bool operator!=(const ConstIterator& o) const
@@ -234,7 +235,7 @@ struct Enum<%name%> : public IEnum
 		tmpl << "		return std::string();\n";
 	}
 	tmpl << R"(	}
-	
+
 	const std::string& GetName() const override
 	{
 		static const std::string name = "%name%";
@@ -303,11 +304,24 @@ struct Enum<%name%> : public IEnum
 	}
 	tmpl << R"(	}
 };
+
+namespace
+{
+	struct %name_without_colons%_registrar
+	{
+		%name_without_colons%_registrar()
+		{
+			::reflang::registry::internal::Register(
+				std::make_unique<Enum<%name%>>());
+		}
+	} %name_without_colons%_instance;
+}
 )";
 	o << ReplaceAll(
 			tmpl.str(),
 			{
-				{"%name%", the_enum.GetFullName()},
-				{"%unique_values_count%", to_string(unique_values.size())}
+				{"%name%", e.GetFullName()},
+				{"%unique_values_count%", to_string(unique_values.size())},
+				{"%name_without_colons%", GetNameWithoutColons(e.GetFullName())}
 			});
 }

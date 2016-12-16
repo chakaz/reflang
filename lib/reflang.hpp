@@ -102,10 +102,12 @@ namespace reflang
 	namespace registry
 	{
 		std::vector<IFunction*> GetFunctionByName(const std::string& name);
+		std::vector<IEnum*> GetEnumByName(const std::string& name);
 
 		namespace internal
 		{
-			void Register(std::unique_ptr<IFunction>&& function);
+			void Register(std::unique_ptr<IFunction>&& f);
+			void Register(std::unique_ptr<IEnum>&& e);
 		}
 	};
 
