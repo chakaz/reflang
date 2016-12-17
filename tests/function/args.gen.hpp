@@ -13,88 +13,99 @@ namespace reflang
 {
 
 template <>
-class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
+class Function<decltype(Func), Func> : public IFunction
 {
 	int num_args() const override
 	{
-		return 0;
+		return 1;
 	}
 
 	const std::string& GetName() const override
 	{
-		static const std::string name = "ns::NamespacedFunction";
+		static const std::string name = "Func";
 		return name;
 	}
 
 	Object Invoke(const std::vector<Object>& args) override
 	{
-		if (args.size() != 0)
+		if (args.size() != 1)
 		{
 			throw std::invalid_argument("count");
 		}
+		if (!args[0].is_t<int>())
+		{
+			throw std::invalid_argument("a");
+		}
 
-		ns::NamespacedFunction();
+		Func(args[0].get_t<int>());
 		return Object();
 	}
 };
 
 namespace
 {
-	// Object to auto-register ns::NamespacedFunction.
-	struct ns__NamespacedFunction_registrar
+	// Object to auto-register Func.
+	struct Func_registrar
 	{
-		ns__NamespacedFunction_registrar()
+		Func_registrar()
 		{
 			::reflang::registry::internal::Register(
 				std::make_unique<
 					Function<
-						decltype(ns::NamespacedFunction),
-						ns::NamespacedFunction>>());
+						decltype(Func),
+						Func>>());
 		}
-	} ns__NamespacedFunction_instance;
+	} Func_instance;
 }
 
 
 template <>
-class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
+class Function<decltype(Func2), Func2> : public IFunction
 {
 	int num_args() const override
 	{
-		return 0;
+		return 2;
 	}
 
 	const std::string& GetName() const override
 	{
-		static const std::string name = "GlobalFunction";
+		static const std::string name = "Func2";
 		return name;
 	}
 
 	Object Invoke(const std::vector<Object>& args) override
 	{
-		if (args.size() != 0)
+		if (args.size() != 2)
 		{
 			throw std::invalid_argument("count");
 		}
+		if (!args[0].is_t<int>())
+		{
+			throw std::invalid_argument("a");
+		}
+		if (!args[1].is_t<float>())
+		{
+			throw std::invalid_argument("b");
+		}
 
-		GlobalFunction();
-		return Object();
+		return Object(Func2(args[0].get_t<int>(), args[1].get_t<float>()));
 	}
 };
 
 namespace
 {
-	// Object to auto-register GlobalFunction.
-	struct GlobalFunction_registrar
+	// Object to auto-register Func2.
+	struct Func2_registrar
 	{
-		GlobalFunction_registrar()
+		Func2_registrar()
 		{
 			::reflang::registry::internal::Register(
 				std::make_unique<
 					Function<
-						decltype(GlobalFunction),
-						GlobalFunction>>());
+						decltype(Func2),
+						Func2>>());
 		}
-	} GlobalFunction_instance;
+	} Func2_instance;
 }
 
 

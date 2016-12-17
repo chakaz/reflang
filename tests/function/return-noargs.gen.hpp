@@ -33,10 +33,11 @@ class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : publi
 
 	Object Invoke(const std::vector<Object>& args) override
 	{
-		if (args.size() != this->num_args())
+		if (args.size() != 0)
 		{
 			throw std::invalid_argument("count");
 		}
+
 		return Object(ns::NamespacedFunction());
 	}
 };
@@ -74,10 +75,11 @@ class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 
 	Object Invoke(const std::vector<Object>& args) override
 	{
-		if (args.size() != this->num_args())
+		if (args.size() != 0)
 		{
 			throw std::invalid_argument("count");
 		}
+
 		return Object(GlobalFunction());
 	}
 };
@@ -115,10 +117,11 @@ class Function<decltype(ReturnByValue), ReturnByValue> : public IFunction
 
 	Object Invoke(const std::vector<Object>& args) override
 	{
-		if (args.size() != this->num_args())
+		if (args.size() != 0)
 		{
 			throw std::invalid_argument("count");
 		}
+
 		return Object(ReturnByValue());
 	}
 };
@@ -156,10 +159,11 @@ class Function<decltype(ReturnByReference), ReturnByReference> : public IFunctio
 
 	Object Invoke(const std::vector<Object>& args) override
 	{
-		if (args.size() != this->num_args())
+		if (args.size() != 0)
 		{
 			throw std::invalid_argument("count");
 		}
+
 		return Object(ReturnByReference());
 	}
 };

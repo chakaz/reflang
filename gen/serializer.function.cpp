@@ -7,6 +7,27 @@
 using namespace std;
 using namespace reflang;
 
+namespace
+{
+	string CallFunction(const Function& f)
+	{
+		stringstream s;
+		s << f.GetFullName() << "(";
+		int i = 0;
+		for (const auto& arg : f.Arguments)
+		{
+			s << "args[" << i << "].get_t<" << arg.Type << ">()";
+			if (i != f.Arguments.size() - 1)
+			{
+				s << ", ";
+			}
+			++i;
+		}
+		s << ")";
+		return s.str();
+	}
+}
+
 void serializer::SerializeFunction(ostream& o, const Function& f)
 {
 	stringstream tmpl;
@@ -26,20 +47,32 @@ class Function<decltype(%name%), %name%> : public IFunction
 
 	Object Invoke(const std::vector<Object>& args) override
 	{
-		if (args.size() != this->num_args())
+		if (args.size() != %arg_count%)
 		{
 			throw std::invalid_argument("count");
-		})";
+		}
+)";
+	int i = 0;
+	for (const auto& arg : f.Arguments)
+	{
+		tmpl << "		if (!args[" << i << "].is_t<" << arg.Type << R"(>())
+		{
+			throw std::invalid_argument(")" << arg.Name << R"(");
+		}
+)";
+		++i;
+	}
+
 	if (f.ReturnType == "void")
 	{
 		tmpl << R"(
-		%name%();
+		%call_function%;
 		return Object();)";
 	}
 	else
 	{
 		tmpl << R"(
-		return Object(%name%());)";
+		return Object(%call_function%);)";
 	}
 	tmpl << R"(
 	}
@@ -67,6 +100,7 @@ namespace
 			{
 				{"%name%", f.GetFullName()},
 				{"%arg_count%", to_string(f.Arguments.size())},
+				{"%call_function%", CallFunction(f)},
 				{"%name_without_colons%", GetNameWithoutColons(f.GetFullName())}
 			});
 }

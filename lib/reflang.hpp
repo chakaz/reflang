@@ -2,6 +2,7 @@
 #define REFLANG_TYPES_HPP
 
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 #include <type_traits>
@@ -93,11 +94,18 @@ namespace reflang
 		template <typename... Ts>
 		Object operator()(Ts&&... ts)
 		{
-			return this->Invoke({ Object(ts)... });
+			Object init[] = { Object(std::forward<Ts>(ts))... };
+			std::vector<Object> v(
+					std::make_move_iterator(std::begin(init)),
+					std::make_move_iterator(std::end(init)));
+			return this->Invoke(std::move(v));
 		}
 
 		virtual Object Invoke(const std::vector<Object>& args) = 0;
 	};
+
+	template <>
+	Object IFunction::operator()<>();
 
 	namespace registry
 	{

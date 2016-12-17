@@ -49,6 +49,12 @@ Object& Object::operator=(Object&& o)
 	return *this;
 }
 
+template <>
+Object IFunction::operator()<>()
+{
+	return this->Invoke({});
+}
+
 bool Object::is_void() const
 {
 	return id_ == GetTypeId<void>();
