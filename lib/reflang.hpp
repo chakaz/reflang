@@ -43,13 +43,13 @@ namespace reflang
 		}
 
 		template <typename T>
-		T get_t() const
+		const T& get_t() const
 		{
 			if (GetTypeId<T>() != id_)
 			{
 				throw std::invalid_argument("Can't cast to T.");
 			}
-			return T(*static_cast<T*>(data_));
+			return *static_cast<T*>(data_);
 		}
 
 		bool is_void() const;
