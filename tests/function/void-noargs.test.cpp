@@ -14,8 +14,8 @@ TEST_CASE("global")
 	REQUIRE(functions.size() == 1);
 	auto func = functions[0];
 	Object result = (*func)();
-	REQUIRE(result.is_void());
-	REQUIRE(result.is_t<void>());
+	REQUIRE(result.IsVoid());
+	REQUIRE(result.IsT<void>());
 	REQUIRE(global_string == string("GlobalFunction()"));
 }
 
@@ -26,8 +26,8 @@ TEST_CASE("namespace")
 	REQUIRE(functions.size() == 1);
 	auto func = functions[0];
 	Object result = (*func)();
-	REQUIRE(result.is_void());
-	REQUIRE(result.is_t<void>());
+	REQUIRE(result.IsVoid());
+	REQUIRE(result.IsT<void>());
 	REQUIRE(global_string == string("NamespacedFunction()"));
 }
 

@@ -15,7 +15,7 @@ namespace reflang
 template <>
 class Function<decltype(Func), Func> : public IFunction
 {
-	int num_args() const override
+	int GetParameterCount() const override
 	{
 		return 1;
 	}
@@ -32,12 +32,12 @@ class Function<decltype(Func), Func> : public IFunction
 		{
 			throw std::invalid_argument("count");
 		}
-		if (!args[0].is_t<int>())
+		if (!args[0].IsT<int>())
 		{
 			throw std::invalid_argument("a");
 		}
 
-		Func(args[0].get_t<int>());
+		Func(args[0].GetT<int>());
 		return Object();
 	}
 };
@@ -62,7 +62,7 @@ namespace
 template <>
 class Function<decltype(Func2), Func2> : public IFunction
 {
-	int num_args() const override
+	int GetParameterCount() const override
 	{
 		return 2;
 	}
@@ -79,16 +79,16 @@ class Function<decltype(Func2), Func2> : public IFunction
 		{
 			throw std::invalid_argument("count");
 		}
-		if (!args[0].is_t<int>())
+		if (!args[0].IsT<int>())
 		{
 			throw std::invalid_argument("a");
 		}
-		if (!args[1].is_t<float>())
+		if (!args[1].IsT<float>())
 		{
 			throw std::invalid_argument("b");
 		}
 
-		return Object(Func2(args[0].get_t<int>(), args[1].get_t<float>()));
+		return Object(Func2(args[0].GetT<int>(), args[1].GetT<float>()));
 	}
 };
 

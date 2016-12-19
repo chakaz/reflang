@@ -9,7 +9,7 @@ using namespace std;
 
 namespace
 {
-	void noop() {}
+	void NoOp() {}
 
 	unordered_multimap<string, unique_ptr<IFunction>>& GetFunctionsMap()
 	{
@@ -26,7 +26,7 @@ namespace
 
 Object::Object()
 :	id_(GetTypeId<void>())
-,	deleter_(noop)
+,	deleter_(NoOp)
 {
 }
 
@@ -45,7 +45,7 @@ Object& Object::operator=(Object&& o)
 	id_ = o.id_;
 	data_ = o.data_;
 	deleter_ = std::move(o.deleter_);
-	o.deleter_ = noop;
+	o.deleter_ = NoOp;
 	return *this;
 }
 
@@ -55,7 +55,7 @@ Object IFunction::operator()<>()
 	return this->Invoke({});
 }
 
-bool Object::is_void() const
+bool Object::IsVoid() const
 {
 	return id_ == GetTypeId<void>();
 }

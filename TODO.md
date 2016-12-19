@@ -4,7 +4,6 @@ This file is intended for Reflang author.
 ## General
 * Support header-only or header+cpp
 * Library for base types, registry, etc
-* Consistent style for names of functions, methods, variables, members, ...
 * Reflang exception class (inherit from std::exception)
 
 ## Functions

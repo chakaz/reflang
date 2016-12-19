@@ -13,9 +13,9 @@ TEST_CASE("global")
 	REQUIRE(functions.size() == 1);
 	auto func = functions[0];
 	auto result = (*func)();
-	REQUIRE(result.is_t<const char*>());
-	REQUIRE(!result.is_t<int>());
-	REQUIRE(result.get_t<const char*>() == string("GlobalFunction()"));
+	REQUIRE(result.IsT<const char*>());
+	REQUIRE(!result.IsT<int>());
+	REQUIRE(result.GetT<const char*>() == string("GlobalFunction()"));
 }
 
 TEST_CASE("namespace")
@@ -24,9 +24,9 @@ TEST_CASE("namespace")
 	REQUIRE(functions.size() == 1);
 	auto func = functions[0];
 	auto result = (*func)();
-	REQUIRE(result.is_t<const char*>());
-	REQUIRE(!result.is_t<int>());
-	REQUIRE(result.get_t<const char*>() == string("NamespacedFunction()"));
+	REQUIRE(result.IsT<const char*>());
+	REQUIRE(!result.IsT<int>());
+	REQUIRE(result.GetT<const char*>() == string("NamespacedFunction()"));
 }
 
 TEST_CASE("with-classes")
@@ -35,11 +35,11 @@ TEST_CASE("with-classes")
 	REQUIRE(functions.size() == 1);
 	auto func = functions[0];
 	auto result = (*func)();
-	REQUIRE(result.is_t<DummyClass>());
+	REQUIRE(result.IsT<DummyClass>());
 
 	functions = registry::GetFunctionByName("ReturnByReference");
 	REQUIRE(functions.size() == 1);
 	func = functions[0];
 	result = (*func)();
-	REQUIRE(result.is_t<DummyClass>());
+	REQUIRE(result.IsT<DummyClass>());
 }

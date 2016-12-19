@@ -11,16 +11,16 @@ using namespace std;
 TEST_CASE("void")
 {
 	Object object;
-	REQUIRE(object.is_void());
-	REQUIRE(object.is_t<void>());
+	REQUIRE(object.IsVoid());
+	REQUIRE(object.IsT<void>());
 }
 
 TEST_CASE("get-set-integral")
 {
 	Object object(4);
-	REQUIRE(!object.is_void());
-	REQUIRE(object.is_t<int>());
-	REQUIRE(object.get_t<int>() == 4);
+	REQUIRE(!object.IsVoid());
+	REQUIRE(object.IsT<int>());
+	REQUIRE(object.GetT<int>() == 4);
 }
 
 TEST_CASE("get-set-class")
@@ -28,20 +28,20 @@ TEST_CASE("get-set-class")
 	// copy.
 	string s = "hello!";
 	Object object(s);
-	REQUIRE(object.is_t<string>());
-	REQUIRE(object.get_t<string>() == s);
+	REQUIRE(object.IsT<string>());
+	REQUIRE(object.GetT<string>() == s);
 
 	// reference.
 	const string& rs = "hello!";
 	object = Object(rs);
-	REQUIRE(object.is_t<string>());
-	REQUIRE(object.get_t<string>() == s);
+	REQUIRE(object.IsT<string>());
+	REQUIRE(object.GetT<string>() == s);
 
 	// r-value reference.
 	string rrs = s;
 	object = Object(std::move(rrs));
-	REQUIRE(object.is_t<string>());
-	REQUIRE(object.get_t<string>() == s);
+	REQUIRE(object.IsT<string>());
+	REQUIRE(object.GetT<string>() == s);
 }
 
 namespace

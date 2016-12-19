@@ -20,7 +20,7 @@ Class 'DummyClass' with:
 template <>
 class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
 {
-	int num_args() const override
+	int GetParameterCount() const override
 	{
 		return 0;
 	}
@@ -62,7 +62,7 @@ namespace
 template <>
 class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 {
-	int num_args() const override
+	int GetParameterCount() const override
 	{
 		return 0;
 	}
@@ -104,7 +104,7 @@ namespace
 template <>
 class Function<decltype(ReturnByValue), ReturnByValue> : public IFunction
 {
-	int num_args() const override
+	int GetParameterCount() const override
 	{
 		return 0;
 	}
@@ -146,7 +146,7 @@ namespace
 template <>
 class Function<decltype(ReturnByReference), ReturnByReference> : public IFunction
 {
-	int num_args() const override
+	int GetParameterCount() const override
 	{
 		return 0;
 	}

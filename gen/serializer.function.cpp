@@ -16,7 +16,7 @@ namespace
 		int i = 0;
 		for (const auto& arg : f.Arguments)
 		{
-			s << "args[" << i << "].get_t<" << arg.Type << ">()";
+			s << "args[" << i << "].GetT<" << arg.Type << ">()";
 			if (i != f.Arguments.size() - 1)
 			{
 				s << ", ";
@@ -34,7 +34,7 @@ void serializer::SerializeFunction(ostream& o, const Function& f)
 	tmpl << R"(template <>
 class Function<decltype(%name%), %name%> : public IFunction
 {
-	int num_args() const override
+	int GetParameterCount() const override
 	{
 		return %arg_count%;
 	}
@@ -55,7 +55,7 @@ class Function<decltype(%name%), %name%> : public IFunction
 	int i = 0;
 	for (const auto& arg : f.Arguments)
 	{
-		tmpl << "		if (!args[" << i << "].is_t<" << arg.Type << R"(>())
+		tmpl << "		if (!args[" << i << "].IsT<" << arg.Type << R"(>())
 		{
 			throw std::invalid_argument(")" << arg.Name << R"(");
 		}

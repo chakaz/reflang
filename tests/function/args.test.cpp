@@ -27,6 +27,6 @@ TEST_CASE("multiple-args-bool-return-type")
 	Object ret = (*f)(1234, 5678.0f);
 	REQUIRE(global_int == 1234);
 	REQUIRE(global_float == 5678.0f);
-	REQUIRE(ret.is_t<bool>());
-	REQUIRE(ret.get_t<bool>() == true);
+	REQUIRE(ret.IsT<bool>());
+	REQUIRE(ret.GetT<bool>() == true);
 }

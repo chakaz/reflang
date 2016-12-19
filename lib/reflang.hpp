@@ -37,13 +37,13 @@ namespace reflang
 		~Object();
 
 		template <typename T>
-		bool is_t() const
+		bool IsT() const
 		{
 			return GetTypeId<T>() == id_;
 		}
 
 		template <typename T>
-		const T& get_t() const
+		const T& GetT() const
 		{
 			if (GetTypeId<T>() != id_)
 			{
@@ -52,7 +52,7 @@ namespace reflang
 			return *static_cast<T*>(data_);
 		}
 
-		bool is_void() const;
+		bool IsVoid() const;
 
 	private:
 		static int global_id;
@@ -89,7 +89,7 @@ namespace reflang
 
 		virtual const std::string& GetName() const = 0;
 
-		virtual int num_args() const = 0;
+		virtual int GetParameterCount() const = 0;
 
 		template <typename... Ts>
 		Object operator()(Ts&&... ts)
