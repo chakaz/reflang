@@ -30,3 +30,15 @@ TEST_CASE("multiple-args-bool-return-type")
 	REQUIRE(ret.IsT<bool>());
 	REQUIRE(ret.GetT<bool>() == true);
 }
+
+TEST_CASE("reference-bool-return-type")
+{
+	global_int = 0;
+	auto functions = registry::GetFunctionByName("Func3");
+	REQUIRE(functions.size() == 1);
+	auto f = functions[0];
+	Object ret = (*f)(1234);
+	REQUIRE(global_int == 1234);
+	REQUIRE(ret.IsT<bool>());
+	REQUIRE(ret.GetT<bool>() == true);
+}

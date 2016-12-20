@@ -64,6 +64,7 @@ Please check this section later.
 
 ## Limitations
 * No `template` classes / functions support.
+* No support for functions taking rvalue references arguments.
 
 ## Bugs, pull requests, feedback
 Please check this section later.

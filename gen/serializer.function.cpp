@@ -16,7 +16,7 @@ namespace
 		int i = 0;
 		for (const auto& arg : f.Arguments)
 		{
-			s << "args[" << i << "].GetT<" << arg.Type << ">()";
+			s << "args[" << i << "].GetT<std::decay_t<" << arg.Type << ">>()";
 			if (i != f.Arguments.size() - 1)
 			{
 				s << ", ";
@@ -55,7 +55,7 @@ class Function<decltype(%name%), %name%> : public IFunction
 	int i = 0;
 	for (const auto& arg : f.Arguments)
 	{
-		tmpl << "		if (!args[" << i << "].IsT<" << arg.Type << R"(>())
+		tmpl << "		if (!args[" << i << "].IsT<std::decay_t<" << arg.Type << R"(>>())
 		{
 			throw std::invalid_argument(")" << arg.Name << R"(");
 		}

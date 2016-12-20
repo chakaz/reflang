@@ -12,3 +12,9 @@ bool Func2(int a, float b)
 	global_float = b;
 	return true;
 }
+
+bool Func3(const int& a)
+{
+	global_int = a;
+	return true;
+}
