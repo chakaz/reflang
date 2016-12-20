@@ -1,6 +1,7 @@
 #ifndef REFLANG_TYPES_HPP
 #define REFLANG_TYPES_HPP
 
+#include <atomic>
 #include <functional>
 #include <iterator>
 #include <memory>
@@ -10,11 +11,15 @@
 
 namespace reflang
 {
+	// Object is a class similar in nature to std::any, only it does not require
+	// C++17 and does not require stored objects to be copyable.
 	class Object final
 	{
 	public:
+		// Constructs an Object with stored type of void.
 		Object();
 
+		// Constructs an Object with a copy of T.
 		template <typename T>
 		explicit Object(T&& t)
 		:	id_(GetTypeId<std::decay_t<T>>())
@@ -55,12 +60,15 @@ namespace reflang
 		bool IsVoid() const;
 
 	private:
-		static int global_id;
+		static std::atomic<int> global_id;
 
 		template <typename T>
 		static int GetTypeId()
 		{
-			static int t_id = global_id++;
+			// While it may seem like global_id could be an int rather than
+			// std::atomic, this is in fact no true. GetTypeId<T1> does not
+			// sync access to GetTypeId<T2>.
+			static const int t_id = global_id++;
 			return t_id;
 		}
 
@@ -91,6 +99,7 @@ namespace reflang
 
 		virtual int GetParameterCount() const = 0;
 
+		// Syntactic sugar for calling Invoke().
 		template <typename... Ts>
 		Object operator()(Ts&&... ts)
 		{

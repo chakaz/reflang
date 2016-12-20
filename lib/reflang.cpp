@@ -60,7 +60,7 @@ bool Object::IsVoid() const
 	return id_ == GetTypeId<void>();
 }
 
-int Object::global_id = 0;
+atomic<int> Object::global_id;
 
 vector<IFunction*> registry::GetFunctionByName(const string& name)
 {
