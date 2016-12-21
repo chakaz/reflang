@@ -1,8 +1,10 @@
 # Reflang - Modern C++ reflection using libclang
 
-## In short
-Reflang is a reflection library & tool for C++. For example, if your source
-looks like this:
+## TL;DR
+Reflang is a reflection library & tool for C++
+
+### Enums
+If your program has the following `enum`:
 
 ```cpp
 	enum class MyEnum
@@ -16,7 +18,7 @@ looks like this:
 	};
 ```
 
-Using Reflang you could do:
+With Reflang you could do:
 
 ```cpp
 	for (auto it : reflang::Enum<MyEnum>::Iterate())
@@ -34,18 +36,38 @@ Using Reflang you could do:
 	}
 ```
 
-Reflang will soon support classes, functions and other forms of fun.
+### Functions
+If your program has the following function:
+
+```cpp
+	bool Func(int a, float b);
+```
+
+With Reflang you could do:
+
+```cpp
+	std::vector<IFunction*> functions = reflang::registry::GetFunctionByName("Func");
+	IFunction* f = functions[0];
+	Object ret = (*f)(1234, 5678.0f);
+	if (ret.GetT<bool>())
+	{
+		// do something
+	}
+```
+
+### Classes
+Reflang will soon support classes and other forms of fun.
 
 ## How it works
 Reflang is made of 2 components:
 * Code generator, which uses libclang to parse your C++ code and generate
-  reflection information;
+  reflection information. You can easily integrate this tool in your build
+  process;
 * Support library, which allows generic and abstract coding ("find class by
-  name", "invoke method by name", etc).
+  name", "invoke function by name", etc).
 
-Reflang understands your code exactly like clang does, so by integrating Reflang
-in your build process you can get always updated reflection information with no
-effort.
+Reflang understands your code exactly like clang does, so which results in
+accurate parsing of your code.
 
 ## Examples
 Check out the tests/ directory, which shows pretty much all features supported
