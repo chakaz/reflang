@@ -3,7 +3,6 @@ This file is intended for Reflang author.
 
 ## General
 * Support header-only or header+cpp
-* Library for base types, registry, etc
 * Reflang exception class (inherit from std::exception)
 
 ## Functions
@@ -17,5 +16,5 @@ This file is intended for Reflang author.
 * Constructors (construct by name with arguments)
 
 ## Central registry
-* Interface for all types (IEnum, IClass, ...)
+* Interface for all types - maybe IType (base for IEnum, IClass, ...)
 * Find all types by name, regex

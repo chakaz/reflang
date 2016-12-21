@@ -132,7 +132,6 @@ namespace reflang
 	template <typename T> class Enum;
 	template <typename T> class Class;
 	template <typename T, T t> class Function;
-
 }
 
 #endif //REFLANG_TYPES_HPP
