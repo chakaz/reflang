@@ -1,10 +1,10 @@
 # Reflang - Modern C++ reflection using libclang
 
 ## TL;DR
-Reflang is a reflection library & tool for C++
+Reflang is a reflection library & tool for modern C++
 
 ### Enums
-If your program has the following `enum`:
+Lets say you have the following `enum`:
 
 ```cpp
 	enum class MyEnum
@@ -23,7 +23,7 @@ With Reflang you could do:
 ```cpp
 	for (auto it : reflang::Enum<MyEnum>::Iterate())
 	{
-		// do something with MyEnum values
+		// Do something with MyEnum values...
 	}
 
 	std::string string_value = reflang::Enum<MyEnum>::Translate(MyEnum::Value2);
@@ -36,8 +36,26 @@ With Reflang you could do:
 	}
 ```
 
+Or even without `#include`ing `MyEnum`:
+
+```cpp
+	IEnum* e = registry::GetEnumByName("MyNamespace::MyClass::Cpp11Enum");
+
+	// Iterate over {"Value1", "Value2", "Value3", "Value5", "Value6"}
+	for (const auto& s : e->GetStringValues())
+	{
+		// ...
+	}
+
+	// Iterate over {4, 5, 6, 0, 12}
+	for (const auto& s : e->GetStringValues())
+	{
+		// ...
+	}
+```
+
 ### Functions
-If your program has the following function:
+Lets say you have the following function:
 
 ```cpp
 	bool Func(int a, float b);
@@ -46,12 +64,13 @@ If your program has the following function:
 With Reflang you could do:
 
 ```cpp
+	// Note: no need to include header fo Func().
 	std::vector<IFunction*> functions = reflang::registry::GetFunctionByName("Func");
 	IFunction* f = functions[0];
 	Object ret = (*f)(1234, 5678.0f);
 	if (ret.GetT<bool>())
 	{
-		// do something
+		// ...
 	}
 ```
 

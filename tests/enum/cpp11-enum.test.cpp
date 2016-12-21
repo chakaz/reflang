@@ -71,9 +71,8 @@ TEST_CASE("from string")
 
 TEST_CASE("reflection")
 {
-	auto enums = registry::GetEnumByName("MyNamespace::MyClass::Cpp11Enum");
-	REQUIRE(enums.size() == 1);
-	auto e = enums[0];
+	auto e = registry::GetEnumByName("MyNamespace::MyClass::Cpp11Enum");
+	REQUIRE(e != nullptr);
 	REQUIRE(e->GetStringValues() ==
 			vector<string>({"Value1", "Value2", "Value3", "Value5", "Value6"}));
 	REQUIRE(e->GetIntValues() == vector<int>({4, 5, 6, 0, 12}));

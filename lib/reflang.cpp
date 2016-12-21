@@ -17,9 +17,9 @@ namespace
 		return functions;
 	}
 
-	unordered_multimap<string, unique_ptr<IEnum>>& GetEnumsMap()
+	unordered_map<string, unique_ptr<IEnum>>& GetEnumsMap()
 	{
-		static unordered_multimap<string, unique_ptr<IEnum>> enums;
+		static unordered_map<string, unique_ptr<IEnum>> enums;
 		return enums;
 	}
 }
@@ -75,17 +75,17 @@ vector<IFunction*> registry::GetFunctionByName(const string& name)
 	return functions;
 }
 
-vector<IEnum*> registry::GetEnumByName(const string& name)
+IEnum* registry::GetEnumByName(const string& name)
 {
-	auto range = GetEnumsMap().equal_range(name);
-
-	vector<IEnum*> enums;
-	enums.reserve(distance(range.first, range.second));
-	for (auto it = range.first; it != range.second; ++it)
+	auto it = GetEnumsMap().find(name);
+	if (it == GetEnumsMap().end())
 	{
-		enums.push_back(it->second.get());
+		return nullptr;
 	}
-	return enums;
+	else
+	{
+		return it->second.get();
+	}
 }
 
 void registry::internal::Register(unique_ptr<IFunction>&& f)

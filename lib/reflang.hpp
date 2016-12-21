@@ -119,7 +119,7 @@ namespace reflang
 	namespace registry
 	{
 		std::vector<IFunction*> GetFunctionByName(const std::string& name);
-		std::vector<IEnum*> GetEnumByName(const std::string& name);
+		IEnum* GetEnumByName(const std::string& name);
 
 		namespace internal
 		{
