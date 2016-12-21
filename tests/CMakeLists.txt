@@ -25,3 +25,4 @@ add_subdirectory(lib)
 
 add_subdirectory(enum)
 add_subdirectory(function)
+add_subdirectory(class)

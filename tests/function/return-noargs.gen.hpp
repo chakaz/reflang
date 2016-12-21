@@ -14,7 +14,9 @@ namespace reflang
 {
 
 /*
-Class 'DummyClass' with:
+Class 'DummyClass'.
+Methods:
+Members:
 */
 
 

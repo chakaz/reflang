@@ -14,7 +14,9 @@ namespace reflang
 {
 
 /*
-Class 'MyNamespace::MyClass' with:
+Class 'MyNamespace::MyClass'.
+Methods:
+Members:
 */
 
 

@@ -29,9 +29,7 @@ public:
 	void MethodWithConstReferenceArg1(const int& arg) {}
 	void MethodWithConstReferenceArg2(const ComplexArgument& arg) {}
 
-	void MethodWithNullptrt(nullptr_t arg) {}
-
-	void MethodWithTypedef(MyInt arg) {}
+	void MethodWithTypedef(Test::MyInt arg) {}
 
 	template <typename T>
 	void TemplatedMethod() {}

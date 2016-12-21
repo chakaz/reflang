@@ -14,6 +14,7 @@ This file is intended for Reflang author.
 * Methods
 * Members
 * Constructors (construct by name with arguments)
+* Sub-classes
 
 ## Central registry
 * Interface for all types - maybe IType (base for IEnum, IClass, ...)
