@@ -4,7 +4,7 @@
 #include <string>
 
 #include "lib/reflang.hpp"
-#include "methods.src.hpp"
+#include "static-fields.src.hpp"
 
 namespace reflang
 {
@@ -15,7 +15,7 @@ class Class<MyClass> : public IClass
 {
 public:
 	static const constexpr int FieldCount = 0;
-	static const constexpr int StaticFieldCount = 0;
+	static const constexpr int StaticFieldCount = 14;
 
 	int GetFieldCount() const override;
 	int GetStaticFieldCount() const override;
@@ -47,6 +47,20 @@ void Class<MyClass>::IterateFields(MyClass& c, T t)
 template <typename T>
 void Class<MyClass>::IterateStaticFields(T t)
 {
+	t(MyClass::var);
+	t(MyClass::const_var);
+	t(MyClass::pointer_var);
+	t(MyClass::const_pointer_var);
+	t(MyClass::const_pointer_const_var);
+	t(MyClass::ref_var);
+	t(MyClass::const_ref_var);
+	t(MyClass::complex);
+	t(MyClass::const_complex);
+	t(MyClass::pointer_complex);
+	t(MyClass::const_pointer_complex);
+	t(MyClass::const_pointer_const_complex);
+	t(MyClass::ref_complex);
+	t(MyClass::const_ref_complex);
 }
 
 

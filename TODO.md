@@ -13,7 +13,6 @@ This file is used by Reflang author.
 ## Classes
 * Methods
 * Static methods
-* Static members
 * IClass API
 * Constructors (construct by name with arguments)
 * Sub-classes

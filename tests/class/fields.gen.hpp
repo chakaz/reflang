@@ -15,8 +15,10 @@ class Class<MyClass> : public IClass
 {
 public:
 	static const constexpr int FieldCount = 14;
+	static const constexpr int StaticFieldCount = 0;
 
 	int GetFieldCount() const override;
+	int GetStaticFieldCount() const override;
 
 	const std::string& GetName() const override;
 
@@ -27,6 +29,9 @@ public:
 
 	template <typename T>
 	static void IterateFields(MyClass& c, T t);
+
+	template <typename T>
+	static void IterateStaticFields(T t);
 };
 
 template <typename T>
@@ -65,6 +70,11 @@ void Class<MyClass>::IterateFields(MyClass& c, T t)
 	t(c.const_pointer_const_complex);
 	t(c.ref_complex);
 	t(c.const_ref_complex);
+}
+
+template <typename T>
+void Class<MyClass>::IterateStaticFields(T t)
+{
 }
 
 

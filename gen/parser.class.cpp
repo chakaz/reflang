@@ -56,6 +56,9 @@ namespace
 			case CXCursor_FieldDecl:
 				c->Fields.push_back(GetFieldFromCursor(cursor));
 				break;
+			case CXCursor_VarDecl:
+				c->StaticFields.push_back(GetFieldFromCursor(cursor));
+				break;
 			default:
 				break;
 			}

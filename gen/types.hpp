@@ -71,7 +71,9 @@ namespace reflang
 		Type GetType() const override;
 
 		MethodList Methods;
+
 		FieldList Fields;
+		FieldList StaticFields;
 	};
 }
 

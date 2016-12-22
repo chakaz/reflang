@@ -89,6 +89,7 @@ namespace reflang
 	{
 	public:
 		virtual int GetFieldCount() const = 0;
+		virtual int GetStaticFieldCount() const = 0;
 	};
 
 	class IEnum : public IType
