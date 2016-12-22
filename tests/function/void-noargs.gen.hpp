@@ -13,31 +13,39 @@
 namespace reflang
 {
 
+
 template <>
 class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 0;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "ns::NamespacedFunction";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 0)
-		{
-			throw std::invalid_argument("count");
-		}
-
-		ns::NamespacedFunction();
-		return Object();
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::GetParameterCount() const
+{
+	return 0;
+}
+
+static const std::string ns__NamespacedFunction_name = "ns::NamespacedFunction";
+
+const std::string& Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::GetName() const
+{
+	return ns__NamespacedFunction_name;
+}
+
+Object Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 0)
+	{
+		throw std::invalid_argument("count");
+	}
+
+	ns::NamespacedFunction();
+	return Object();
+}
 
 namespace
 {
@@ -56,31 +64,39 @@ namespace
 }
 
 
+
 template <>
 class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 0;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "GlobalFunction";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 0)
-		{
-			throw std::invalid_argument("count");
-		}
-
-		GlobalFunction();
-		return Object();
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(GlobalFunction), GlobalFunction>::GetParameterCount() const
+{
+	return 0;
+}
+
+static const std::string GlobalFunction_name = "GlobalFunction";
+
+const std::string& Function<decltype(GlobalFunction), GlobalFunction>::GetName() const
+{
+	return GlobalFunction_name;
+}
+
+Object Function<decltype(GlobalFunction), GlobalFunction>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 0)
+	{
+		throw std::invalid_argument("count");
+	}
+
+	GlobalFunction();
+	return Object();
+}
 
 namespace
 {

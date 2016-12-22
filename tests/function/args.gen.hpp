@@ -13,35 +13,43 @@
 namespace reflang
 {
 
+
 template <>
 class Function<decltype(Func), Func> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 1;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "Func";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 1)
-		{
-			throw std::invalid_argument("count");
-		}
-		if (!args[0].IsT<std::decay_t<int>>())
-		{
-			throw std::invalid_argument("a");
-		}
-
-		Func(args[0].GetT<std::decay_t<int>>());
-		return Object();
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(Func), Func>::GetParameterCount() const
+{
+	return 1;
+}
+
+static const std::string Func_name = "Func";
+
+const std::string& Function<decltype(Func), Func>::GetName() const
+{
+	return Func_name;
+}
+
+Object Function<decltype(Func), Func>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 1)
+	{
+		throw std::invalid_argument("count");
+	}
+	if (!args[0].IsT<std::decay_t<int>>())
+	{
+		throw std::invalid_argument("a");
+	}
+
+	Func(args[0].GetT<std::decay_t<int>>());
+	return Object();
+}
 
 namespace
 {
@@ -60,38 +68,46 @@ namespace
 }
 
 
+
 template <>
 class Function<decltype(Func2), Func2> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 2;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "Func2";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 2)
-		{
-			throw std::invalid_argument("count");
-		}
-		if (!args[0].IsT<std::decay_t<int>>())
-		{
-			throw std::invalid_argument("a");
-		}
-		if (!args[1].IsT<std::decay_t<float>>())
-		{
-			throw std::invalid_argument("b");
-		}
-
-		return Object(Func2(args[0].GetT<std::decay_t<int>>(), args[1].GetT<std::decay_t<float>>()));
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(Func2), Func2>::GetParameterCount() const
+{
+	return 2;
+}
+
+static const std::string Func2_name = "Func2";
+
+const std::string& Function<decltype(Func2), Func2>::GetName() const
+{
+	return Func2_name;
+}
+
+Object Function<decltype(Func2), Func2>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 2)
+	{
+		throw std::invalid_argument("count");
+	}
+	if (!args[0].IsT<std::decay_t<int>>())
+	{
+		throw std::invalid_argument("a");
+	}
+	if (!args[1].IsT<std::decay_t<float>>())
+	{
+		throw std::invalid_argument("b");
+	}
+
+	return Object(Func2(args[0].GetT<std::decay_t<int>>(), args[1].GetT<std::decay_t<float>>()));
+}
 
 namespace
 {
@@ -110,34 +126,42 @@ namespace
 }
 
 
+
 template <>
 class Function<decltype(Func3), Func3> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 1;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "Func3";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 1)
-		{
-			throw std::invalid_argument("count");
-		}
-		if (!args[0].IsT<std::decay_t<const int &>>())
-		{
-			throw std::invalid_argument("a");
-		}
-
-		return Object(Func3(args[0].GetT<std::decay_t<const int &>>()));
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(Func3), Func3>::GetParameterCount() const
+{
+	return 1;
+}
+
+static const std::string Func3_name = "Func3";
+
+const std::string& Function<decltype(Func3), Func3>::GetName() const
+{
+	return Func3_name;
+}
+
+Object Function<decltype(Func3), Func3>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 1)
+	{
+		throw std::invalid_argument("count");
+	}
+	if (!args[0].IsT<std::decay_t<const int &>>())
+	{
+		throw std::invalid_argument("a");
+	}
+
+	return Object(Func3(args[0].GetT<std::decay_t<const int &>>()));
+}
 
 namespace
 {

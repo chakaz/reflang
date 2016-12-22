@@ -13,30 +13,38 @@
 namespace reflang
 {
 
+
 template <>
 class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 0;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "ns::NamespacedFunction";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 0)
-		{
-			throw std::invalid_argument("count");
-		}
-
-		return Object(ns::NamespacedFunction());
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::GetParameterCount() const
+{
+	return 0;
+}
+
+static const std::string ns__NamespacedFunction_name = "ns::NamespacedFunction";
+
+const std::string& Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::GetName() const
+{
+	return ns__NamespacedFunction_name;
+}
+
+Object Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 0)
+	{
+		throw std::invalid_argument("count");
+	}
+
+	return Object(ns::NamespacedFunction());
+}
 
 namespace
 {
@@ -55,30 +63,38 @@ namespace
 }
 
 
+
 template <>
 class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 0;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "GlobalFunction";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 0)
-		{
-			throw std::invalid_argument("count");
-		}
-
-		return Object(GlobalFunction());
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(GlobalFunction), GlobalFunction>::GetParameterCount() const
+{
+	return 0;
+}
+
+static const std::string GlobalFunction_name = "GlobalFunction";
+
+const std::string& Function<decltype(GlobalFunction), GlobalFunction>::GetName() const
+{
+	return GlobalFunction_name;
+}
+
+Object Function<decltype(GlobalFunction), GlobalFunction>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 0)
+	{
+		throw std::invalid_argument("count");
+	}
+
+	return Object(GlobalFunction());
+}
 
 namespace
 {
@@ -97,30 +113,38 @@ namespace
 }
 
 
+
 template <>
 class Function<decltype(ReturnByValue), ReturnByValue> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 0;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "ReturnByValue";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 0)
-		{
-			throw std::invalid_argument("count");
-		}
-
-		return Object(ReturnByValue());
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(ReturnByValue), ReturnByValue>::GetParameterCount() const
+{
+	return 0;
+}
+
+static const std::string ReturnByValue_name = "ReturnByValue";
+
+const std::string& Function<decltype(ReturnByValue), ReturnByValue>::GetName() const
+{
+	return ReturnByValue_name;
+}
+
+Object Function<decltype(ReturnByValue), ReturnByValue>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 0)
+	{
+		throw std::invalid_argument("count");
+	}
+
+	return Object(ReturnByValue());
+}
 
 namespace
 {
@@ -139,30 +163,38 @@ namespace
 }
 
 
+
 template <>
 class Function<decltype(ReturnByReference), ReturnByReference> : public IFunction
 {
-	int GetParameterCount() const override
-	{
-		return 0;
-	}
+	int GetParameterCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "ReturnByReference";
-		return name;
-	}
+	const std::string& GetName() const override;
 
-	Object Invoke(const std::vector<Object>& args) override
-	{
-		if (args.size() != 0)
-		{
-			throw std::invalid_argument("count");
-		}
-
-		return Object(ReturnByReference());
-	}
+	Object Invoke(const std::vector<Object>& args) override;
 };
+
+int Function<decltype(ReturnByReference), ReturnByReference>::GetParameterCount() const
+{
+	return 0;
+}
+
+static const std::string ReturnByReference_name = "ReturnByReference";
+
+const std::string& Function<decltype(ReturnByReference), ReturnByReference>::GetName() const
+{
+	return ReturnByReference_name;
+}
+
+Object Function<decltype(ReturnByReference), ReturnByReference>::Invoke(const std::vector<Object>& args)
+{
+	if (args.size() != 0)
+	{
+		throw std::invalid_argument("count");
+	}
+
+	return Object(ReturnByReference());
+}
 
 namespace
 {
