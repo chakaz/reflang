@@ -20,178 +20,215 @@ struct Enum<CEnum> : public IEnum
 
 	struct ConstIterator
 	{
-		EnumType operator*() { return value_; }
+		ConstIterator(bool is_last);
 
-		ConstIterator& operator++()
-		{
-			switch (value_)
-			{
-			case EnumType::Value0:
-				value_ = EnumType::Value1;
-				break;
-			case EnumType::Value1:
-				last_ = true;
-				break;
-			}
-			return *this;
-		}
+		EnumType operator*();
 
-		ConstIterator operator++(int)
-		{
-			auto tmp = *this;
-			operator++();
-			return tmp;
-		}
+		ConstIterator& operator++();
+		ConstIterator operator++(int);
+		ConstIterator& operator--();
+		ConstIterator operator--(int);
 
-		ConstIterator& operator--()
-		{
-			if (last_)
-			{
-				last_ = false;
-				value_ = EnumType::Value1;
-			}
-			else
-			{
-				switch (value_)
-				{
-				case EnumType::Value0:
-					assert(false);
-					break;
-				case EnumType::Value1:
-					value_ = EnumType::Value0;
-					break;
-				}
-			}
-			return *this;
-		}
+		bool operator==(const ConstIterator& o) const;
+		bool operator!=(const ConstIterator& o) const;
 
-		ConstIterator operator--(int)
-		{
-			auto tmp = *this;
-			operator--();
-			return tmp;
-		}
-
-		bool operator==(const ConstIterator& o) const
-		{
-			return ((last_ && o.last_) ||
-				(!last_ && !o.last_ && value_ == o.value_));
-		}
-
-		bool operator!=(const ConstIterator& o) const
-		{
-			return !(*this == o);
-		}
-
+	private:
 		EnumType value_;
 		bool last_ = true;
 	};
 
 	struct IteratorContainer
 	{
-		ConstIterator begin() const
-		{
-			ConstIterator it;
-			it.last_ = false;
-			it.value_ = EnumType::Value0;
-			return it;
-		}
-
-		ConstIterator end() const
-		{
-			return ConstIterator();
-		}
+		ConstIterator begin() const;
+		ConstIterator end() const;
 	};
 
-	static IteratorContainer Iterate()
-	{
-		return IteratorContainer();
-	}
+	static IteratorContainer Iterate();
 
-	static bool TryTranslate(const std::string& s, EnumType& value)
-	{
-		if (s == "Value0")
-		{
-			value = EnumType::Value0;
-			return true;
-		}
-		else if (s == "Value1")
-		{
-			value = EnumType::Value1;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+	static bool TryTranslate(const std::string& s, EnumType& value);
+	static std::string Translate(EnumType e);
 
-	static std::string Translate(EnumType e)
+	const std::string& GetName() const override;
+
+	std::vector<std::string> GetStringValues() const override;
+
+	std::vector<int> GetIntValues() const override;
+
+	bool TryTranslate(const std::string& value, int& out) override;
+	bool TryTranslate(int value, std::string& out) override;
+};
+
+Enum<CEnum>::ConstIterator::ConstIterator(bool is_last)
+:	last_(is_last)
+,	value_(EnumType::Value0)
+{
+}
+
+Enum<CEnum>::EnumType Enum<CEnum>::ConstIterator::operator*()
+{
+	return value_;
+}
+
+Enum<CEnum>::ConstIterator& Enum<CEnum>::ConstIterator::operator++()
+{
+	switch (value_)
 	{
-		switch (e)
+		case EnumType::Value0:
+			value_ = EnumType::Value1;
+			break;
+		case EnumType::Value1:
+			last_ = true;
+			break;
+	}
+	return *this;
+}
+
+Enum<CEnum>::ConstIterator Enum<CEnum>::ConstIterator::operator++(int)
+{
+	auto tmp = *this;
+	operator++();
+	return tmp;
+}
+
+Enum<CEnum>::ConstIterator& Enum<CEnum>::ConstIterator::operator--()
+{
+	if (last_)
+	{
+		last_ = false;
+		value_ = EnumType::Value1;
+	}
+	else
+	{
+		switch (value_)
 		{
 			case EnumType::Value0:
-				return "Value0";
+				assert(false);
 				break;
 			case EnumType::Value1:
-				return "Value1";
+				value_ = EnumType::Value0;
 				break;
 		}
-		return std::string();
 	}
+	return *this;
+}
 
-	const std::string& GetName() const override
+Enum<CEnum>::ConstIterator Enum<CEnum>::ConstIterator::operator--(int)
+{
+	auto tmp = *this;
+	operator--();
+	return tmp;
+}
+
+bool Enum<CEnum>::ConstIterator::operator==(const ConstIterator& o) const
+{
+	return ((last_ && o.last_) ||
+		(!last_ && !o.last_ && value_ == o.value_));
+}
+
+bool Enum<CEnum>::ConstIterator::operator!=(const ConstIterator& o) const
+{
+	return !(*this == o);
+}
+
+Enum<CEnum>::ConstIterator Enum<CEnum>::IteratorContainer::begin() const
+{
+	return ConstIterator(false);
+}
+
+Enum<CEnum>::ConstIterator Enum<CEnum>::IteratorContainer::end() const
+{
+	return ConstIterator(true);
+}
+
+Enum<CEnum>::IteratorContainer Enum<CEnum>::Iterate()
+{
+	return IteratorContainer();
+}
+
+bool Enum<CEnum>::TryTranslate(const std::string& s, EnumType& value)
+{
+	if (s == "Value0")
 	{
-		static const std::string name = "CEnum";
-		return name;
+		value = EnumType::Value0;
+		return true;
 	}
-
-	std::vector<std::string> GetStringValues() const override
+	else if (s == "Value1")
 	{
-		std::vector<std::string> values;
-		values.reserve(2);
-		for (const auto& value : this->Iterate())
-		{
-			values.push_back(this->Translate(value));
-		}
-		return values;
+		value = EnumType::Value1;
+		return true;
 	}
-
-	std::vector<int> GetIntValues() const override
+	else
 	{
-		std::vector<int> values;
-		values.reserve(2);
-		for (const auto& value : this->Iterate())
-		{
-			values.push_back(static_cast<int>(value));
-		}
-		return values;
+		return false;
 	}
+}
 
-	bool TryTranslate(const std::string& value, int& out) override
+std::string Enum<CEnum>::Translate(EnumType e)
+{
+	switch (e)
 	{
-		EnumType tmp;
-		bool result = this->TryTranslate(value, tmp);
-		if (result)
-		{
-			out = static_cast<int>(tmp);
-		}
-		return result;
-	}
-
-	bool TryTranslate(int value, std::string& out) override
-	{
-		switch (static_cast<EnumType>(value))
-		{
 		case EnumType::Value0:
+			return "Value0";
+			break;
 		case EnumType::Value1:
-			out = Translate(static_cast<EnumType>(value));
-			return true;
-		default:
-			return false;
-		}
+			return "Value1";
+			break;
 	}
-};
+	return std::string();
+}
+
+static const std::string CEnum_name = "CEnum";
+
+const std::string& Enum<CEnum>::GetName() const
+{
+	return CEnum_name;
+}
+
+std::vector<std::string> Enum<CEnum>::GetStringValues() const
+{
+	std::vector<std::string> values;
+	values.reserve(2);
+	for (const auto& value : this->Iterate())
+	{
+		values.push_back(this->Translate(value));
+	}
+	return values;
+}
+
+std::vector<int> Enum<CEnum>::GetIntValues() const
+{
+	std::vector<int> values;
+	values.reserve(2);
+	for (const auto& value : this->Iterate())
+	{
+		values.push_back(static_cast<int>(value));
+	}
+	return values;
+}
+
+bool Enum<CEnum>::TryTranslate(const std::string& value, int& out)
+{
+	EnumType tmp;
+	bool result = this->TryTranslate(value, tmp);
+	if (result)
+	{
+		out = static_cast<int>(tmp);
+	}
+	return result;
+}
+
+bool Enum<CEnum>::TryTranslate(int value, std::string& out)
+{
+	switch (static_cast<EnumType>(value))
+	{
+	case EnumType::Value0:
+	case EnumType::Value1:
+		out = Translate(static_cast<EnumType>(value));
+		return true;
+	default:
+		return false;
+	}
+}
 
 namespace
 {
