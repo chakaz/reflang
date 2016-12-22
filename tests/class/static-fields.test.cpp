@@ -14,6 +14,7 @@ int const* MyClass::const_pointer_var = &MyClass::var;
 int const* const MyClass::const_pointer_const_var = &MyClass::var;
 int& MyClass::ref_var = MyClass::var;
 int const& MyClass::const_ref_var = MyClass::var;
+constexpr const int MyClass::constexpr_var;
 
 Test::ComplexType MyClass::complex{ 789 };
 const Test::ComplexType MyClass::const_complex = MyClass::complex;
@@ -46,7 +47,7 @@ void RequireEquals(Test::ComplexType const* const t)
 TEST_CASE("iterate-static-fields")
 {
 	int fields = Class<MyClass>::StaticFieldCount;
-	REQUIRE(fields == 14);
+	REQUIRE(fields == 15);
 
 	// non-const iteration.
 	Class<MyClass>::IterateStaticFields(

@@ -21,6 +21,7 @@ public:
 	static int const* const const_pointer_const_var;
 	static int& ref_var;
 	static int const& const_ref_var;
+	static constexpr const int constexpr_var = 456;
 
 	static ComplexType complex;
 	static const ComplexType const_complex;

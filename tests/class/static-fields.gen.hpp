@@ -15,7 +15,7 @@ class Class<MyClass> : public IClass
 {
 public:
 	static const constexpr int FieldCount = 0;
-	static const constexpr int StaticFieldCount = 14;
+	static const constexpr int StaticFieldCount = 15;
 
 	int GetFieldCount() const override;
 	int GetStaticFieldCount() const override;
@@ -54,6 +54,7 @@ void Class<MyClass>::IterateStaticFields(T t)
 	t(MyClass::const_pointer_const_var);
 	t(MyClass::ref_var);
 	t(MyClass::const_ref_var);
+	t(MyClass::constexpr_var);
 	t(MyClass::complex);
 	t(MyClass::const_complex);
 	t(MyClass::pointer_complex);
