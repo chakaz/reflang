@@ -14,39 +14,6 @@ namespace reflang
 {
 
 template <>
-class Class<MyNamespace::MyClass> : public IClass
-{
-public:
-	static const constexpr int FieldCount = 0;
-
-	int GetFieldCount() const override
-	{
-		return FieldCount;
-	}
-
-	const std::string& GetName() const override
-	{
-		static const std::string name = "MyNamespace::MyClass";
-		return name;
-	}
-
-	// Calls T::operator() on each field of 'MyNamespace::MyClass'.
-	// Works well with C++14 generic lambdas.
-	template <typename T>
-	static void IterateFields(const MyNamespace::MyClass& c, T t)
-	{
-	}
-
-	template <typename T>
-	static void IterateFields(MyNamespace::MyClass& c, T t)
-	{
-	}
-};
-
-const int Class<MyNamespace::MyClass>::FieldCount;
-
-
-template <>
 struct Enum<MyNamespace::MyClass::Cpp11Enum> : public IEnum
 {
 	using EnumType = MyNamespace::MyClass::Cpp11Enum;

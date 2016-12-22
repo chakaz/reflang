@@ -1,2 +1,2 @@
-reflang_test(methods)
-reflang_test(fields)
+reflang_test(methods "MyClass")
+reflang_test(fields "MyClass")

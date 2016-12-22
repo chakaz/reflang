@@ -14,39 +14,6 @@ namespace reflang
 {
 
 template <>
-class Class<DummyClass> : public IClass
-{
-public:
-	static const constexpr int FieldCount = 0;
-
-	int GetFieldCount() const override
-	{
-		return FieldCount;
-	}
-
-	const std::string& GetName() const override
-	{
-		static const std::string name = "DummyClass";
-		return name;
-	}
-
-	// Calls T::operator() on each field of 'DummyClass'.
-	// Works well with C++14 generic lambdas.
-	template <typename T>
-	static void IterateFields(const DummyClass& c, T t)
-	{
-	}
-
-	template <typename T>
-	static void IterateFields(DummyClass& c, T t)
-	{
-	}
-};
-
-const int Class<DummyClass>::FieldCount;
-
-
-template <>
 class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
 {
 	int GetParameterCount() const override

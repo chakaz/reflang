@@ -14,41 +14,6 @@ namespace reflang
 {
 
 template <>
-class Class<Test::ComplexType> : public IClass
-{
-public:
-	static const constexpr int FieldCount = 1;
-
-	int GetFieldCount() const override
-	{
-		return FieldCount;
-	}
-
-	const std::string& GetName() const override
-	{
-		static const std::string name = "Test::ComplexType";
-		return name;
-	}
-
-	// Calls T::operator() on each field of 'Test::ComplexType'.
-	// Works well with C++14 generic lambdas.
-	template <typename T>
-	static void IterateFields(const Test::ComplexType& c, T t)
-	{
-		t(c.field);
-	}
-
-	template <typename T>
-	static void IterateFields(Test::ComplexType& c, T t)
-	{
-		t(c.field);
-	}
-};
-
-const int Class<Test::ComplexType>::FieldCount;
-
-
-template <>
 class Class<MyClass> : public IClass
 {
 public:

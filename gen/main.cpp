@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
 	char** clang_argv = &argv[consumed];
 
 	parser::Options options;
-	options.include = filter_include->Get();
-	options.exclude = filter_exclude->Get();
+	options.include = "^(" + filter_include->Get() + ")$";
+	options.exclude = "^(" + filter_exclude->Get() + ")$";
 
 	if (list_only->Get())
 	{

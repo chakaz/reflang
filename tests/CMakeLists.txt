@@ -1,4 +1,4 @@
-macro(reflang_test TEST)
+macro(reflang_test TEST REGEX)
 	message(STATUS "Generating test target: ${TEST}")
 
 	set(INPUT "${TEST}.src.hpp")
@@ -12,6 +12,7 @@ macro(reflang_test TEST)
 			-DINPUT=${CMAKE_CURRENT_SOURCE_DIR}/${INPUT}
 			-DOUTPUT=${CMAKE_CURRENT_SOURCE_DIR}/${OUTPUT}
 			-DGEN=$<TARGET_FILE:reflang>
+			-DREGEX="${REGEX}"
 			-P ${CMAKE_SOURCE_DIR}/cmake/runtest.cmake)
 
 	add_executable(

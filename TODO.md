@@ -2,7 +2,6 @@
 This file is used by Reflang author.
 
 ## General
-* Only generate reflection for relevant types in tests
 * Support header-only or header+cpp
 * Reflang exception class (inherit from std::exception)
 
