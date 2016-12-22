@@ -82,6 +82,8 @@ namespace reflang
 	public:
 		virtual ~IClass() = default;
 
+		virtual const std::string& GetName() const = 0;
+
 		virtual int GetMemberCount() const = 0;
 	};
 

@@ -17,6 +17,19 @@ template <>
 class Class<MyNamespace::MyClass> : public IClass
 {
 public:
+	static const constexpr int MemberCount = 0;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+
+	const std::string& GetName() const override
+	{
+		static const std::string name = "MyNamespace::MyClass";
+		return name;
+	}
+
 	// Calls T::operator() on each member of 'MyNamespace::MyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
@@ -27,13 +40,6 @@ public:
 	template <typename T>
 	static void IterateMembers(MyNamespace::MyClass& c, T t)
 	{
-	}
-
-	static const constexpr int MemberCount = 0;
-
-	int GetMemberCount() const override
-	{
-		return MemberCount;
 	}
 };
 

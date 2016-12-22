@@ -17,6 +17,19 @@ template <>
 class Class<Test::ComplexType> : public IClass
 {
 public:
+	static const constexpr int MemberCount = 1;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+
+	const std::string& GetName() const override
+	{
+		static const std::string name = "Test::ComplexType";
+		return name;
+	}
+
 	// Calls T::operator() on each member of 'Test::ComplexType'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
@@ -30,13 +43,6 @@ public:
 	{
 		t(c.member);
 	}
-
-	static const constexpr int MemberCount = 1;
-
-	int GetMemberCount() const override
-	{
-		return MemberCount;
-	}
 };
 
 const int Class<Test::ComplexType>::MemberCount;
@@ -46,6 +52,19 @@ template <>
 class Class<MyClass> : public IClass
 {
 public:
+	static const constexpr int MemberCount = 14;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+
+	const std::string& GetName() const override
+	{
+		static const std::string name = "MyClass";
+		return name;
+	}
+
 	// Calls T::operator() on each member of 'MyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
@@ -84,13 +103,6 @@ public:
 		t(c.const_pointer_const_complex);
 		t(c.ref_complex);
 		t(c.const_ref_complex);
-	}
-
-	static const constexpr int MemberCount = 14;
-
-	int GetMemberCount() const override
-	{
-		return MemberCount;
 	}
 };
 

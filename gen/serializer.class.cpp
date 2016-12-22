@@ -29,6 +29,19 @@ void serializer::SerializeClass(ostream& o, const Class& c)
 class Class<%name%> : public IClass
 {
 public:
+	static const constexpr int MemberCount = %member_count%;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+
+	const std::string& GetName() const override
+	{
+		static const std::string name = "%name%";
+		return name;
+	}
+
 	// Calls T::operator() on each member of '%name%'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
@@ -40,13 +53,6 @@ public:
 	static void IterateMembers(%name%& c, T t)
 	{
 %iterate_members%	}
-
-	static const constexpr int MemberCount = %member_count%;
-
-	int GetMemberCount() const override
-	{
-		return MemberCount;
-	}
 };
 
 const int Class<%name%>::MemberCount;

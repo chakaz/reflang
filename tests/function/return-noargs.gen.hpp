@@ -17,6 +17,19 @@ template <>
 class Class<DummyClass> : public IClass
 {
 public:
+	static const constexpr int MemberCount = 0;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+
+	const std::string& GetName() const override
+	{
+		static const std::string name = "DummyClass";
+		return name;
+	}
+
 	// Calls T::operator() on each member of 'DummyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
@@ -27,13 +40,6 @@ public:
 	template <typename T>
 	static void IterateMembers(DummyClass& c, T t)
 	{
-	}
-
-	static const constexpr int MemberCount = 0;
-
-	int GetMemberCount() const override
-	{
-		return MemberCount;
 	}
 };
 
