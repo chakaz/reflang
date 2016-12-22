@@ -2,6 +2,8 @@
 This file is intended for Reflang author.
 
 ## General
+* Rename 'member' to 'field'
+* Only generate reflection for relevant types in tests
 * Support header-only or header+cpp
 * Reflang exception class (inherit from std::exception)
 
@@ -13,6 +15,8 @@ This file is intended for Reflang author.
 ## Classes
 * Methods
 * Members
+* Static methods
+* Static members
 * Constructors (construct by name with arguments)
 * Sub-classes
 

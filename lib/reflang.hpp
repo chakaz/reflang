@@ -77,6 +77,14 @@ namespace reflang
 		std::function<void()> deleter_;
 	};
 
+	class IClass
+	{
+	public:
+		virtual ~IClass() = default;
+
+		virtual int GetMemberCount() const = 0;
+	};
+
 	class IEnum
 	{
 	public:

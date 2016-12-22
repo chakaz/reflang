@@ -1,14 +1,18 @@
 namespace Test
 {
-	class ComplexType {};
+	class ComplexType
+	{
+	public:
+		int member;
+	};
 }
 
 class MyClass {
 public:
 	using ComplexType = Test::ComplexType;
 
-	MyClass()
-	:	member(0)
+	MyClass(int val)
+	:	member(val)
 	,	const_member(member)
 	,	pointer_member(&member)
 	,	const_pointer_member(&member)

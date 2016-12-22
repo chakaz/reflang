@@ -13,11 +13,31 @@
 namespace reflang
 {
 
-/*
-Class 'DummyClass'.
-Methods:
-Members:
-*/
+template <>
+class Class<DummyClass> : public IClass
+{
+public:
+	// Calls T::operator() on each member of 'DummyClass'.
+	// Works well with C++14 generic lambdas.
+	template <typename T>
+	static void IterateMembers(const DummyClass& c, T t)
+	{
+	}
+
+	template <typename T>
+	static void IterateMembers(DummyClass& c, T t)
+	{
+	}
+
+	static const constexpr int MemberCount = 0;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+};
+
+const int Class<DummyClass>::MemberCount;
 
 
 template <>

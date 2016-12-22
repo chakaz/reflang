@@ -13,32 +13,88 @@
 namespace reflang
 {
 
-/*
-Class 'Test::ComplexType'.
-Methods:
-Members:
-*/
+template <>
+class Class<Test::ComplexType> : public IClass
+{
+public:
+	// Calls T::operator() on each member of 'Test::ComplexType'.
+	// Works well with C++14 generic lambdas.
+	template <typename T>
+	static void IterateMembers(const Test::ComplexType& c, T t)
+	{
+		t(c.member);
+	}
+
+	template <typename T>
+	static void IterateMembers(Test::ComplexType& c, T t)
+	{
+		t(c.member);
+	}
+
+	static const constexpr int MemberCount = 1;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+};
+
+const int Class<Test::ComplexType>::MemberCount;
 
 
-/*
-Class 'MyClass'.
-Methods:
-Members:
-> int member
-> const int const_member
-> int * pointer_member
-> const int * const_pointer_member
-> const int *const const_pointer_const_member
-> int & ref_member
-> const int & const_ref_member
-> ComplexType complex
-> const ComplexType const_complex
-> ComplexType * pointer_complex
-> const ComplexType * const_pointer_complex
-> const ComplexType *const const_pointer_const_complex
-> ComplexType & ref_complex
-> const ComplexType & const_ref_complex
-*/
+template <>
+class Class<MyClass> : public IClass
+{
+public:
+	// Calls T::operator() on each member of 'MyClass'.
+	// Works well with C++14 generic lambdas.
+	template <typename T>
+	static void IterateMembers(const MyClass& c, T t)
+	{
+		t(c.member);
+		t(c.const_member);
+		t(c.pointer_member);
+		t(c.const_pointer_member);
+		t(c.const_pointer_const_member);
+		t(c.ref_member);
+		t(c.const_ref_member);
+		t(c.complex);
+		t(c.const_complex);
+		t(c.pointer_complex);
+		t(c.const_pointer_complex);
+		t(c.const_pointer_const_complex);
+		t(c.ref_complex);
+		t(c.const_ref_complex);
+	}
+
+	template <typename T>
+	static void IterateMembers(MyClass& c, T t)
+	{
+		t(c.member);
+		t(c.const_member);
+		t(c.pointer_member);
+		t(c.const_pointer_member);
+		t(c.const_pointer_const_member);
+		t(c.ref_member);
+		t(c.const_ref_member);
+		t(c.complex);
+		t(c.const_complex);
+		t(c.pointer_complex);
+		t(c.const_pointer_complex);
+		t(c.const_pointer_const_complex);
+		t(c.ref_complex);
+		t(c.const_ref_complex);
+	}
+
+	static const constexpr int MemberCount = 14;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+};
+
+const int Class<MyClass>::MemberCount;
 
 
 }  // namespace reflang

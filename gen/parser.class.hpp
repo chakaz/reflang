@@ -14,4 +14,3 @@ namespace reflang
 }
 
 #endif //REFLANG_PARSER_CLASS_HPP
-

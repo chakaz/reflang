@@ -1,7 +1,5 @@
 #include "parser.class.hpp"
 
-#include <iostream>
-
 #include "parser.util.hpp"
 
 using namespace reflang;

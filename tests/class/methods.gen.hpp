@@ -13,18 +13,58 @@
 namespace reflang
 {
 
-/*
-Class 'Test::ComplexArgument'.
-Methods:
-Members:
-*/
+template <>
+class Class<Test::ComplexArgument> : public IClass
+{
+public:
+	// Calls T::operator() on each member of 'Test::ComplexArgument'.
+	// Works well with C++14 generic lambdas.
+	template <typename T>
+	static void IterateMembers(const Test::ComplexArgument& c, T t)
+	{
+	}
+
+	template <typename T>
+	static void IterateMembers(Test::ComplexArgument& c, T t)
+	{
+	}
+
+	static const constexpr int MemberCount = 0;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+};
+
+const int Class<Test::ComplexArgument>::MemberCount;
 
 
-/*
-Class 'MyClass'.
-Methods:
-Members:
-*/
+template <>
+class Class<MyClass> : public IClass
+{
+public:
+	// Calls T::operator() on each member of 'MyClass'.
+	// Works well with C++14 generic lambdas.
+	template <typename T>
+	static void IterateMembers(const MyClass& c, T t)
+	{
+	}
+
+	template <typename T>
+	static void IterateMembers(MyClass& c, T t)
+	{
+	}
+
+	static const constexpr int MemberCount = 0;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+};
+
+const int Class<MyClass>::MemberCount;
 
 
 }  // namespace reflang

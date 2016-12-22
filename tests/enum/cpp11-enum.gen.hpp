@@ -13,11 +13,31 @@
 namespace reflang
 {
 
-/*
-Class 'MyNamespace::MyClass'.
-Methods:
-Members:
-*/
+template <>
+class Class<MyNamespace::MyClass> : public IClass
+{
+public:
+	// Calls T::operator() on each member of 'MyNamespace::MyClass'.
+	// Works well with C++14 generic lambdas.
+	template <typename T>
+	static void IterateMembers(const MyNamespace::MyClass& c, T t)
+	{
+	}
+
+	template <typename T>
+	static void IterateMembers(MyNamespace::MyClass& c, T t)
+	{
+	}
+
+	static const constexpr int MemberCount = 0;
+
+	int GetMemberCount() const override
+	{
+		return MemberCount;
+	}
+};
+
+const int Class<MyNamespace::MyClass>::MemberCount;
 
 
 template <>
