@@ -27,6 +27,16 @@ int main(int argc, char *argv[])
 			"--reflang-include",
 			"Complete #include line for reflang for generated code.",
 			R"(#include "reflang.hpp")");
+	auto out_hpp = cmd_args.Register<string>(
+			"--out-hpp",
+			"Output file path to write declarations (header) to. If empty "
+			"stdout is used (outputs to console).",
+			"");
+	auto out_cpp = cmd_args.Register<string>(
+			"--out-cpp",
+			"Output file path to write definitions to. If empty, --out-hpp is "
+			"used.",
+			"");
 
 	bool wtf = false;
 	int consumed = 0;
@@ -71,6 +81,8 @@ int main(int argc, char *argv[])
 		auto types = parser::GetTypes(clang_argc, clang_argv, options);
 		serializer::Options options;
 		options.include_path = reflang_include->Get();
+		options.out_hpp_path = out_hpp->Get();
+		options.out_cpp_path = out_cpp->Get();
 		serializer::Serialize(types, options);
 	}
 }

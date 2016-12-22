@@ -10,7 +10,8 @@ namespace reflang
 {
 	namespace serializer
 	{
-		void SerializeEnum(std::ostream& o, const Enum& e);
+		void SerializeEnumHeader(std::ostream& o, const Enum& e);
+		void SerializeEnumSources(std::ostream& o, const Enum& e);
 	}
 }
 

@@ -10,7 +10,8 @@ namespace reflang
 {
 	namespace serializer
 	{
-		void SerializeClass(std::ostream& o, const Class& c);
+		void SerializeClassHeader(std::ostream& o, const Class& c);
+		void SerializeClassSources(std::ostream& o, const Class& c);
 	}
 }
 

@@ -40,11 +40,12 @@ namespace
 
 		return results;
 	}
+}
 
-	string SerializeHeader(const Enum& e)
-	{
-		stringstream tmpl;
-		tmpl << R"(template <>
+void serializer::SerializeEnumHeader(ostream& o, const Enum& e)
+{
+	stringstream tmpl;
+	tmpl << R"(template <>
 struct Enum<%name%> : public IEnum
 {
 	using EnumType = %name%;
@@ -89,31 +90,31 @@ struct Enum<%name%> : public IEnum
 	bool TryTranslate(int value, std::string& out) override;
 };
 )";
-		return serializer::ReplaceAll(
-				tmpl.str(),
-				{
-					{"%name%", e.GetFullName()}
-				});
-	}
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", e.GetFullName()}
+			});
+}
 
-	string SerializeSource(const Enum& e)
-	{
-		vector<string> unique_values = GetEnumUniqueValues(e);
-		vector<string> values = GetEnumValues(e);
+void serializer::SerializeEnumSources(ostream& o, const Enum& e)
+{
+	vector<string> unique_values = GetEnumUniqueValues(e);
+	vector<string> values = GetEnumValues(e);
 
-		stringstream tmpl;
-		tmpl << R"(
+	stringstream tmpl;
+	tmpl << R"(
 Enum<%name%>::ConstIterator::ConstIterator(bool is_last)
 )";
-		if (!unique_values.empty())
-		{
-			tmpl << ":	last_(is_last)\n";
-			tmpl << ",	value_(EnumType::" << unique_values.front() << ")";
-		}
-		else {
-			tmpl << ":	last_(true)";
-		}
-		tmpl << R"(
+	if (!unique_values.empty())
+	{
+		tmpl << ":	last_(is_last)\n";
+		tmpl << ",	value_(EnumType::" << unique_values.front() << ")";
+	}
+	else {
+		tmpl << ":	last_(true)";
+	}
+	tmpl << R"(
 {
 }
 
@@ -125,30 +126,30 @@ Enum<%name%>::EnumType Enum<%name%>::ConstIterator::operator*()
 Enum<%name%>::ConstIterator& Enum<%name%>::ConstIterator::operator++()
 {
 )";
-		if (unique_values.empty())
-		{
-			tmpl << "	assert(false);\n";
-		}
-		else
-		{
-			tmpl << R"(	switch (value_)
+	if (unique_values.empty())
+	{
+		tmpl << "	assert(false);\n";
+	}
+	else
+	{
+		tmpl << R"(	switch (value_)
 	{
 )";
-			for (size_t i = 1; i < unique_values.size(); ++i)
-			{
-				const auto& prev = unique_values[i - 1];
-				const auto& it = unique_values[i];
-				tmpl << "		case EnumType::" << prev << ":\n";
-				tmpl << "			value_ = EnumType::" << it << ";\n";
-				tmpl << "			break;\n";
-			}
-			tmpl << "		case EnumType::" << unique_values.back() << ":\n";
-			tmpl << R"(			last_ = true;
+		for (size_t i = 1; i < unique_values.size(); ++i)
+		{
+			const auto& prev = unique_values[i - 1];
+			const auto& it = unique_values[i];
+			tmpl << "		case EnumType::" << prev << ":\n";
+			tmpl << "			value_ = EnumType::" << it << ";\n";
+			tmpl << "			break;\n";
+		}
+		tmpl << "		case EnumType::" << unique_values.back() << ":\n";
+		tmpl << R"(			last_ = true;
 			break;
 	}
 )";
-		}
-		tmpl << R"(	return *this;
+	}
+	tmpl << R"(	return *this;
 }
 
 Enum<%name%>::ConstIterator Enum<%name%>::ConstIterator::operator++(int)
@@ -161,13 +162,13 @@ Enum<%name%>::ConstIterator Enum<%name%>::ConstIterator::operator++(int)
 Enum<%name%>::ConstIterator& Enum<%name%>::ConstIterator::operator--()
 {
 )";
-		if (unique_values.empty())
-		{
-			tmpl << "	assert(false);\n";
-		}
-		else
-		{
-			tmpl << R"(	if (last_)
+	if (unique_values.empty())
+	{
+		tmpl << "	assert(false);\n";
+	}
+	else
+	{
+		tmpl << R"(	if (last_)
 	{
 		last_ = false;
 		value_ = EnumType::)" << unique_values.back() << R"(;
@@ -177,21 +178,22 @@ Enum<%name%>::ConstIterator& Enum<%name%>::ConstIterator::operator--()
 		switch (value_)
 		{
 )";
-			tmpl << "			case EnumType::" << unique_values.front() << ":\n";
-			tmpl << "				assert(false);\n";
+		tmpl << "			case EnumType::" << unique_values.front() << ":\n";
+		tmpl << "				assert(false);\n";
+		tmpl << "				break;\n";
+		for (size_t i = 1; i < unique_values.size(); ++i)
+		{
+			const auto& prev = unique_values[i - 1];
+			const auto& it = unique_values[i];
+			tmpl << "			case EnumType::" << it << ":\n";
+			tmpl << "				value_ = EnumType::" << prev << ";\n";
 			tmpl << "				break;\n";
-			for (size_t i = 1; i < unique_values.size(); ++i)
-			{
-				const auto& prev = unique_values[i - 1];
-				const auto& it = unique_values[i];
-				tmpl << "			case EnumType::" << it << ":\n";
-				tmpl << "				value_ = EnumType::" << prev << ";\n";
-				tmpl << "				break;\n";
-			}
-			tmpl << "		}\n";
-			tmpl << "	}\n";
 		}
-		tmpl << R"(	return *this;
+		tmpl << "		}\n";
+		
+		tmpl << "	}\n";
+	}
+	tmpl << R"(	return *this;
 }
 
 Enum<%name%>::ConstIterator Enum<%name%>::ConstIterator::operator--(int)
@@ -230,54 +232,54 @@ Enum<%name%>::IteratorContainer Enum<%name%>::Iterate()
 bool Enum<%name%>::TryTranslate(const std::string& s, EnumType& value)
 {
 )";
-		if (values.empty())
+	if (values.empty())
+	{
+		tmpl << "	return false;\n";
+	}
+	else
+	{
+		for (size_t i = 0; i < values.size(); ++i)
 		{
-			tmpl << "	return false;\n";
-		}
-		else
-		{
-			for (size_t i = 0; i < values.size(); ++i)
+			tmpl << "	";
+			if (i != 0)
 			{
-				tmpl << "	";
-				if (i != 0)
-				{
-					tmpl << "else ";
-				}
-				tmpl << "if (s == \"" << values[i] << "\")\n";
-				tmpl << "	{\n";
-				tmpl << "		value = EnumType::" << values[i] <<";\n";
-				tmpl << "		return true;\n";
-				tmpl << "	}\n";
+				tmpl << "else ";
 			}
-			tmpl << R"(	else
+			tmpl << "if (s == \"" << values[i] << "\")\n";
+			tmpl << "	{\n";
+			tmpl << "		value = EnumType::" << values[i] <<";\n";
+			tmpl << "		return true;\n";
+			tmpl << "	}\n";
+		}
+		tmpl << R"(	else
 	{
 		return false;
 	}
 )";
-		}
-		tmpl << R"(}
+	}
+	tmpl << R"(}
 
 std::string Enum<%name%>::Translate(EnumType e)
 {
 )";
-		if (unique_values.empty())
+	if (unique_values.empty())
+	{
+		tmpl << "	return std::string();\n";
+	}
+	else
+	{
+		tmpl << "	switch (e)\n";
+		tmpl << "	{\n";
+		for (const auto& value : unique_values)
 		{
-			tmpl << "	return std::string();\n";
+			tmpl << "		case EnumType::" << value << ":\n";
+			tmpl << "			return \"" << value <<"\";\n";
+			tmpl << "			break;\n";
 		}
-		else
-		{
-			tmpl << "	switch (e)\n";
-			tmpl << "	{\n";
-			for (const auto& value : unique_values)
-			{
-				tmpl << "		case EnumType::" << value << ":\n";
-				tmpl << "			return \"" << value <<"\";\n";
-				tmpl << "			break;\n";
-			}
-			tmpl << "	}\n";
-			tmpl << "	return std::string();\n";
-		}
-		tmpl << R"(}
+		tmpl << "	}\n";
+		tmpl << "	return std::string();\n";
+	}
+	tmpl << R"(}
 
 static const std::string %escaped_name%_name = "%name%";
 
@@ -322,31 +324,31 @@ bool Enum<%name%>::TryTranslate(const std::string& value, int& out)
 bool Enum<%name%>::TryTranslate(int value, std::string& out)
 {
 )";
-		if (unique_values.empty())
-		{
-			tmpl << "	return false;\n";
-		}
-		else
-		{
-			tmpl << R"(	switch (static_cast<EnumType>(value))
+	if (unique_values.empty())
+	{
+		tmpl << "	return false;\n";
+	}
+	else
+	{
+		tmpl << R"(	switch (static_cast<EnumType>(value))
 	{
 )";
-			for (const auto& value : unique_values)
-			{
-				tmpl << "	case EnumType::" << value << ":\n";
-			}
-			if (!unique_values.empty())
-			{
-				tmpl << R"(		out = Translate(static_cast<EnumType>(value));
+		for (const auto& value : unique_values)
+		{
+			tmpl << "	case EnumType::" << value << ":\n";
+		}
+		if (!unique_values.empty())
+		{
+			tmpl << R"(		out = Translate(static_cast<EnumType>(value));
 		return true;
 )";
-			}
-			tmpl << R"(	default:
+		}
+		tmpl << R"(	default:
 		return false;
 	}
 )";
-		}
-		tmpl << R"(}
+	}
+	tmpl << R"(}
 
 namespace
 {
@@ -360,18 +362,11 @@ namespace
 	} %escaped_name%_instance;
 }
 )";
-		return serializer::ReplaceAll(
-				tmpl.str(),
-				{
-					{"%name%", e.GetFullName()},
-					{"%unique_values_count%", to_string(unique_values.size())},
-					{"%escaped_name%", serializer::GetNameWithoutColons(e.GetFullName())}
-				});
-	}
-}
-
-void serializer::SerializeEnum(ostream& o, const Enum& e)
-{
-	o << SerializeHeader(e);
-	o << SerializeSource(e);
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", e.GetFullName()},
+				{"%unique_values_count%", to_string(unique_values.size())},
+				{"%escaped_name%", GetNameWithoutColons(e.GetFullName())}
+			});
 }

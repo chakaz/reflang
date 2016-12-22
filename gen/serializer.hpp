@@ -14,6 +14,7 @@ namespace reflang
 		{
 			std::string include_path;
 			std::string out_hpp_path;
+			std::string out_cpp_path;
 			//TODO: bool standalone = false;
 		};
 

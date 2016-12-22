@@ -20,11 +20,12 @@ namespace
 
 		return tmpl.str();
 	}
+}
 
-	string SerializeHeader(const Class& c)
-	{
-		stringstream tmpl;
-		tmpl << R"(
+void serializer::SerializeClassHeader(ostream& o, const Class& c)
+{
+	stringstream tmpl;
+	tmpl << R"(
 template <>
 class Class<%name%> : public IClass
 {
@@ -55,19 +56,19 @@ void Class<%name%>::IterateFields(%name%& c, T t)
 %iterate_fields%}
 )";
 
-		return serializer::ReplaceAll(
-				tmpl.str(),
-				{
-					{"%name%", c.GetFullName()},
-					{"%iterate_fields%", IterateFields(c)},
-					{"%field_count%", to_string(c.Fields.size())},
-				});
-	}
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", c.GetFullName()},
+				{"%iterate_fields%", IterateFields(c)},
+				{"%field_count%", to_string(c.Fields.size())},
+			});
+}
 
-	string SerializeSource(const Class& c)
-	{
-		stringstream tmpl;
-		tmpl << R"(
+void serializer::SerializeClassSources(ostream& o, const Class& c)
+{
+	stringstream tmpl;
+	tmpl << R"(
 const int Class<%name%>::FieldCount;
 
 int Class<%name%>::GetFieldCount() const
@@ -83,19 +84,12 @@ const std::string& Class<%name%>::GetName() const
 }
 )";
 
-		return serializer::ReplaceAll(
-				tmpl.str(),
-				{
-					{"%name%", c.GetFullName()},
-					{"%iterate_fields%", IterateFields(c)},
-					{"%field_count%", to_string(c.Fields.size())},
-					{"%escaped_name%", serializer::GetNameWithoutColons(c.GetFullName())}
-				});
-	}
-}
-
-void serializer::SerializeClass(ostream& o, const Class& c)
-{
-	o << SerializeHeader(c);
-	o << SerializeSource(c);
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", c.GetFullName()},
+				{"%iterate_fields%", IterateFields(c)},
+				{"%field_count%", to_string(c.Fields.size())},
+				{"%escaped_name%", GetNameWithoutColons(c.GetFullName())}
+			});
 }

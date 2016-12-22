@@ -26,11 +26,12 @@ namespace
 		s << ")";
 		return s.str();
 	}
+}
 
-	string SerializeHeader(const Function& f)
-	{
-		stringstream tmpl;
-		tmpl << R"(
+void serializer::SerializeFunctionHeader(ostream& o, const Function& f)
+{
+	stringstream tmpl;
+	tmpl << R"(
 template <>
 class Function<decltype(%name%), %name%> : public IFunction
 {
@@ -42,17 +43,17 @@ class Function<decltype(%name%), %name%> : public IFunction
 };
 )";
 
-		return serializer::ReplaceAll(
-				tmpl.str(),
-				{
-					{"%name%", f.GetFullName()},
-				});
-	}
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", f.GetFullName()},
+			});
+}
 
-	string SerializeSource(const Function& f)
-	{
-		stringstream tmpl;
-		tmpl << R"(
+void serializer::SerializeFunctionSources(ostream& o, const Function& f)
+{
+	stringstream tmpl;
+	tmpl << R"(
 int Function<decltype(%name%), %name%>::GetParameterCount() const
 {
 	return %arg_count%;
@@ -72,29 +73,29 @@ Object Function<decltype(%name%), %name%>::Invoke(const std::vector<Object>& arg
 		throw std::invalid_argument("count");
 	}
 )";
-		int i = 0;
-		for (const auto& arg : f.Arguments)
-		{
-			tmpl << "	if (!args[" << i << "].IsT<std::decay_t<" << arg.Type << R"(>>())
+	int i = 0;
+	for (const auto& arg : f.Arguments)
+	{
+		tmpl << "	if (!args[" << i << "].IsT<std::decay_t<" << arg.Type << R"(>>())
 	{
 		throw std::invalid_argument(")" << arg.Name << R"(");
 	}
 )";
-			++i;
-		}
+		++i;
+	}
 
-		if (f.ReturnType == "void")
-		{
-			tmpl << R"(
+	if (f.ReturnType == "void")
+	{
+		tmpl << R"(
 	%call_function%;
 	return Object();)";
-		}
-		else
-		{
-			tmpl << R"(
-	return Object(%call_function%);)";
-		}
+	}
+	else
+	{
 		tmpl << R"(
+	return Object(%call_function%);)";
+	}
+	tmpl << R"(
 }
 
 namespace
@@ -114,19 +115,12 @@ namespace
 }
 )";
 
-		return serializer::ReplaceAll(
-				tmpl.str(),
-				{
-					{"%name%", f.GetFullName()},
-					{"%arg_count%", to_string(f.Arguments.size())},
-					{"%call_function%", CallFunction(f)},
-					{"%escaped_name%", serializer::GetNameWithoutColons(f.GetFullName())}
-				});
-	}
-}
-
-void serializer::SerializeFunction(ostream& o, const Function& f)
-{
-	o << SerializeHeader(f);
-	o << SerializeSource(f);
+	o << ReplaceAll(
+			tmpl.str(),
+			{
+				{"%name%", f.GetFullName()},
+				{"%arg_count%", to_string(f.Arguments.size())},
+				{"%call_function%", CallFunction(f)},
+				{"%escaped_name%", GetNameWithoutColons(f.GetFullName())}
+			});
 }
