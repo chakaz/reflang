@@ -1,5 +1,5 @@
 # TODOs in Reflang
-This file is intended for Reflang author.
+This file is used by Reflang author.
 
 ## General
 * Rename 'member' to 'field'
@@ -21,5 +21,4 @@ This file is intended for Reflang author.
 * Sub-classes
 
 ## Central registry
-* Interface for all types - maybe IType (base for IEnum, IClass, ...)
-* Find all types by name, regex
+* Find all types by name, regex (registry::Get() instead of registry::GetEnum())

@@ -77,36 +77,32 @@ namespace reflang
 		std::function<void()> deleter_;
 	};
 
-	class IClass
+	class IType
 	{
 	public:
-		virtual ~IClass() = default;
+		virtual ~IType() = default;
 
 		virtual const std::string& GetName() const = 0;
+	};
 
+	class IClass : public IType
+	{
+	public:
 		virtual int GetMemberCount() const = 0;
 	};
 
-	class IEnum
+	class IEnum : public IType
 	{
 	public:
-		virtual ~IEnum() = default;
-
-		virtual const std::string& GetName() const = 0;
-
 		virtual std::vector<std::string> GetStringValues() const = 0;
 		virtual std::vector<int> GetIntValues() const = 0;
 		virtual bool TryTranslate(const std::string& value, int& out) = 0;
 		virtual bool TryTranslate(int value, std::string& out) = 0;
 	};
 
-	class IFunction
+	class IFunction : public IType
 	{
 	public:
-		virtual ~IFunction() = default;
-
-		virtual const std::string& GetName() const = 0;
-
 		virtual int GetParameterCount() const = 0;
 
 		// Syntactic sugar for calling Invoke().
