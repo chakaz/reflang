@@ -17,11 +17,11 @@ template <>
 class Class<MyNamespace::MyClass> : public IClass
 {
 public:
-	static const constexpr int MemberCount = 0;
+	static const constexpr int FieldCount = 0;
 
-	int GetMemberCount() const override
+	int GetFieldCount() const override
 	{
-		return MemberCount;
+		return FieldCount;
 	}
 
 	const std::string& GetName() const override
@@ -30,20 +30,20 @@ public:
 		return name;
 	}
 
-	// Calls T::operator() on each member of 'MyNamespace::MyClass'.
+	// Calls T::operator() on each field of 'MyNamespace::MyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateMembers(const MyNamespace::MyClass& c, T t)
+	static void IterateFields(const MyNamespace::MyClass& c, T t)
 	{
 	}
 
 	template <typename T>
-	static void IterateMembers(MyNamespace::MyClass& c, T t)
+	static void IterateFields(MyNamespace::MyClass& c, T t)
 	{
 	}
 };
 
-const int Class<MyNamespace::MyClass>::MemberCount;
+const int Class<MyNamespace::MyClass>::FieldCount;
 
 
 template <>

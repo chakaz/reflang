@@ -64,14 +64,14 @@ namespace reflang
 	{
 	public:
 		using MethodList = std::vector<Function>;
-		using MemberList = std::vector<NamedObject>;
+		using FieldList = std::vector<NamedObject>;
 		
 	public:
 		Class(std::string file, std::string full_name);
 		Type GetType() const override;
 
 		MethodList Methods;
-		MemberList Members;
+		FieldList Fields;
 	};
 }
 

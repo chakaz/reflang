@@ -34,12 +34,12 @@ namespace
 		return f;
 	}
 
-	NamedObject GetMemberFromCursor(CXCursor cursor)
+	NamedObject GetFieldFromCursor(CXCursor cursor)
 	{
-		NamedObject member;
-		member.Name = parser::Convert(clang_getCursorSpelling(cursor));
-		member.Type = parser::GetName(clang_getCursorType(cursor));
-		return member;
+		NamedObject field;
+		field.Name = parser::Convert(clang_getCursorSpelling(cursor));
+		field.Type = parser::GetName(clang_getCursorType(cursor));
+		return field;
 	}
 
 	CXChildVisitResult VisitClass(
@@ -54,7 +54,7 @@ namespace
 				c->Methods.push_back(GetMethodFromCursor(cursor));
 				break;
 			case CXCursor_FieldDecl:
-				c->Members.push_back(GetMemberFromCursor(cursor));
+				c->Fields.push_back(GetFieldFromCursor(cursor));
 				break;
 			default:
 				break;

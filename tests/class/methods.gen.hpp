@@ -17,11 +17,11 @@ template <>
 class Class<Test::ComplexArgument> : public IClass
 {
 public:
-	static const constexpr int MemberCount = 0;
+	static const constexpr int FieldCount = 0;
 
-	int GetMemberCount() const override
+	int GetFieldCount() const override
 	{
-		return MemberCount;
+		return FieldCount;
 	}
 
 	const std::string& GetName() const override
@@ -30,31 +30,31 @@ public:
 		return name;
 	}
 
-	// Calls T::operator() on each member of 'Test::ComplexArgument'.
+	// Calls T::operator() on each field of 'Test::ComplexArgument'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateMembers(const Test::ComplexArgument& c, T t)
+	static void IterateFields(const Test::ComplexArgument& c, T t)
 	{
 	}
 
 	template <typename T>
-	static void IterateMembers(Test::ComplexArgument& c, T t)
+	static void IterateFields(Test::ComplexArgument& c, T t)
 	{
 	}
 };
 
-const int Class<Test::ComplexArgument>::MemberCount;
+const int Class<Test::ComplexArgument>::FieldCount;
 
 
 template <>
 class Class<MyClass> : public IClass
 {
 public:
-	static const constexpr int MemberCount = 0;
+	static const constexpr int FieldCount = 0;
 
-	int GetMemberCount() const override
+	int GetFieldCount() const override
 	{
-		return MemberCount;
+		return FieldCount;
 	}
 
 	const std::string& GetName() const override
@@ -63,20 +63,20 @@ public:
 		return name;
 	}
 
-	// Calls T::operator() on each member of 'MyClass'.
+	// Calls T::operator() on each field of 'MyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateMembers(const MyClass& c, T t)
+	static void IterateFields(const MyClass& c, T t)
 	{
 	}
 
 	template <typename T>
-	static void IterateMembers(MyClass& c, T t)
+	static void IterateFields(MyClass& c, T t)
 	{
 	}
 };
 
-const int Class<MyClass>::MemberCount;
+const int Class<MyClass>::FieldCount;
 
 
 }  // namespace reflang

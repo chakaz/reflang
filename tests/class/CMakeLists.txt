@@ -1,2 +1,2 @@
 reflang_test(methods)
-reflang_test(members)
+reflang_test(fields)

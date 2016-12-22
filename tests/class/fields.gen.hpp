@@ -17,11 +17,11 @@ template <>
 class Class<Test::ComplexType> : public IClass
 {
 public:
-	static const constexpr int MemberCount = 1;
+	static const constexpr int FieldCount = 1;
 
-	int GetMemberCount() const override
+	int GetFieldCount() const override
 	{
-		return MemberCount;
+		return FieldCount;
 	}
 
 	const std::string& GetName() const override
@@ -30,33 +30,33 @@ public:
 		return name;
 	}
 
-	// Calls T::operator() on each member of 'Test::ComplexType'.
+	// Calls T::operator() on each field of 'Test::ComplexType'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateMembers(const Test::ComplexType& c, T t)
+	static void IterateFields(const Test::ComplexType& c, T t)
 	{
-		t(c.member);
+		t(c.field);
 	}
 
 	template <typename T>
-	static void IterateMembers(Test::ComplexType& c, T t)
+	static void IterateFields(Test::ComplexType& c, T t)
 	{
-		t(c.member);
+		t(c.field);
 	}
 };
 
-const int Class<Test::ComplexType>::MemberCount;
+const int Class<Test::ComplexType>::FieldCount;
 
 
 template <>
 class Class<MyClass> : public IClass
 {
 public:
-	static const constexpr int MemberCount = 14;
+	static const constexpr int FieldCount = 14;
 
-	int GetMemberCount() const override
+	int GetFieldCount() const override
 	{
-		return MemberCount;
+		return FieldCount;
 	}
 
 	const std::string& GetName() const override
@@ -65,18 +65,18 @@ public:
 		return name;
 	}
 
-	// Calls T::operator() on each member of 'MyClass'.
+	// Calls T::operator() on each field of 'MyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateMembers(const MyClass& c, T t)
+	static void IterateFields(const MyClass& c, T t)
 	{
-		t(c.member);
-		t(c.const_member);
-		t(c.pointer_member);
-		t(c.const_pointer_member);
-		t(c.const_pointer_const_member);
-		t(c.ref_member);
-		t(c.const_ref_member);
+		t(c.field);
+		t(c.const_field);
+		t(c.pointer_field);
+		t(c.const_pointer_field);
+		t(c.const_pointer_const_field);
+		t(c.ref_field);
+		t(c.const_ref_field);
 		t(c.complex);
 		t(c.const_complex);
 		t(c.pointer_complex);
@@ -87,15 +87,15 @@ public:
 	}
 
 	template <typename T>
-	static void IterateMembers(MyClass& c, T t)
+	static void IterateFields(MyClass& c, T t)
 	{
-		t(c.member);
-		t(c.const_member);
-		t(c.pointer_member);
-		t(c.const_pointer_member);
-		t(c.const_pointer_const_member);
-		t(c.ref_member);
-		t(c.const_ref_member);
+		t(c.field);
+		t(c.const_field);
+		t(c.pointer_field);
+		t(c.const_pointer_field);
+		t(c.const_pointer_const_field);
+		t(c.ref_field);
+		t(c.const_ref_field);
 		t(c.complex);
 		t(c.const_complex);
 		t(c.pointer_complex);
@@ -106,7 +106,7 @@ public:
 	}
 };
 
-const int Class<MyClass>::MemberCount;
+const int Class<MyClass>::FieldCount;
 
 
 }  // namespace reflang

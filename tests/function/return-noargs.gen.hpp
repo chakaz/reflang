@@ -17,11 +17,11 @@ template <>
 class Class<DummyClass> : public IClass
 {
 public:
-	static const constexpr int MemberCount = 0;
+	static const constexpr int FieldCount = 0;
 
-	int GetMemberCount() const override
+	int GetFieldCount() const override
 	{
-		return MemberCount;
+		return FieldCount;
 	}
 
 	const std::string& GetName() const override
@@ -30,20 +30,20 @@ public:
 		return name;
 	}
 
-	// Calls T::operator() on each member of 'DummyClass'.
+	// Calls T::operator() on each field of 'DummyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateMembers(const DummyClass& c, T t)
+	static void IterateFields(const DummyClass& c, T t)
 	{
 	}
 
 	template <typename T>
-	static void IterateMembers(DummyClass& c, T t)
+	static void IterateFields(DummyClass& c, T t)
 	{
 	}
 };
 
-const int Class<DummyClass>::MemberCount;
+const int Class<DummyClass>::FieldCount;
 
 
 template <>

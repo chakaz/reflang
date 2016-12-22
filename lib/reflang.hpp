@@ -88,7 +88,7 @@ namespace reflang
 	class IClass : public IType
 	{
 	public:
-		virtual int GetMemberCount() const = 0;
+		virtual int GetFieldCount() const = 0;
 	};
 
 	class IEnum : public IType

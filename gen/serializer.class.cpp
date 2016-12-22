@@ -9,13 +9,13 @@ using namespace reflang;
 
 namespace
 {
-	string IterateMembers(const Class& c)
+	string IterateFields(const Class& c)
 	{
 		stringstream tmpl;
 
-		for (const auto& member : c.Members)
+		for (const auto& field : c.Fields)
 		{
-			tmpl << "		t(c." << member.Name << ");\n";
+			tmpl << "		t(c." << field.Name << ");\n";
 		}
 
 		return tmpl.str();
@@ -29,11 +29,11 @@ void serializer::SerializeClass(ostream& o, const Class& c)
 class Class<%name%> : public IClass
 {
 public:
-	static const constexpr int MemberCount = %member_count%;
+	static const constexpr int FieldCount = %field_count%;
 
-	int GetMemberCount() const override
+	int GetFieldCount() const override
 	{
-		return MemberCount;
+		return FieldCount;
 	}
 
 	const std::string& GetName() const override
@@ -42,28 +42,28 @@ public:
 		return name;
 	}
 
-	// Calls T::operator() on each member of '%name%'.
+	// Calls T::operator() on each field of '%name%'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateMembers(const %name%& c, T t)
+	static void IterateFields(const %name%& c, T t)
 	{
-%iterate_members%	}
+%iterate_fields%	}
 
 	template <typename T>
-	static void IterateMembers(%name%& c, T t)
+	static void IterateFields(%name%& c, T t)
 	{
-%iterate_members%	}
+%iterate_fields%	}
 };
 
-const int Class<%name%>::MemberCount;
+const int Class<%name%>::FieldCount;
 )";
 
 	o << ReplaceAll(
 			tmpl.str(),
 			{
 				{"%name%", c.GetFullName()},
-				{"%iterate_members%", IterateMembers(c)},
-				{"%member_count%", to_string(c.Members.size())},
+				{"%iterate_fields%", IterateFields(c)},
+				{"%field_count%", to_string(c.Fields.size())},
 				{"%name_without_colons%", GetNameWithoutColons(c.GetFullName())}
 			});
 }

@@ -3,7 +3,7 @@ namespace Test
 	class ComplexType
 	{
 	public:
-		int member;
+		int field;
 	};
 }
 
@@ -12,13 +12,13 @@ public:
 	using ComplexType = Test::ComplexType;
 
 	MyClass(int val)
-	:	member(val)
-	,	const_member(member)
-	,	pointer_member(&member)
-	,	const_pointer_member(&member)
-	,	const_pointer_const_member(&member)
-	,	ref_member(member)
-	,	const_ref_member(member)
+	:	field(val)
+	,	const_field(field)
+	,	pointer_field(&field)
+	,	const_pointer_field(&field)
+	,	const_pointer_const_field(&field)
+	,	ref_field(field)
+	,	const_ref_field(field)
 	,	const_complex(complex)
 	,	pointer_complex(&complex)
 	,	const_pointer_complex(&complex)
@@ -28,13 +28,13 @@ public:
 	{
 	}
 
-	int member;
-	const int const_member;
-	int* pointer_member;
-	int const* const_pointer_member;
-	int const* const const_pointer_const_member;
-	int& ref_member;
-	int const& const_ref_member;
+	int field;
+	const int const_field;
+	int* pointer_field;
+	int const* const_pointer_field;
+	int const* const const_pointer_const_field;
+	int& ref_field;
+	int const& const_ref_field;
 
 	ComplexType complex;
 	const ComplexType const_complex;
@@ -45,8 +45,8 @@ public:
 	ComplexType const& const_ref_complex;
 
 protected:
-	int protected_member;
+	int protected_field;
 
 private:
-	int private_member;
+	int private_field;
 };
