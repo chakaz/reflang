@@ -47,30 +47,6 @@ namespace
 		return unit;
 	}
 
-	struct GetSupportedTypeNamesStruct
-	{
-		vector<string>* results;
-		const parser::Options* options;
-	};
-
-	CXChildVisitResult GetSupportedTypeNamesVisitor(
-			CXCursor cursor, CXCursor parent, CXClientData client_data)
-	{
-		auto* data = reinterpret_cast<GetSupportedTypeNamesStruct*>(
-				client_data);
-		if (clang_getCursorKind(cursor) == CXCursor_EnumDecl)
-		{
-			string name = parser::GetFullName(cursor);
-			if (regex_match(name, data->options->include) &&
-					!regex_match(name, data->options->exclude))
-			{
-				data->results->push_back(name);
-			}
-		}
-		return CXChildVisit_Recurse;
-	}
-
-
 	struct GetTypesStruct
 	{
 		vector<unique_ptr<TypeBase>>* types;
@@ -114,18 +90,15 @@ namespace
 vector<string> parser::GetSupportedTypeNames(
 		int argc, char* argv[], const Options& options)
 {
-	CXIndex index = clang_createIndex(0, 0);
-	CXTranslationUnit unit = Parse(index, argc, argv);
+	auto types = GetTypes(argc, argv, options);
 
-	auto cursor = clang_getTranslationUnitCursor(unit);
-
-	vector<string> results;
-	GetSupportedTypeNamesStruct data = { &results, &options };
-	clang_visitChildren(cursor, GetSupportedTypeNamesVisitor, &data);
-
-	clang_disposeTranslationUnit(unit);
-	clang_disposeIndex(index);
-	return results;
+	vector<string> names;
+	names.reserve(types.size());
+	for (const auto& type : types)
+	{
+		names.push_back(type->GetFullName());
+	}
+	return names;
 }
 
 vector<unique_ptr<TypeBase>> parser::GetTypes(
