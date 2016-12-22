@@ -1,20 +1,8 @@
-int global_int = 0;
-float global_float = 0.0f;
+#ifndef ARGS_SRC_HPP
+#define ARGS_SRC_HPP
 
-void Func(int a)
-{
-	global_int = a;
-}
+void Func(int a);
+bool Func2(int a, float b);
+bool Func3(const int& a);
 
-bool Func2(int a, float b)
-{
-	global_int = a;
-	global_float = b;
-	return true;
-}
-
-bool Func3(const int& a)
-{
-	global_int = a;
-	return true;
-}
+#endif //ARGS_SRC_HPP

@@ -1,14 +1,11 @@
-const char* global_string = nullptr;
+#ifndef VOID_NOARGS_SRC_HPP
+#define VOID_NOARGS_SRC_HPP
 
 namespace ns
 {
-	void NamespacedFunction()
-	{
-		global_string = "NamespacedFunction()";
-	}
+	void NamespacedFunction();
 }
 
-void GlobalFunction()
-{
-	global_string = "GlobalFunction()";
-}
+void GlobalFunction();
+
+#endif //VOID_NOARGS_SRC_HPP

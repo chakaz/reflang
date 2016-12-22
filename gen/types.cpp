@@ -20,6 +20,11 @@ const string& TypeBase::GetName() const
 	return full_name_;
 }
 
+const string& TypeBase::GetFile() const
+{
+	return file_;
+}
+
 Enum::Enum(string file, string full_name)
 :	TypeBase(move(file), move(full_name))
 {

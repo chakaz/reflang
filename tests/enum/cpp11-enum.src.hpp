@@ -1,3 +1,6 @@
+#ifndef CPP11_ENUM_SRC_HPP
+#define CPP11_ENUM_SRC_HPP
+
 namespace MyNamespace
 {
 	class MyClass
@@ -16,3 +19,5 @@ namespace MyNamespace
 		};
 	};
 }
+
+#endif //CPP11_ENUM_SRC_HPP

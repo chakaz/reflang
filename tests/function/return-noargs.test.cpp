@@ -7,6 +7,28 @@
 using namespace reflang;
 using namespace std;
 
+// definitions for return-noargs.src.hpp
+const char* ns::NamespacedFunction()
+{
+	return "NamespacedFunction()";
+}
+
+const char* GlobalFunction()
+{
+	return "GlobalFunction()";
+}
+
+DummyClass ReturnByValue()
+{
+	return DummyClass();
+}
+
+const DummyClass& ReturnByReference()
+{
+	static DummyClass dc;
+	return dc;
+}
+
 TEST_CASE("global")
 {
 	auto functions = registry::GetFunctionByName("GlobalFunction");

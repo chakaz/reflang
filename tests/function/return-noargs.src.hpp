@@ -1,25 +1,17 @@
+#ifndef RETURN_NOARGS_SRC_HPP
+#define RETURN_NOARGS_SRC_HPP
+
 class DummyClass {};
 
 namespace ns
 {
-	const char* NamespacedFunction()
-	{
-		return "NamespacedFunction()";
-	}
+	const char* NamespacedFunction();
 }
 
-const char* GlobalFunction()
-{
-	return "GlobalFunction()";
-}
+const char* GlobalFunction();
 
-DummyClass ReturnByValue()
-{
-	return DummyClass();
-}
+DummyClass ReturnByValue();
 
-const DummyClass& ReturnByReference()
-{
-	static DummyClass dc;
-	return dc;
-}
+const DummyClass& ReturnByReference();
+
+#endif //RETURN_NOARGS_SRC_HPP

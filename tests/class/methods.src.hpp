@@ -1,3 +1,6 @@
+#ifndef METHODS_SRC_HPP
+#define METHODS_SRC_HPP
+
 namespace Test
 {
 	class ComplexArgument {};
@@ -40,3 +43,5 @@ protected:
 private:
 	void PrivateMethod() {}
 };
+
+#endif //METHODS_SRC_HPP

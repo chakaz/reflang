@@ -1,6 +1,7 @@
 #include "serializer.hpp"
 
 #include <fstream>
+#include <unordered_set>
 
 #include "serializer.class.hpp"
 #include "serializer.enum.hpp"
@@ -19,15 +20,29 @@ namespace
 )";
 	}
 
-	void BeginHeader(ostream& o, const serializer::Options& options)
+	void BeginHeader(
+			ostream& o,
+			const serializer::Options& options,
+			const std::vector<std::unique_ptr<TypeBase>>& types)
 	{
 		AutoGenComment(o);
 		o << R"(#include <string>
 
 )";
-		o << options.include_path;
-		o << R"(
+		o << options.include_path << "\n";
 
+		// Generate unique list of includes.
+		unordered_set<string> headers;
+		for (const auto& type : types)
+		{
+			headers.insert(type->GetFile());
+		}
+		for (const auto& header : headers)
+		{
+			o << "#include \"" << header << "\"\n";
+		}
+
+		o << R"(
 namespace reflang
 {
 
@@ -44,7 +59,7 @@ namespace reflang
 		AutoGenComment(o);
 		if (!options.out_cpp_path.empty())
 		{
-			o << "#include \"" << options.out_cpp_path << "\"\n";
+			o << "#include \"" << options.out_hpp_path << "\"\n";
 		}
 		o << R"(
 #include <algorithm>
@@ -86,7 +101,7 @@ void serializer::Serialize(
 		out_cpp = fout_cpp.get();
 	}
 
-	BeginHeader(*out_hpp, options);
+	BeginHeader(*out_hpp, options, types);
 	for (const auto& type : types)
 	{
 		switch (type->GetType())

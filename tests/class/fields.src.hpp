@@ -1,3 +1,6 @@
+#ifndef FIELDS_SRC_HPP
+#define FIELDS_SRC_HPP
+
 namespace Test
 {
 	class ComplexType
@@ -50,3 +53,5 @@ protected:
 private:
 	int private_field;
 };
+
+#endif //FIELDS_SRC_HPP

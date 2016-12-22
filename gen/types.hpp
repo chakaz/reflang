@@ -35,7 +35,7 @@ namespace reflang
 	{
 	public:
 		using ValueList = std::vector<std::pair<std::string, int>>;
-		
+
 	public:
 		Enum(std::string file, std::string full_name);
 		Type GetType() const override;
@@ -65,7 +65,7 @@ namespace reflang
 	public:
 		using MethodList = std::vector<Function>;
 		using FieldList = std::vector<NamedObject>;
-		
+
 	public:
 		Class(std::string file, std::string full_name);
 		Type GetType() const override;

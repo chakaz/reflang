@@ -7,6 +7,19 @@
 using namespace reflang;
 using namespace std;
 
+// definitions for void-noargs.src.hpp
+const char* global_string = nullptr;
+
+void ns::NamespacedFunction()
+{
+	global_string = "NamespacedFunction()";
+}
+
+void GlobalFunction()
+{
+	global_string = "GlobalFunction()";
+}
+
 TEST_CASE("global")
 {
 	global_string = nullptr;
