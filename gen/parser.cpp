@@ -76,6 +76,7 @@ namespace
 		const string& name = type->GetFullName();
 		if (type
 				&& !name.empty()
+				&& parser::IsRecursivelyPublic(cursor)
 				&& !(name.back() == ':')
 				&& regex_match(name, data->options->include)
 				&& !regex_match(name, data->options->exclude))

@@ -43,3 +43,31 @@ string parser::GetFile(const CXCursor& cursor)
 	clang_getSpellingLocation(location, &file, nullptr, nullptr, nullptr);
 	return Convert(clang_getFileName(file));
 }
+
+bool parser::IsRecursivelyPublic(CXCursor cursor)
+{
+	while (clang_isDeclaration(clang_getCursorKind(cursor)) != 0)
+	{
+		auto access = clang_getCXXAccessSpecifier(cursor);
+		if (access == CX_CXXPrivate || access == CX_CXXProtected)
+		{
+			return false;
+		}
+
+		if (clang_getCursorLinkage(cursor) == CXLinkage_Internal)
+		{
+			return false;
+		}
+
+		if (clang_getCursorKind(cursor) == CXCursor_Namespace
+				&& Convert(clang_getCursorSpelling(cursor)).empty())
+		{
+			// Anonymous namespace.
+			return false;
+		}
+
+		cursor = clang_getCursorSemanticParent(cursor);
+	}
+
+	return true;
+}

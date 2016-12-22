@@ -7,7 +7,6 @@ This file is used by Reflang author.
 
 ## Functions
 * Overloads
-* Don't add static / functions in anonymous namespace
 * Default values
 
 ## Classes
