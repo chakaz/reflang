@@ -13,65 +13,77 @@
 namespace reflang
 {
 
+
 template <>
 class Class<MyClass> : public IClass
 {
 public:
 	static const constexpr int FieldCount = 14;
 
-	int GetFieldCount() const override
-	{
-		return FieldCount;
-	}
+	int GetFieldCount() const override;
 
-	const std::string& GetName() const override
-	{
-		static const std::string name = "MyClass";
-		return name;
-	}
+	const std::string& GetName() const override;
 
 	// Calls T::operator() on each field of 'MyClass'.
 	// Works well with C++14 generic lambdas.
 	template <typename T>
-	static void IterateFields(const MyClass& c, T t)
-	{
-		t(c.field);
-		t(c.const_field);
-		t(c.pointer_field);
-		t(c.const_pointer_field);
-		t(c.const_pointer_const_field);
-		t(c.ref_field);
-		t(c.const_ref_field);
-		t(c.complex);
-		t(c.const_complex);
-		t(c.pointer_complex);
-		t(c.const_pointer_complex);
-		t(c.const_pointer_const_complex);
-		t(c.ref_complex);
-		t(c.const_ref_complex);
-	}
+	static void IterateFields(const MyClass& c, T t);
 
 	template <typename T>
-	static void IterateFields(MyClass& c, T t)
-	{
-		t(c.field);
-		t(c.const_field);
-		t(c.pointer_field);
-		t(c.const_pointer_field);
-		t(c.const_pointer_const_field);
-		t(c.ref_field);
-		t(c.const_ref_field);
-		t(c.complex);
-		t(c.const_complex);
-		t(c.pointer_complex);
-		t(c.const_pointer_complex);
-		t(c.const_pointer_const_complex);
-		t(c.ref_complex);
-		t(c.const_ref_complex);
-	}
+	static void IterateFields(MyClass& c, T t);
 };
 
+template <typename T>
+void Class<MyClass>::IterateFields(const MyClass& c, T t)
+{
+	t(c.field);
+	t(c.const_field);
+	t(c.pointer_field);
+	t(c.const_pointer_field);
+	t(c.const_pointer_const_field);
+	t(c.ref_field);
+	t(c.const_ref_field);
+	t(c.complex);
+	t(c.const_complex);
+	t(c.pointer_complex);
+	t(c.const_pointer_complex);
+	t(c.const_pointer_const_complex);
+	t(c.ref_complex);
+	t(c.const_ref_complex);
+}
+
+template <typename T>
+void Class<MyClass>::IterateFields(MyClass& c, T t)
+{
+	t(c.field);
+	t(c.const_field);
+	t(c.pointer_field);
+	t(c.const_pointer_field);
+	t(c.const_pointer_const_field);
+	t(c.ref_field);
+	t(c.const_ref_field);
+	t(c.complex);
+	t(c.const_complex);
+	t(c.pointer_complex);
+	t(c.const_pointer_complex);
+	t(c.const_pointer_const_complex);
+	t(c.ref_complex);
+	t(c.const_ref_complex);
+}
+
 const int Class<MyClass>::FieldCount;
+
+int Class<MyClass>::GetFieldCount() const
+{
+	return FieldCount;
+}
+
+static const std::string MyClass_name = "MyClass";
+
+const std::string& Class<MyClass>::GetName() const
+{
+	return MyClass_name;
+}
 
 
 }  // namespace reflang
