@@ -11,7 +11,6 @@ This file is used by Reflang author.
 * Default values
 
 ## Classes
-* Methods
 * Static methods
 * IClass API
 * Constructors (construct by name with arguments)

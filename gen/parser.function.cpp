@@ -16,8 +16,7 @@ Function parser::GetFunction(CXCursor cursor)
 	{
 		auto arg_cursor = clang_Cursor_getArgument(cursor, i);
 		NamedObject arg;
-		arg.Name = parser::Convert(
-				clang_getCursorSpelling(arg_cursor));
+		arg.Name = parser::Convert(clang_getCursorSpelling(arg_cursor));
 		if (arg.Name.empty())
 		{
 			arg.Name = "nameless";

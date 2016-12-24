@@ -36,12 +36,16 @@ Object::~Object()
 }
 
 Object::Object(Object&& o)
+:	deleter_(NoOp)
 {
 	*this = std::move(o);
 }
 
 Object& Object::operator=(Object&& o)
 {
+	// Release existing resource if any.
+	deleter_();
+
 	id_ = o.id_;
 	data_ = o.data_;
 	deleter_ = std::move(o.deleter_);
@@ -55,12 +59,21 @@ Object IFunction::operator()<>()
 	return this->Invoke({});
 }
 
+template <>
+Object IMethod::operator()<>(const Reference& o)
+{
+	return this->Invoke(o, {});
+}
+
 bool Object::IsVoid() const
 {
 	return id_ == GetTypeId<void>();
 }
 
-atomic<int> Object::global_id;
+Reference::Reference(const Reference& o) = default;
+Reference& Reference::operator=(const Reference& o) = default;
+
+atomic<int> reflang::global_id;
 
 vector<IFunction*> registry::GetFunctionByName(const string& name)
 {

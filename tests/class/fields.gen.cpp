@@ -14,6 +14,7 @@ namespace reflang
 
 const int Class<MyClass>::FieldCount;
 const int Class<MyClass>::StaticFieldCount;
+const int Class<MyClass>::MethodCount;
 
 int Class<MyClass>::GetFieldCount() const
 {
@@ -25,12 +26,18 @@ int Class<MyClass>::GetStaticFieldCount() const
 	return StaticFieldCount;
 }
 
+int Class<MyClass>::GetMethodCount() const
+{
+	return MethodCount;
+}
+
 static const std::string MyClass_name = "MyClass";
 
 const std::string& Class<MyClass>::GetName() const
 {
 	return MyClass_name;
 }
+
 
 
 }  // namespace reflang

@@ -106,6 +106,7 @@ Please check this section later.
 
 ## Limitations
 * No `template` classes / functions support.
+* No support for functions taking non-const reference arguments (yet?).
 * No support for functions taking rvalue references arguments.
 
 ## Bugs, pull requests, feedback
