@@ -64,6 +64,7 @@ namespace
 				type = std::make_unique<Enum>(parser::GetEnum(cursor));
 				break;
 			case CXCursor_ClassDecl:
+			case CXCursor_StructDecl:
 				type = std::make_unique<Class>(parser::GetClass(cursor));
 				break;
 			case CXCursor_FunctionDecl:
