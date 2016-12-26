@@ -14,6 +14,7 @@ namespace reflang
 
 const int Class<MyClass>::FieldCount;
 const int Class<MyClass>::StaticFieldCount;
+const int Class<MyClass>::MethodCount;
 
 int Class<MyClass>::GetFieldCount() const
 {
@@ -25,12 +26,198 @@ int Class<MyClass>::GetStaticFieldCount() const
 	return StaticFieldCount;
 }
 
+int Class<MyClass>::GetMethodCount() const
+{
+	return MethodCount;
+}
+
 static const std::string MyClass_name = "MyClass";
 
 const std::string& Class<MyClass>::GetName() const
 {
 	return MyClass_name;
 }
+
+// MyClass methods definitions.
+static std::string MyClass_Method0_name = "Method0";
+
+const std::string& Method<decltype(&MyClass::Method0), &MyClass::Method0>::GetName() const
+{
+	return MyClass_Method0_name;
+}
+
+int Method<decltype(&MyClass::Method0), &MyClass::Method0>::GetParameterCount() const
+{
+	return 0;
+}
+
+Object Method<decltype(&MyClass::Method0), &MyClass::Method0>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::Method0))();
+	return Object();
+}
+
+static std::string MyClass_Method1_name = "Method1";
+
+const std::string& Method<decltype(&MyClass::Method1), &MyClass::Method1>::GetName() const
+{
+	return MyClass_Method1_name;
+}
+
+int Method<decltype(&MyClass::Method1), &MyClass::Method1>::GetParameterCount() const
+{
+	return 2;
+}
+
+Object Method<decltype(&MyClass::Method1), &MyClass::Method1>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::Method1))(args[0].GetT<std::decay_t<bool>>(), args[1].GetT<std::decay_t<int>>());
+	return Object();
+}
+
+static std::string MyClass_RMethod0_name = "RMethod0";
+
+const std::string& Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::GetName() const
+{
+	return MyClass_RMethod0_name;
+}
+
+int Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::GetParameterCount() const
+{
+	return 0;
+}
+
+Object Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	return Object(((o.GetT<MyClass>()).*(&MyClass::RMethod0))());
+}
+
+static std::string MyClass_RMethod1_name = "RMethod1";
+
+const std::string& Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::GetName() const
+{
+	return MyClass_RMethod1_name;
+}
+
+int Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::GetParameterCount() const
+{
+	return 2;
+}
+
+Object Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	return Object(((o.GetT<MyClass>()).*(&MyClass::RMethod1))(args[0].GetT<std::decay_t<bool>>(), args[1].GetT<std::decay_t<int>>()));
+}
+
+static std::string MyClass_VirtualMethod_name = "VirtualMethod";
+
+const std::string& Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::GetName() const
+{
+	return MyClass_VirtualMethod_name;
+}
+
+int Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::GetParameterCount() const
+{
+	return 0;
+}
+
+Object Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::VirtualMethod))();
+	return Object();
+}
+
+static std::string MyClass_ConstMethod_name = "ConstMethod";
+
+const std::string& Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::GetName() const
+{
+	return MyClass_ConstMethod_name;
+}
+
+int Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::GetParameterCount() const
+{
+	return 0;
+}
+
+Object Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::ConstMethod))();
+	return Object();
+}
+
+static std::string MyClass_MethodWithClassArg_name = "MethodWithClassArg";
+
+const std::string& Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>::GetName() const
+{
+	return MyClass_MethodWithClassArg_name;
+}
+
+int Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>::GetParameterCount() const
+{
+	return 1;
+}
+
+Object Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::MethodWithClassArg))(args[0].GetT<std::decay_t<ComplexArgument>>());
+	return Object();
+}
+
+static std::string MyClass_MethodWithPointerArg_name = "MethodWithPointerArg";
+
+const std::string& Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointerArg>::GetName() const
+{
+	return MyClass_MethodWithPointerArg_name;
+}
+
+int Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointerArg>::GetParameterCount() const
+{
+	return 1;
+}
+
+Object Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointerArg>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::MethodWithPointerArg))(args[0].GetT<std::decay_t<int *>>());
+	return Object();
+}
+
+static std::string MyClass_MethodWithConstReferenceArg0_name = "MethodWithConstReferenceArg0";
+
+const std::string& Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWithConstReferenceArg0>::GetName() const
+{
+	return MyClass_MethodWithConstReferenceArg0_name;
+}
+
+int Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWithConstReferenceArg0>::GetParameterCount() const
+{
+	return 1;
+}
+
+Object Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWithConstReferenceArg0>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::MethodWithConstReferenceArg0))(args[0].GetT<std::decay_t<const int &>>());
+	return Object();
+}
+
+static std::string MyClass_MethodWithConstReferenceArg1_name = "MethodWithConstReferenceArg1";
+
+const std::string& Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWithConstReferenceArg1>::GetName() const
+{
+	return MyClass_MethodWithConstReferenceArg1_name;
+}
+
+int Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWithConstReferenceArg1>::GetParameterCount() const
+{
+	return 1;
+}
+
+Object Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWithConstReferenceArg1>::Invoke(const Reference& o, const std::vector<Object>& args)
+{
+	((o.GetT<MyClass>()).*(&MyClass::MethodWithConstReferenceArg1))(args[0].GetT<std::decay_t<const ComplexArgument &>>());
+	return Object();
+}
+
+// End of MyClass methods definitions.
 
 
 }  // namespace reflang

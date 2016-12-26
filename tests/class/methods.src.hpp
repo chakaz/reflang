@@ -1,47 +1,32 @@
 #ifndef METHODS_SRC_HPP
 #define METHODS_SRC_HPP
 
-namespace Test
-{
-	class ComplexArgument {};
-	using MyInt = int;
-}
+struct ComplexArgument { int i; };
 
 class MyClass {
 public:
-	using ComplexArgument = Test::ComplexArgument;
-
 	MyClass() = default;
 	virtual ~MyClass() = default;
 
-	void Method0() {}
-	void Method1(bool b) {}
-	void Method2(bool b, int i) {}
-	void Method3(bool b, int i, float f) {}
-	bool RMethod3(bool b, int i, float f) { return true; }
-	bool RMethod1(bool) { return true; }
-	virtual void VirtualMethod() {}
-	virtual void AbstractMethod() = 0;
-	void ConstMethod() const {}
+	void Method0();
+	void Method1(bool b, int i);
+	bool RMethod0();
+	bool RMethod1(bool b, int i);
+	virtual void VirtualMethod();
+	void ConstMethod() const;
 
-	void MethodWithClassArg(ComplexArgument arg) {}
-	void MethodWithPointerArg1(int* arg) {}
-	void MethodWithPointerArg2(ComplexArgument* arg) {}
-	void MethodWithReferenceArg1(int& arg) {}
-	void MethodWithReferenceArg2(ComplexArgument& arg) {}
-	void MethodWithConstReferenceArg1(const int& arg) {}
-	void MethodWithConstReferenceArg2(const ComplexArgument& arg) {}
+	void MethodWithClassArg(ComplexArgument arg);
+	void MethodWithPointerArg(int* p);
+	void MethodWithConstReferenceArg0(const int& i);
+	void MethodWithConstReferenceArg1(const ComplexArgument& arg);
 
-	void MethodWithTypedef(Test::MyInt arg) {}
-
-	template <typename T>
-	void TemplatedMethod() {}
+	template <typename T> void TemplatedMethod() {}
 
 protected:
-	void ProtectedMethod() {}
+	void ProtectedMethod();
 
 private:
-	void PrivateMethod() {}
+	void PrivateMethod();
 };
 
 #endif //METHODS_SRC_HPP

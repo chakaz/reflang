@@ -16,9 +16,11 @@ class Class<MyClass> : public IClass
 public:
 	static const constexpr int FieldCount = 14;
 	static const constexpr int StaticFieldCount = 0;
+	static const constexpr int MethodCount = 0;
 
 	int GetFieldCount() const override;
 	int GetStaticFieldCount() const override;
+	int GetMethodCount() const override;
 
 	const std::string& GetName() const override;
 
@@ -76,6 +78,8 @@ template <typename T>
 void Class<MyClass>::IterateStaticFields(T t)
 {
 }
+
+
 
 
 }  // namespace reflang

@@ -65,20 +65,11 @@ namespace
 		}
 		return CXChildVisit_Continue;
 	}
-
-	Class::MethodList GetClassData(CXCursor cursor, Class& c)
-	{
-		Class::MethodList result;
-
-		clang_visitChildren(cursor, VisitClass, &c);
-
-		return result;
-	}
 }
 
 Class parser::GetClass(CXCursor cursor)
 {
 	Class c(GetFile(cursor), GetFullName(cursor));
-	c.Methods = GetClassData(cursor, c);
+	clang_visitChildren(cursor, VisitClass, &c);
 	return c;
 }
