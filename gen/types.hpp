@@ -71,6 +71,7 @@ namespace reflang
 		Type GetType() const override;
 
 		MethodList Methods;
+		MethodList StaticMethods;
 
 		FieldList Fields;
 		FieldList StaticFields;

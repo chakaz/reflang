@@ -73,6 +73,26 @@ public:
 		return tmpl.str();
 	}
 
+	string StaticMethodsDeclarations(const Class& c)
+	{
+		if (c.StaticMethods.empty())
+		{
+			return string();
+		}
+
+		stringstream tmpl;
+		tmpl << "// " << c.GetFullName() << " static methods metadata.\n";
+
+		for (const auto& method : c.StaticMethods)
+		{
+			tmpl << "// " << method.Name << "()\n";
+		}
+
+		tmpl << "// End of " << c.GetFullName() << " static methods metadata.\n";
+
+		return tmpl.str();
+	}
+
 	string GetCallArgs(const Function& m)
 	{
 		stringstream tmpl;
@@ -163,10 +183,12 @@ public:
 	static const constexpr int FieldCount = %field_count%;
 	static const constexpr int StaticFieldCount = %static_field_count%;
 	static const constexpr int MethodCount = %method_count%;
+	static const constexpr int StaticMethodCount = %static_method_count%;
 
 	int GetFieldCount() const override;
 	int GetStaticFieldCount() const override;
 	int GetMethodCount() const override;
+	int GetStaticMethodCount() const override;
 
 	const std::string& GetName() const override;
 
@@ -197,7 +219,7 @@ void Class<%name%>::IterateStaticFields(T t)
 {
 %iterate_static_fields%}
 
-%methods_decl%
+%methods_decl%%static_methods_decl%
 )";
 
 	o << ReplaceAll(
@@ -209,7 +231,9 @@ void Class<%name%>::IterateStaticFields(T t)
 				{"%field_count%", to_string(c.Fields.size())},
 				{"%static_field_count%", to_string(c.StaticFields.size())},
 				{"%method_count%", to_string(c.Methods.size())},
-				{"%methods_decl%", MethodsDeclarations(c)}
+				{"%methods_decl%", MethodsDeclarations(c)},
+				{"%static_method_count%", to_string(c.StaticMethods.size())},
+				{"%static_methods_decl%", StaticMethodsDeclarations(c)}
 			});
 }
 
@@ -220,6 +244,7 @@ void serializer::SerializeClassSources(ostream& o, const Class& c)
 const int Class<%name%>::FieldCount;
 const int Class<%name%>::StaticFieldCount;
 const int Class<%name%>::MethodCount;
+const int Class<%name%>::StaticMethodCount;
 
 int Class<%name%>::GetFieldCount() const
 {
@@ -234,6 +259,11 @@ int Class<%name%>::GetStaticFieldCount() const
 int Class<%name%>::GetMethodCount() const
 {
 	return MethodCount;
+}
+
+int Class<%name%>::GetStaticMethodCount() const
+{
+	return StaticMethodCount;
 }
 
 static const std::string %escaped_name%_name = "%name%";

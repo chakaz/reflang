@@ -109,6 +109,9 @@ namespace reflang
 
 		virtual int GetMethodCount() const = 0;
 		//virtual std::vector<IMethod*> GetMethods(const std::string& name) const = 0;
+
+		virtual int GetStaticMethodCount() const = 0;
+		//virtual std::vector<IFunction*> GetStaticMethods(const std::string& name) const = 0;
 	};
 
 	class IEnum : public IType

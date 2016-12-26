@@ -17,10 +17,12 @@ public:
 	static const constexpr int FieldCount = 0;
 	static const constexpr int StaticFieldCount = 0;
 	static const constexpr int MethodCount = 10;
+	static const constexpr int StaticMethodCount = 0;
 
 	int GetFieldCount() const override;
 	int GetStaticFieldCount() const override;
 	int GetMethodCount() const override;
+	int GetStaticMethodCount() const override;
 
 	const std::string& GetName() const override;
 

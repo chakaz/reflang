@@ -51,7 +51,14 @@ namespace
 			switch (clang_getCursorKind(cursor))
 			{
 			case CXCursor_CXXMethod:
-				c->Methods.push_back(GetMethodFromCursor(cursor));
+				if (clang_CXXMethod_isStatic(cursor) != 0)
+				{
+					c->StaticMethods.push_back(GetMethodFromCursor(cursor));
+				}
+				else
+				{
+					c->Methods.push_back(GetMethodFromCursor(cursor));
+				}
 				break;
 			case CXCursor_FieldDecl:
 				c->Fields.push_back(GetFieldFromCursor(cursor));
