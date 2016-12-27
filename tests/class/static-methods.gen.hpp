@@ -17,7 +17,7 @@ public:
 	static const constexpr int FieldCount = 0;
 	static const constexpr int StaticFieldCount = 0;
 	static const constexpr int MethodCount = 0;
-	static const constexpr int StaticMethodCount = 1;
+	static const constexpr int StaticMethodCount = 4;
 
 	int GetFieldCount() const override;
 	int GetStaticFieldCount() const override;
@@ -54,7 +54,46 @@ void Class<MyClass>::IterateStaticFields(T t)
 }
 
 // MyClass static methods metadata.
-// Method0()
+
+template <>
+class Function<decltype(MyClass::Method0), MyClass::Method0> : public IFunction
+{
+	int GetParameterCount() const override;
+
+	const std::string& GetName() const override;
+
+	Object Invoke(const std::vector<Object>& args) override;
+};
+
+template <>
+class Function<decltype(MyClass::Method1), MyClass::Method1> : public IFunction
+{
+	int GetParameterCount() const override;
+
+	const std::string& GetName() const override;
+
+	Object Invoke(const std::vector<Object>& args) override;
+};
+
+template <>
+class Function<decltype(MyClass::RMethod0), MyClass::RMethod0> : public IFunction
+{
+	int GetParameterCount() const override;
+
+	const std::string& GetName() const override;
+
+	Object Invoke(const std::vector<Object>& args) override;
+};
+
+template <>
+class Function<decltype(MyClass::RMethod1), MyClass::RMethod1> : public IFunction
+{
+	int GetParameterCount() const override;
+
+	const std::string& GetName() const override;
+
+	Object Invoke(const std::vector<Object>& args) override;
+};
 // End of MyClass static methods metadata.
 
 

@@ -1,10 +1,20 @@
 # Reflang - Modern C++ reflection using libclang
 
 ## TL;DR
-Reflang is a reflection library & tool for modern C++
+**Reflang is a reflection library & tool for modern C++.**
+
+The tool parses your C++ code using libclang, then generates *human-readable*
+code around it to enable reflection.
+
+The library is extremely lightweight, containing utility interfaces, classes &
+functions.
+
+Reflang's library has no dependencies other than C++14 with STL. Reflang's
+tool's only other dependency is libclang (which is not required after code
+generation).
 
 ### Enums
-Lets say you have the following `enum`:
+Suppose you have the following `enum`:
 
 ```cpp
 	enum class MyEnum
@@ -39,7 +49,8 @@ With Reflang you could do:
 Or even without `#include`ing `MyEnum`:
 
 ```cpp
-	IEnum* e = registry::GetEnumByName("MyNamespace::MyClass::Cpp11Enum");
+	// Note: no need to include header of MyEnum
+	IEnum* e = reglang::registry::GetEnumByName("MyEnum");
 
 	// Iterate over {"Value1", "Value2", "Value3", "Value5", "Value6"}
 	for (const auto& s : e->GetStringValues())
@@ -55,7 +66,7 @@ Or even without `#include`ing `MyEnum`:
 ```
 
 ### Functions
-Lets say you have the following function:
+Suppose you have the following function:
 
 ```cpp
 	bool Func(int a, float b);
@@ -64,7 +75,7 @@ Lets say you have the following function:
 With Reflang you could do:
 
 ```cpp
-	// Note: no need to include header fo Func().
+	// Note: no need to include header of Func().
 	std::vector<IFunction*> functions = reflang::registry::GetFunctionByName("Func");
 	IFunction* f = functions[0];
 	Object ret = (*f)(1234, 5678.0f);

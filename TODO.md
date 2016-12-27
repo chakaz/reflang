@@ -5,13 +5,14 @@ This file is used by Reflang author.
 * Include-guards for generated headers
 * Support header-only or header+cpp
 * Reflang exception class (inherit from std::exception)
+* Better registry look-up - ignore prefix '::' if exists
+* Support generation from multiple translation units
 
 ## Functions
 * Overloads
 * Default values
 
 ## Classes
-* Static methods
 * IClass API
 * Constructors (construct by name with arguments)
 * Sub-classes

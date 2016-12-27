@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "serializer.function.hpp"
 #include "serializer.util.hpp"
 
 using namespace std;
@@ -85,7 +86,7 @@ public:
 
 		for (const auto& method : c.StaticMethods)
 		{
-			tmpl << "// " << method.Name << "()\n";
+			serializer::SerializeFunctionHeader(tmpl, method);
 		}
 
 		tmpl << "// End of " << c.GetFullName() << " static methods metadata.\n";
@@ -167,6 +168,26 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 		}
 
 		tmpl << "// End of " << c.GetFullName() << " methods definitions.\n";
+
+		return tmpl.str();
+	}
+
+	string StaticMethodsDefinitions(const Class& c)
+	{
+		if (c.StaticMethods.empty())
+		{
+			return string();
+		}
+
+		stringstream tmpl;
+		tmpl << "// " << c.GetFullName() << " static methods definitions.\n";
+
+		for (const auto& method : c.StaticMethods)
+		{
+			serializer::SerializeFunctionSources(tmpl, method);
+		}
+
+		tmpl << "// End of " << c.GetFullName() << " static methods definitions.\n";
 
 		return tmpl.str();
 	}
@@ -273,7 +294,7 @@ const std::string& Class<%name%>::GetName() const
 	return %escaped_name%_name;
 }
 
-%method_definitions%)";
+%method_definitions%%static_method_definitions%)";
 
 	o << ReplaceAll(
 			tmpl.str(),
@@ -282,6 +303,7 @@ const std::string& Class<%name%>::GetName() const
 				{"%iterate_fields%", IterateFields(c)},
 				{"%field_count%", to_string(c.Fields.size())},
 				{"%escaped_name%", GetNameWithoutColons(c.GetFullName())},
-				{"%method_definitions%", MethodsDefinitions(c)}
+				{"%method_definitions%", MethodsDefinitions(c)},
+				{"%static_method_definitions%", StaticMethodsDefinitions(c)}
 			});
 }
