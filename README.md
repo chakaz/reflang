@@ -90,10 +90,10 @@ Reflang will soon support classes and other forms of fun.
 
 ## How it works
 Reflang is made of 2 components:
-* Code generator, which uses libclang to parse your C++ code and generate
+* **Code generator**, which uses libclang to parse your C++ code and generate
   reflection information. You can easily integrate this tool in your build
   process;
-* Support library, which allows generic and abstract coding ("find class by
+* **Support library**, which allows generic and abstract coding ("find class by
   name", "invoke function by name", etc).
 
 Reflang understands your code exactly like clang does, so which results in
@@ -110,7 +110,38 @@ Each test is made of 4 files:
 * X.test.cpp -- test code which uses the above.
 
 ## Using
-Please check this section later.
+*This section is incomplete. Please check later for more elaborated
+documentation.*
+
+Rough instructions:
+* Clone the repository;
+* Build it using CMake;
+* A new executable, *reflang* is now available - use it to generate code;
+* Link your program with the generated code and with *libreflang*, which has
+  been built by CMake as well;
+* Profit.
+
+Examples of running the tool:
+
+```console
+# print help
+$ ./reflang
+
+# generate code for test.hpp, write both hpp and cpp to stdout
+$ ./reflang -- test.hpp
+
+# specify output files
+$ ./reflang --out-cpp test.reflang.cpp --out-hpp test.reflang.hpp -- test.hpp
+
+# only list classes, functions, etc available for generation
+$ ./reflang --list-only true -- test.hpp
+
+# only generate code for classes, functions, etc not in std::
+$ ./reflang --exclude "std::.*" -- test.hpp
+
+# only generate code for classes, functions, etc beginning with My
+$ ./reflang --include "My.*" -- test.hpp
+```
 
 ## Building
 Please check this section later.

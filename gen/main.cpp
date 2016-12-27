@@ -54,8 +54,13 @@ int main(int argc, char *argv[])
 
 	if (wtf || consumed == 0)
 	{
-		cout << "Reflang tool to generate reflection metadata." << endl;
-		cout << "Usage:" << endl;
+		cout << "Reflang tool to generate reflection metadata.\n";
+		cout << "\n";
+		cout << "Usage: reflang [reflang_flags] -- [clang_flags]\n";
+		cout << "Where [reflang_flags] are any of the below, and [clang_flags] "
+			"are any flags supported by the libclang version installed\n";
+		cout << "\n";
+		cout << "Supported flags:\n";
 		cmd_args.PrintHelp();
 		exit(-1);
 	}
