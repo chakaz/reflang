@@ -8,7 +8,6 @@ This file is used by Reflang author.
 * Support generation from multiple translation units
 
 ## Functions
-* Overloads
 * Get parameter names and types
 * Default values
 
