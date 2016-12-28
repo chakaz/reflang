@@ -86,14 +86,7 @@ namespace reflang
 
 		// Syntactic sugar for calling Invoke().
 		template <typename... Ts>
-		Object operator()(const Reference& o, Ts&&... ts)
-		{
-			Object init[] = { Object(std::forward<Ts>(ts))... };
-			std::vector<Object> v(
-					std::make_move_iterator(std::begin(init)),
-					std::make_move_iterator(std::end(init)));
-			return this->Invoke(o, std::move(v));
-		}
+		Object operator()(const Reference& o, Ts&&... ts);
 
 		virtual Object Invoke(const Reference& o, const std::vector<Object>& args) = 0;
 	};
@@ -130,14 +123,7 @@ namespace reflang
 
 		// Syntactic sugar for calling Invoke().
 		template <typename... Ts>
-		Object operator()(Ts&&... ts)
-		{
-			Object init[] = { Object(std::forward<Ts>(ts))... };
-			std::vector<Object> v(
-					std::make_move_iterator(std::begin(init)),
-					std::make_move_iterator(std::end(init)));
-			return this->Invoke(std::move(v));
-		}
+		Object operator()(Ts&&... ts);
 
 		virtual Object Invoke(const std::vector<Object>& args) = 0;
 	};
@@ -228,5 +214,25 @@ template <>
 reflang::Object reflang::IFunction::operator()<>();
 template <>
 reflang::Object reflang::IMethod::operator()<>(const Reference& o);
+
+template <typename... Ts>
+reflang::Object reflang::IMethod::operator()(const Reference& o, Ts&&... ts)
+{
+	Object init[] = { Object(std::forward<Ts>(ts))... };
+	std::vector<Object> v(
+			std::make_move_iterator(std::begin(init)),
+			std::make_move_iterator(std::end(init)));
+	return this->Invoke(o, std::move(v));
+}
+
+template <typename... Ts>
+reflang::Object reflang::IFunction::operator()(Ts&&... ts)
+{
+	Object init[] = { Object(std::forward<Ts>(ts))... };
+	std::vector<Object> v(
+			std::make_move_iterator(std::begin(init)),
+			std::make_move_iterator(std::end(init)));
+	return this->Invoke(std::move(v));
+}
 
 #endif //REFLANG_TYPES_HPP
