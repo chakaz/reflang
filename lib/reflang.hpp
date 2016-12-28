@@ -131,6 +131,7 @@ namespace reflang
 
 	namespace registry
 	{
+		std::vector<IType*> GetByName(const std::string& name);
 		std::vector<IFunction*> GetFunctionByName(const std::string& name);
 		IEnum* GetEnumByName(const std::string& name);
 

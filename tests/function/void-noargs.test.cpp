@@ -44,6 +44,14 @@ TEST_CASE("namespace")
 	REQUIRE(global_string == string("NamespacedFunction()"));
 }
 
+TEST_CASE("with :: prefix")
+{
+	auto functions = registry::GetFunctionByName("::GlobalFunction");
+	REQUIRE(functions.size() == 1);
+	functions = registry::GetFunctionByName("::ns::NamespacedFunction");
+	REQUIRE(functions.size() == 1);
+}
+
 TEST_CASE("non-existent")
 {
 	auto functions = registry::GetFunctionByName("waaaaaaat");

@@ -3,18 +3,18 @@ This file is used by Reflang author.
 
 ## General
 * Support header-only or header+cpp
-* Better registry look-up - ignore prefix '::' if exists
 * Support generation from multiple translation units
 
 ## Functions
-* Get parameter names and types
+* Get parameter names and types, return value type
 * Default values
 
 ## Classes
 * Overloaded methods
+* Get method parameter names and types, return value type
 * IClass API
 * Constructors (construct by name with arguments)
 * Sub-classes
 
-## Central registry
-* Find all types by name, regex (registry::Get() instead of registry::GetEnum())
+## Registry
+* Find all types by regex

@@ -22,6 +22,20 @@ namespace
 		static unordered_map<string, unique_ptr<IEnum>> enums;
 		return enums;
 	}
+
+	string NormalizeTypeName(const string& name)
+	{
+		const string ignored_prefix = "::";
+
+		if (name.compare(0, ignored_prefix.size(), ignored_prefix) == 0)
+		{
+			return name.substr(ignored_prefix.size());
+		}
+		else
+		{
+			return name;
+		}
+	}
 }
 
 Object::Object()
@@ -75,8 +89,28 @@ Reference& Reference::operator=(const Reference& o) = default;
 
 atomic<int> reflang::global_id;
 
-vector<IFunction*> registry::GetFunctionByName(const string& name)
+vector<IType*> registry::GetByName(const string& raw_name)
 {
+	vector<IType*> types;
+	for (const auto& f : GetFunctionByName(raw_name))
+	{
+		types.push_back(f);
+	}
+
+	auto* e = GetEnumByName(raw_name);
+	if (e != nullptr)
+	{
+		types.push_back(e);
+	}
+
+	// Add classes here.
+
+	return types;
+}
+
+vector<IFunction*> registry::GetFunctionByName(const string& raw_name)
+{
+	string name = NormalizeTypeName(raw_name);
 	auto range = GetFunctionsMap().equal_range(name);
 
 	vector<IFunction*> functions;
@@ -88,8 +122,9 @@ vector<IFunction*> registry::GetFunctionByName(const string& name)
 	return functions;
 }
 
-IEnum* registry::GetEnumByName(const string& name)
+IEnum* registry::GetEnumByName(const string& raw_name)
 {
+	string name = NormalizeTypeName(raw_name);
 	auto it = GetEnumsMap().find(name);
 	if (it == GetEnumsMap().end())
 	{
