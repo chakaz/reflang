@@ -123,7 +123,7 @@ Rough instructions:
 
 Examples of running the tool:
 
-```console
+```bash
 # print help
 $ ./reflang
 
