@@ -140,7 +140,8 @@ namespace reflang
 		}
 	};
 
-	// Below is implementation helpers.
+	// The following classes are specialized with reflection metadata and can
+	// be used directly instead of going through the registry.
 	template <typename T> class Enum;
 	template <typename T> class Class;
 	template <typename T, T t> class Function;
