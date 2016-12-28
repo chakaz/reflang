@@ -1,6 +1,7 @@
 #include "serializer.function.hpp"
 
 #include <sstream>
+#include <unordered_map>
 
 #include "serializer.util.hpp"
 
@@ -26,6 +27,39 @@ namespace
 		s << ")";
 		return s.str();
 	}
+
+	string GetSignature(const Function& f)
+	{
+		stringstream s;
+		s << f.ReturnType << "(";
+		for (size_t i = 0; i < f.Arguments.size(); ++i)
+		{
+			s << f.Arguments[i].Type;
+			if (i != f.Arguments.size() - 1)
+			{
+				s << ", ";
+			}
+		}
+		s << ")";
+		return s.str();
+	}
+
+	// Returns a different string for equal names. This is useful for overload
+	// disambiguation. For example, first time called with "foo" it will return
+	// "", second time will return "_1", third time will return "_2", etc.
+	string GetUniqueSuffixForString(const string& name)
+	{
+		static unordered_map<string, int> unique_ids;
+		int current_id = unique_ids[name]++;
+		string unique_id = "_" + to_string(current_id);
+		if (unique_id == "_0")
+		{
+			// No need to make the generated code ugly for the first instance of
+			// the function (which probably has no overloads anyway).
+			unique_id.clear();
+		}
+		return unique_id;
+	}
 }
 
 void serializer::SerializeFunctionHeader(ostream& o, const Function& f)
@@ -33,7 +67,7 @@ void serializer::SerializeFunctionHeader(ostream& o, const Function& f)
 	stringstream tmpl;
 	tmpl << R"(
 template <>
-class Function<decltype(%name%), %name%> : public IFunction
+class Function<%signature%, %name%> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -47,6 +81,7 @@ class Function<decltype(%name%), %name%> : public IFunction
 			tmpl.str(),
 			{
 				{"%name%", f.GetFullName()},
+				{"%signature%", GetSignature(f)}
 			});
 }
 
@@ -54,19 +89,19 @@ void serializer::SerializeFunctionSources(ostream& o, const Function& f)
 {
 	stringstream tmpl;
 	tmpl << R"(
-int Function<decltype(%name%), %name%>::GetParameterCount() const
+int Function<%signature%, %name%>::GetParameterCount() const
 {
 	return %arg_count%;
 }
 
-static const std::string %escaped_name%_name = "%name%";
+static const std::string %escaped_name%%unique_id%_name = "%name%";
 
-const std::string& Function<decltype(%name%), %name%>::GetName() const
+const std::string& Function<%signature%, %name%>::GetName() const
 {
-	return %escaped_name%_name;
+	return %escaped_name%%unique_id%_name;
 }
 
-Object Function<decltype(%name%), %name%>::Invoke(const std::vector<Object>& args)
+Object Function<%signature%, %name%>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != %arg_count%)
 	{
@@ -101,17 +136,14 @@ Object Function<decltype(%name%), %name%>::Invoke(const std::vector<Object>& arg
 namespace
 {
 	// Object to auto-register %name%.
-	struct %escaped_name%_registrar
+	struct %escaped_name%%unique_id%_registrar
 	{
-		%escaped_name%_registrar()
+		%escaped_name%%unique_id%_registrar()
 		{
 			::reflang::registry::internal::Register(
-				std::make_unique<
-					Function<
-						decltype(%name%),
-						%name%>>());
+					std::make_unique<Function<%signature%, %name%>>());
 		}
-	} %escaped_name%_instance;
+	} %escaped_name%%unique_id%_instance;
 }
 )";
 
@@ -119,8 +151,10 @@ namespace
 			tmpl.str(),
 			{
 				{"%name%", f.GetFullName()},
+				{"%signature%", GetSignature(f)},
 				{"%arg_count%", to_string(f.Arguments.size())},
 				{"%call_function%", CallFunction(f)},
-				{"%escaped_name%", GetNameWithoutColons(f.GetFullName())}
+				{"%escaped_name%", GetNameWithoutColons(f.GetFullName())},
+				{"%unique_id%", GetUniqueSuffixForString(f.GetFullName())}
 			});
 }

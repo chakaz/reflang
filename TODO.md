@@ -9,9 +9,11 @@ This file is used by Reflang author.
 
 ## Functions
 * Overloads
+* Get parameter names and types
 * Default values
 
 ## Classes
+* Overloaded methods
 * IClass API
 * Constructors (construct by name with arguments)
 * Sub-classes

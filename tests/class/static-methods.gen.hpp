@@ -59,7 +59,7 @@ void Class<MyClass>::IterateStaticFields(T t)
 // MyClass static methods metadata.
 
 template <>
-class Function<decltype(MyClass::Method0), MyClass::Method0> : public IFunction
+class Function<void(), MyClass::Method0> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -69,7 +69,7 @@ class Function<decltype(MyClass::Method0), MyClass::Method0> : public IFunction
 };
 
 template <>
-class Function<decltype(MyClass::Method1), MyClass::Method1> : public IFunction
+class Function<void(int), MyClass::Method1> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -79,7 +79,7 @@ class Function<decltype(MyClass::Method1), MyClass::Method1> : public IFunction
 };
 
 template <>
-class Function<decltype(MyClass::RMethod0), MyClass::RMethod0> : public IFunction
+class Function<bool(), MyClass::RMethod0> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -89,7 +89,7 @@ class Function<decltype(MyClass::RMethod0), MyClass::RMethod0> : public IFunctio
 };
 
 template <>
-class Function<decltype(MyClass::RMethod1), MyClass::RMethod1> : public IFunction
+class Function<bool(bool, int), MyClass::RMethod1> : public IFunction
 {
 	int GetParameterCount() const override;
 

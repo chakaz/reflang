@@ -12,19 +12,19 @@ namespace reflang
 {
 
 
-int Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::GetParameterCount() const
+int Function<void(), ns::NamespacedFunction>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string ns__NamespacedFunction_name = "ns::NamespacedFunction";
 
-const std::string& Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::GetName() const
+const std::string& Function<void(), ns::NamespacedFunction>::GetName() const
 {
 	return ns__NamespacedFunction_name;
 }
 
-Object Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
+Object Function<void(), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -43,29 +43,26 @@ namespace
 		ns__NamespacedFunction_registrar()
 		{
 			::reflang::registry::internal::Register(
-				std::make_unique<
-					Function<
-						decltype(ns::NamespacedFunction),
-						ns::NamespacedFunction>>());
+					std::make_unique<Function<void(), ns::NamespacedFunction>>());
 		}
 	} ns__NamespacedFunction_instance;
 }
 
 
 
-int Function<decltype(GlobalFunction), GlobalFunction>::GetParameterCount() const
+int Function<void(), GlobalFunction>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string GlobalFunction_name = "GlobalFunction";
 
-const std::string& Function<decltype(GlobalFunction), GlobalFunction>::GetName() const
+const std::string& Function<void(), GlobalFunction>::GetName() const
 {
 	return GlobalFunction_name;
 }
 
-Object Function<decltype(GlobalFunction), GlobalFunction>::Invoke(const std::vector<Object>& args)
+Object Function<void(), GlobalFunction>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -84,10 +81,7 @@ namespace
 		GlobalFunction_registrar()
 		{
 			::reflang::registry::internal::Register(
-				std::make_unique<
-					Function<
-						decltype(GlobalFunction),
-						GlobalFunction>>());
+					std::make_unique<Function<void(), GlobalFunction>>());
 		}
 	} GlobalFunction_instance;
 }

@@ -46,19 +46,19 @@ const std::string& Class<MyClass>::GetName() const
 
 // MyClass static methods definitions.
 
-int Function<decltype(MyClass::Method0), MyClass::Method0>::GetParameterCount() const
+int Function<void(), MyClass::Method0>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string MyClass__Method0_name = "MyClass::Method0";
 
-const std::string& Function<decltype(MyClass::Method0), MyClass::Method0>::GetName() const
+const std::string& Function<void(), MyClass::Method0>::GetName() const
 {
 	return MyClass__Method0_name;
 }
 
-Object Function<decltype(MyClass::Method0), MyClass::Method0>::Invoke(const std::vector<Object>& args)
+Object Function<void(), MyClass::Method0>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -77,27 +77,24 @@ namespace
 		MyClass__Method0_registrar()
 		{
 			::reflang::registry::internal::Register(
-				std::make_unique<
-					Function<
-						decltype(MyClass::Method0),
-						MyClass::Method0>>());
+					std::make_unique<Function<void(), MyClass::Method0>>());
 		}
 	} MyClass__Method0_instance;
 }
 
-int Function<decltype(MyClass::Method1), MyClass::Method1>::GetParameterCount() const
+int Function<void(int), MyClass::Method1>::GetParameterCount() const
 {
 	return 1;
 }
 
 static const std::string MyClass__Method1_name = "MyClass::Method1";
 
-const std::string& Function<decltype(MyClass::Method1), MyClass::Method1>::GetName() const
+const std::string& Function<void(int), MyClass::Method1>::GetName() const
 {
 	return MyClass__Method1_name;
 }
 
-Object Function<decltype(MyClass::Method1), MyClass::Method1>::Invoke(const std::vector<Object>& args)
+Object Function<void(int), MyClass::Method1>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -120,27 +117,24 @@ namespace
 		MyClass__Method1_registrar()
 		{
 			::reflang::registry::internal::Register(
-				std::make_unique<
-					Function<
-						decltype(MyClass::Method1),
-						MyClass::Method1>>());
+					std::make_unique<Function<void(int), MyClass::Method1>>());
 		}
 	} MyClass__Method1_instance;
 }
 
-int Function<decltype(MyClass::RMethod0), MyClass::RMethod0>::GetParameterCount() const
+int Function<bool(), MyClass::RMethod0>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string MyClass__RMethod0_name = "MyClass::RMethod0";
 
-const std::string& Function<decltype(MyClass::RMethod0), MyClass::RMethod0>::GetName() const
+const std::string& Function<bool(), MyClass::RMethod0>::GetName() const
 {
 	return MyClass__RMethod0_name;
 }
 
-Object Function<decltype(MyClass::RMethod0), MyClass::RMethod0>::Invoke(const std::vector<Object>& args)
+Object Function<bool(), MyClass::RMethod0>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -158,27 +152,24 @@ namespace
 		MyClass__RMethod0_registrar()
 		{
 			::reflang::registry::internal::Register(
-				std::make_unique<
-					Function<
-						decltype(MyClass::RMethod0),
-						MyClass::RMethod0>>());
+					std::make_unique<Function<bool(), MyClass::RMethod0>>());
 		}
 	} MyClass__RMethod0_instance;
 }
 
-int Function<decltype(MyClass::RMethod1), MyClass::RMethod1>::GetParameterCount() const
+int Function<bool(bool, int), MyClass::RMethod1>::GetParameterCount() const
 {
 	return 2;
 }
 
 static const std::string MyClass__RMethod1_name = "MyClass::RMethod1";
 
-const std::string& Function<decltype(MyClass::RMethod1), MyClass::RMethod1>::GetName() const
+const std::string& Function<bool(bool, int), MyClass::RMethod1>::GetName() const
 {
 	return MyClass__RMethod1_name;
 }
 
-Object Function<decltype(MyClass::RMethod1), MyClass::RMethod1>::Invoke(const std::vector<Object>& args)
+Object Function<bool(bool, int), MyClass::RMethod1>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 2)
 	{
@@ -204,10 +195,7 @@ namespace
 		MyClass__RMethod1_registrar()
 		{
 			::reflang::registry::internal::Register(
-				std::make_unique<
-					Function<
-						decltype(MyClass::RMethod1),
-						MyClass::RMethod1>>());
+					std::make_unique<Function<bool(bool, int), MyClass::RMethod1>>());
 		}
 	} MyClass__RMethod1_instance;
 }

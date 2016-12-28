@@ -14,7 +14,7 @@ namespace reflang
 
 
 template <>
-class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : public IFunction
+class Function<const char *(), ns::NamespacedFunction> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -26,7 +26,7 @@ class Function<decltype(ns::NamespacedFunction), ns::NamespacedFunction> : publi
 
 
 template <>
-class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
+class Function<const char *(), GlobalFunction> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -38,7 +38,7 @@ class Function<decltype(GlobalFunction), GlobalFunction> : public IFunction
 
 
 template <>
-class Function<decltype(ReturnByValue), ReturnByValue> : public IFunction
+class Function<DummyClass(), ReturnByValue> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -50,7 +50,7 @@ class Function<decltype(ReturnByValue), ReturnByValue> : public IFunction
 
 
 template <>
-class Function<decltype(ReturnByReference), ReturnByReference> : public IFunction
+class Function<const DummyClass &(), ReturnByReference> : public IFunction
 {
 	int GetParameterCount() const override;
 
