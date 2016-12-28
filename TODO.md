@@ -2,7 +2,6 @@
 This file is used by Reflang author.
 
 ## General
-* Include-guards for generated headers
 * Support header-only or header+cpp
 * Reflang exception class (inherit from std::exception)
 * Better registry look-up - ignore prefix '::' if exists

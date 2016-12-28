@@ -1,6 +1,7 @@
 #include "serializer.hpp"
 
 #include <fstream>
+#include <locale>
 #include <unordered_set>
 
 #include "serializer.class.hpp"
@@ -12,6 +13,23 @@ using namespace reflang;
 
 namespace
 {
+	string CalcIncludeGuard(const serializer::Options& options)
+	{
+		string include_guard = options.out_hpp_path;
+
+		for (char& c : include_guard)
+		{
+			c = toupper(c, std::locale());
+			if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))
+			{
+				continue;
+			}
+			c = '_';
+		}
+
+		return include_guard;
+	}
+
 	void AutoGenComment(ostream& o)
 	{
 		o << R"(// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -26,6 +44,14 @@ namespace
 			const std::vector<std::unique_ptr<TypeBase>>& types)
 	{
 		AutoGenComment(o);
+
+		string include_guard = CalcIncludeGuard(options);
+		if (!include_guard.empty())
+		{
+			o << "#ifndef REFLANG_METADATA_" << include_guard << "\n";
+			o << "#define REFLANG_METADATA_" << include_guard << "\n\n";
+		}
+
 		o << R"(#include <string>
 
 )";
@@ -49,9 +75,17 @@ namespace reflang
 )";
 	}
 
-	void EndHeader(ostream& o)
+	void EndHeader(
+			ostream& o,
+			const serializer::Options& options)
 	{
 		o << "}  // namespace reflang\n";
+
+		string include_guard = CalcIncludeGuard(options);
+		if (!include_guard.empty())
+		{
+			o << "\n#endif //REFLANG_METADATA_" << include_guard << "\n";
+		}
 	}
 
 	void BeginSources(ostream& o, const serializer::Options& options)
@@ -118,7 +152,7 @@ void serializer::Serialize(
 		}
 		*out_hpp << "\n\n";
 	}
-	EndHeader(*out_hpp);
+	EndHeader(*out_hpp, options);
 
 	BeginSources(*out_cpp, options);
 	for (const auto& type : types)
