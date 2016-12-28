@@ -4,6 +4,7 @@ This file is used by Reflang author.
 ## General
 * Support header-only or header+cpp
 * Support generation from multiple translation units
+* Reduce code duplication between method and function generation.
 
 ## Functions
 * Get parameter names and types, return value type
