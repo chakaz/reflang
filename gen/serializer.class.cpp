@@ -125,6 +125,10 @@ int Method<decltype(%pointer%), %pointer%>::GetParameterCount() const
 
 Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != %param_count%)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 )";
 		if (m.ReturnType == "void")
 		{

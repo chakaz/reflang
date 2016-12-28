@@ -59,6 +59,10 @@ int Method<decltype(&MyClass::Method0), &MyClass::Method0>::GetParameterCount() 
 
 Object Method<decltype(&MyClass::Method0), &MyClass::Method0>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 0)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::Method0))();
 	return Object();
 }
@@ -77,6 +81,10 @@ int Method<decltype(&MyClass::Method1), &MyClass::Method1>::GetParameterCount() 
 
 Object Method<decltype(&MyClass::Method1), &MyClass::Method1>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 2)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::Method1))(args[0].GetT<std::decay_t<bool>>(), args[1].GetT<std::decay_t<int>>());
 	return Object();
 }
@@ -95,6 +103,10 @@ int Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::GetParameterCount(
 
 Object Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 0)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	return Object(((o.GetT<MyClass>()).*(&MyClass::RMethod0))());
 }
 
@@ -112,6 +124,10 @@ int Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::GetParameterCount(
 
 Object Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 2)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	return Object(((o.GetT<MyClass>()).*(&MyClass::RMethod1))(args[0].GetT<std::decay_t<bool>>(), args[1].GetT<std::decay_t<int>>()));
 }
 
@@ -129,6 +145,10 @@ int Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::GetParam
 
 Object Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 0)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::VirtualMethod))();
 	return Object();
 }
@@ -147,6 +167,10 @@ int Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::GetParameter
 
 Object Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 0)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::ConstMethod))();
 	return Object();
 }
@@ -165,6 +189,10 @@ int Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>
 
 Object Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 1)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::MethodWithClassArg))(args[0].GetT<std::decay_t<ComplexArgument>>());
 	return Object();
 }
@@ -183,6 +211,10 @@ int Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointer
 
 Object Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointerArg>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 1)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::MethodWithPointerArg))(args[0].GetT<std::decay_t<int *>>());
 	return Object();
 }
@@ -201,6 +233,10 @@ int Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWit
 
 Object Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWithConstReferenceArg0>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 1)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::MethodWithConstReferenceArg0))(args[0].GetT<std::decay_t<const int &>>());
 	return Object();
 }
@@ -219,6 +255,10 @@ int Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWit
 
 Object Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWithConstReferenceArg1>::Invoke(const Reference& o, const std::vector<Object>& args)
 {
+	if (args.size() != 1)
+	{
+		throw Exception("Invoke(): bad argument count.");
+	}
 	((o.GetT<MyClass>()).*(&MyClass::MethodWithConstReferenceArg1))(args[0].GetT<std::decay_t<const ComplexArgument &>>());
 	return Object();
 }

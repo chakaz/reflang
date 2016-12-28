@@ -28,7 +28,7 @@ Object Function<const char *(), ns::NamespacedFunction>::Invoke(const std::vecto
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	return Object(ns::NamespacedFunction());
@@ -65,7 +65,7 @@ Object Function<const char *(), GlobalFunction>::Invoke(const std::vector<Object
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	return Object(GlobalFunction());
@@ -102,7 +102,7 @@ Object Function<DummyClass(), ReturnByValue>::Invoke(const std::vector<Object>& 
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	return Object(ReturnByValue());
@@ -139,7 +139,7 @@ Object Function<const DummyClass &(), ReturnByReference>::Invoke(const std::vect
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	return Object(ReturnByReference());

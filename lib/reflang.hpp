@@ -6,6 +6,7 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <type_traits>
 #include <vector>
 
@@ -140,6 +141,16 @@ namespace reflang
 		}
 	};
 
+	class Exception : virtual public std::exception
+	{
+	public:
+		Exception(std::string error);
+		const char* what() const noexcept override;
+
+	private:
+		std::string what_;
+	};
+
 	// The following classes are specialized with reflection metadata and can
 	// be used directly instead of going through the registry.
 	template <typename T> class Enum;
@@ -183,7 +194,7 @@ const T& reflang::Object::GetT() const
 {
 	if (GetTypeId<T>() != id_)
 	{
-		throw std::invalid_argument("Can't cast to T.");
+		throw Exception("GetT() failed: incompatible T.");
 	}
 	return *static_cast<T*>(data_);
 }
@@ -206,7 +217,7 @@ T& reflang::Reference::GetT() const
 {
 	if (GetTypeId<T>() != id_)
 	{
-		throw std::invalid_argument("Can't cast to T.");
+		throw Exception("GetT() failed: incompatible T.");
 	}
 	return *static_cast<T*>(data_);
 }

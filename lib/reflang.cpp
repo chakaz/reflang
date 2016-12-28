@@ -110,3 +110,13 @@ void registry::internal::Register(unique_ptr<IEnum>&& e)
 {
 	GetEnumsMap().insert(make_pair(e->GetName(), move(e)));
 }
+
+Exception::Exception(string error)
+:	what_(move(error))
+{
+}
+
+const char* Exception::what() const noexcept
+{
+	return what_.c_str();
+}

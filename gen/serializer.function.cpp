@@ -105,19 +105,9 @@ Object Function<%signature%, %name%>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != %arg_count%)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 )";
-	int i = 0;
-	for (const auto& arg : f.Arguments)
-	{
-		tmpl << "	if (!args[" << i << "].IsT<std::decay_t<" << arg.Type << R"(>>())
-	{
-		throw std::invalid_argument(")" << arg.Name << R"(");
-	}
-)";
-		++i;
-	}
 
 	if (f.ReturnType == "void")
 	{

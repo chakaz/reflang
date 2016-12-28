@@ -62,7 +62,7 @@ Object Function<void(), MyClass::Method0>::Invoke(const std::vector<Object>& arg
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	MyClass::Method0();
@@ -98,11 +98,7 @@ Object Function<void(int), MyClass::Method1>::Invoke(const std::vector<Object>& 
 {
 	if (args.size() != 1)
 	{
-		throw std::invalid_argument("count");
-	}
-	if (!args[0].IsT<std::decay_t<int>>())
-	{
-		throw std::invalid_argument("i");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	MyClass::Method1(args[0].GetT<std::decay_t<int>>());
@@ -138,7 +134,7 @@ Object Function<bool(), MyClass::RMethod0>::Invoke(const std::vector<Object>& ar
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	return Object(MyClass::RMethod0());
@@ -173,15 +169,7 @@ Object Function<bool(bool, int), MyClass::RMethod1>::Invoke(const std::vector<Ob
 {
 	if (args.size() != 2)
 	{
-		throw std::invalid_argument("count");
-	}
-	if (!args[0].IsT<std::decay_t<bool>>())
-	{
-		throw std::invalid_argument("b");
-	}
-	if (!args[1].IsT<std::decay_t<int>>())
-	{
-		throw std::invalid_argument("i");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	return Object(MyClass::RMethod1(args[0].GetT<std::decay_t<bool>>(), args[1].GetT<std::decay_t<int>>()));

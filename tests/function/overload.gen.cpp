@@ -28,7 +28,7 @@ Object Function<void(), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	Func();
@@ -66,11 +66,7 @@ Object Function<void(int), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
-		throw std::invalid_argument("count");
-	}
-	if (!args[0].IsT<std::decay_t<int>>())
-	{
-		throw std::invalid_argument("i");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	Func(args[0].GetT<std::decay_t<int>>());
@@ -108,11 +104,7 @@ Object Function<void(float), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
-		throw std::invalid_argument("count");
-	}
-	if (!args[0].IsT<std::decay_t<float>>())
-	{
-		throw std::invalid_argument("f");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	Func(args[0].GetT<std::decay_t<float>>());
@@ -150,11 +142,7 @@ Object Function<bool(const char &), Func>::Invoke(const std::vector<Object>& arg
 {
 	if (args.size() != 1)
 	{
-		throw std::invalid_argument("count");
-	}
-	if (!args[0].IsT<std::decay_t<const char &>>())
-	{
-		throw std::invalid_argument("c");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	return Object(Func(args[0].GetT<std::decay_t<const char &>>()));

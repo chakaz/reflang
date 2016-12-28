@@ -28,7 +28,7 @@ Object Function<void(), ns::NamespacedFunction>::Invoke(const std::vector<Object
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	ns::NamespacedFunction();
@@ -66,7 +66,7 @@ Object Function<void(), GlobalFunction>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
-		throw std::invalid_argument("count");
+		throw Exception("Invoke(): bad argument count.");
 	}
 
 	GlobalFunction();
