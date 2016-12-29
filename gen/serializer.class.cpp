@@ -447,7 +447,20 @@ const std::string& Class<%name%>::GetName() const
 	return %escaped_name%_name;
 }
 
-%method_definitions%%static_method_definitions%)";
+%method_definitions%%static_method_definitions%
+
+namespace
+{
+	// Object to auto-register %name%.
+	struct %escaped_name%_registrar
+	{
+		%escaped_name%_registrar()
+		{
+			::reflang::registry::internal::Register(
+					std::make_unique<Class<%name%>>());
+		}
+	} %escaped_name%_instance;
+})";
 
 	o << ReplaceAll(
 			tmpl.str(),

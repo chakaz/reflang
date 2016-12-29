@@ -137,11 +137,13 @@ namespace reflang
 	{
 		std::vector<IType*> GetByName(const std::string& name);
 		std::vector<IFunction*> GetFunctionByName(const std::string& name);
+		IClass* GetClassByName(const std::string& name);
 		IEnum* GetEnumByName(const std::string& name);
 
 		namespace internal
 		{
 			void Register(std::unique_ptr<IFunction>&& f);
+			void Register(std::unique_ptr<IClass>&& f);
 			void Register(std::unique_ptr<IEnum>&& e);
 		}
 	};

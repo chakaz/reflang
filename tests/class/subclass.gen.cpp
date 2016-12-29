@@ -166,4 +166,17 @@ namespace
 // End of MyClass::Subclass static methods definitions.
 
 
+namespace
+{
+	// Object to auto-register MyClass::Subclass.
+	struct MyClass__Subclass_registrar
+	{
+		MyClass__Subclass_registrar()
+		{
+			::reflang::registry::internal::Register(
+					std::make_unique<Class<MyClass::Subclass>>());
+		}
+	} MyClass__Subclass_instance;
+}
+
 }  // namespace reflang

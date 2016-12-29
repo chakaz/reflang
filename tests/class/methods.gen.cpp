@@ -341,4 +341,17 @@ Object Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::Method
 // End of MyClass methods definitions.
 
 
+namespace
+{
+	// Object to auto-register MyClass.
+	struct MyClass_registrar
+	{
+		MyClass_registrar()
+		{
+			::reflang::registry::internal::Register(
+					std::make_unique<Class<MyClass>>());
+		}
+	} MyClass_instance;
+}
+
 }  // namespace reflang

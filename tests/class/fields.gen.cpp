@@ -195,4 +195,17 @@ const std::string& Class<MyClass>::GetName() const
 
 
 
+namespace
+{
+	// Object to auto-register MyClass.
+	struct MyClass_registrar
+	{
+		MyClass_registrar()
+		{
+			::reflang::registry::internal::Register(
+					std::make_unique<Class<MyClass>>());
+		}
+	} MyClass_instance;
+}
+
 }  // namespace reflang

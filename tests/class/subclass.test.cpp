@@ -50,3 +50,28 @@ TEST_CASE("static-method")
 	(*methods[0])();
 	REQUIRE(MyClass::Subclass::static_field == 1);
 }
+
+TEST_CASE("registry")
+{
+	IClass* metadata = registry::GetClassByName("MyClass::Subclass");
+	REQUIRE(metadata != nullptr);
+
+	MyClass::Subclass c;
+
+	metadata->GetField(c, "field").GetT<int>() = 10;
+	REQUIRE(c.field == 10);
+
+	MyClass::Subclass::static_field = 0;
+	metadata->GetStaticField("static_field").GetT<int>() = 10;
+	REQUIRE(MyClass::Subclass::static_field == 10);
+
+	auto methods = metadata->GetMethod("method");
+	REQUIRE(methods.size() == 1);
+	(*methods[0])(c);
+	REQUIRE(c.field == 11);
+
+	auto static_methods = metadata->GetStaticMethod("static_method");
+	REQUIRE(static_methods.size() == 1);
+	(*static_methods[0])();
+	REQUIRE(MyClass::Subclass::static_field == 11);
+}

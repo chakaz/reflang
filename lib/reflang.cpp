@@ -23,6 +23,12 @@ namespace
 		return enums;
 	}
 
+	unordered_map<string, unique_ptr<IClass>>& GetClassesMap()
+	{
+		static unordered_map<string, unique_ptr<IClass>> classes;
+		return classes;
+	}
+
 	string NormalizeTypeName(const string& name)
 	{
 		const string ignored_prefix = "::";
@@ -52,7 +58,7 @@ Object::~Object()
 Object::Object(Object&& o)
 :	deleter_(NoOp)
 {
-	*this = std::move(o);
+	*this = move(o);
 }
 
 Object& Object::operator=(Object&& o)
@@ -62,7 +68,7 @@ Object& Object::operator=(Object&& o)
 
 	id_ = o.id_;
 	data_ = o.data_;
-	deleter_ = std::move(o.deleter_);
+	deleter_ = move(o.deleter_);
 	o.deleter_ = NoOp;
 	return *this;
 }
@@ -97,13 +103,17 @@ vector<IType*> registry::GetByName(const string& raw_name)
 		types.push_back(f);
 	}
 
+	auto* c = GetClassByName(raw_name);
+	if (c != nullptr)
+	{
+		types.push_back(c);
+	}
+
 	auto* e = GetEnumByName(raw_name);
 	if (e != nullptr)
 	{
 		types.push_back(e);
 	}
-
-	// Add classes here.
 
 	return types;
 }
@@ -120,6 +130,20 @@ vector<IFunction*> registry::GetFunctionByName(const string& raw_name)
 		functions.push_back(it->second.get());
 	}
 	return functions;
+}
+
+IClass* registry::GetClassByName(const string& raw_name)
+{
+	string name = NormalizeTypeName(raw_name);
+	auto it = GetClassesMap().find(name);
+	if (it == GetClassesMap().end())
+	{
+		return nullptr;
+	}
+	else
+	{
+		return it->second.get();
+	}
 }
 
 IEnum* registry::GetEnumByName(const string& raw_name)
@@ -139,6 +163,11 @@ IEnum* registry::GetEnumByName(const string& raw_name)
 void registry::internal::Register(unique_ptr<IFunction>&& f)
 {
 	GetFunctionsMap().insert(make_pair(f->GetName(), move(f)));
+}
+
+void registry::internal::Register(unique_ptr<IClass>&& c)
+{
+	GetClassesMap().insert(make_pair(c->GetName(), move(c)));
 }
 
 void registry::internal::Register(unique_ptr<IEnum>&& e)

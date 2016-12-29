@@ -72,6 +72,29 @@ With Reflang you could do:
 	(*methods[0])();
 ```
 
+Or even without `#include`ing `MyClass`:
+
+```cpp
+	// Note: no need to include header of MyClass.
+	IClass* metadata = reflang::registry::GetClassByName("MyClass");
+
+	// Assign 10 to MyClass::static_field.
+	metadata->GetStaticField("static_field").GetT<int>() = 10;
+
+	// Invoke MyClass::static_method().
+	auto static_methods = metadata->GetStaticMethod("static_method");
+	(*static_methods[0])();
+
+	reflang::Reference c = // get Reference wrapping a MyClass from somewhere.
+
+	// Assign 10 to c.field.
+	metadata->GetField(c, "field").GetT<int>() = 10;
+
+	// Invoke c.method().
+	auto methods = metadata->GetMethod("method");
+	(*methods[0])(c);
+```
+
 ### Enums
 Suppose you have the following `enum`:
 
@@ -96,28 +119,28 @@ With Reflang you could do:
 	}
 
 	std::string string_value = reflang::Enum<MyEnum>::Translate(MyEnum::Value2);
-	// string_value == "Value2"
+	// string_value == "Value2".
 
 	MyEnum e
 	if (reflang::Enum<MyEnum>::TryTranslate(string_value, e))
 	{
-		// e == MyEnum::Value2
+		// e == MyEnum::Value2.
 	}
 ```
 
 Or even without `#include`ing `MyEnum`:
 
 ```cpp
-	// Note: no need to include header of MyEnum
+	// Note: no need to include header of MyEnum.
 	IEnum* e = reglang::registry::GetEnumByName("MyEnum");
 
-	// Iterate over {"Value1", "Value2", "Value3", "Value5", "Value6"}
+	// Iterate over {"Value1", "Value2", "Value3", "Value5", "Value6"}.
 	for (const auto& s : e->GetStringValues())
 	{
 		// ...
 	}
 
-	// Iterate over {4, 5, 6, 0, 12}
+	// Iterate over {4, 5, 6, 0, 12}.
 	for (const auto& s : e->GetStringValues())
 	{
 		// ...
@@ -193,7 +216,7 @@ $ ./reflang --include "My.*" -- test.hpp
 ✓		| *Supported*: Get vector of enum values
 ✓		| *Supported*: Get vector of enum string names
 ✓		| *Supported*: Converting enum <-> string
-⌛		| *Soon*: Get classes through registry
+✓		| *Supported*: Use `class` / `function` / `enum` without `#include` (through registry)
 ⌛		| *Soon*: Get function's / method's argument names & types
 ⌛		| *Soon*: Get function's / method's return type
 ⌛		| *Soon*: Overloaded class methods
