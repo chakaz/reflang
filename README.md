@@ -13,6 +13,65 @@ Reflang's library has no dependencies other than C++14 with STL. Reflang's
 tool's only other dependency is libclang (which is not required after code
 generation).
 
+## More details
+
+### Functions
+Suppose you have the following function:
+
+```cpp
+	bool Func(int a, float b);
+```
+
+With Reflang you could do:
+
+```cpp
+	// Note: no need to include header of Func().
+	std::vector<IFunction*> functions = reflang::registry::GetFunctionByName("Func");
+	IFunction* f = functions[0];
+	Object ret = (*f)(1234, 5678.0f);
+	if (ret.GetT<bool>())
+	{
+		// ...
+	}
+```
+
+### Classes
+Suppose you have the following `class`:
+
+```cpp
+	class MyClass
+	{
+	public:
+		int field = 0;
+		static int static_field;
+		void method();
+		static void static_method();
+	};
+```
+
+With Reflang you could do:
+
+```cpp
+	reflang::Class<MyClass> metadata;
+	MyClass c;
+
+	// Modify / use c's 'field'.
+	reflang::Reference ref = metadata.GetField(c, "field");
+	ref.GetT<int>() = 10;
+
+	// Modify / use 'static_field'.
+	ref = metadata.GetStaticField("static_field")
+	ref.GetT<int>() = 10;
+
+	// Execute 'method()'.
+	auto methods = metadata.GetMethod("method");
+	(*methods[0])(c);
+
+	// Execute 'static_method()'.
+	auto methods = metadata.GetStaticMethod("static_method");
+	(*methods[0])();
+```
+
 ### Enums
 Suppose you have the following `enum`:
 
@@ -65,29 +124,6 @@ Or even without `#include`ing `MyEnum`:
 	}
 ```
 
-### Functions
-Suppose you have the following function:
-
-```cpp
-	bool Func(int a, float b);
-```
-
-With Reflang you could do:
-
-```cpp
-	// Note: no need to include header of Func().
-	std::vector<IFunction*> functions = reflang::registry::GetFunctionByName("Func");
-	IFunction* f = functions[0];
-	Object ret = (*f)(1234, 5678.0f);
-	if (ret.GetT<bool>())
-	{
-		// ...
-	}
-```
-
-### Classes
-Reflang will soon support classes and other forms of fun.
-
 ## How it works
 Reflang is made of 2 components:
 * **Code generator**, which uses libclang to parse your C++ code and generate
@@ -99,15 +135,15 @@ Reflang is made of 2 components:
 Reflang understands your code exactly like clang does, so which results in
 accurate parsing of your code.
 
-## Examples
-Check out the tests/ directory, which shows pretty much all features supported
-by Reflang.
+## End-to-end Examples
+Check out the [tests/](tests/) directory, which shows pretty much all features
+supported by Reflang.
 
-Each test is made of 4 files:
-* X.src.hpp -- source code which will be used for reflection;
-* X.gen.hpp -- generated reflection code declarations (try reading it!);
-* X.gen.cpp -- generated reflection code definitions (try reading it!);
-* X.test.cpp -- test code which uses the above.
+Each test has 4 files:
+* `X.src.hpp` -- source code which will be used for reflection;
+* `X.gen.hpp` -- generated reflection code declarations for `X.src.hpp`;
+* `X.gen.cpp` -- generated reflection code definitions for `X.src.hpp`;
+* `X.test.cpp` -- test code which tests the above.
 
 ## Using
 *This section is incomplete. Please check later for more elaborated
@@ -143,16 +179,36 @@ $ ./reflang --exclude "std::.*" -- test.hpp
 $ ./reflang --include "My.*" -- test.hpp
 ```
 
-## Building
-Please check this section later.
-
-## Limitations
-* No `template` classes / functions support.
-* No support for functions taking non-const reference arguments (yet?).
-* No support for functions taking rvalue references arguments.
+## Supported Features & Limitations
+&nbsp;	| Feature
+--------|-----------------------------------------------
+✓		| *Supported*: Invoking global / namespace functions
+✓		| *Supported*: Function overloads
+✓		| *Supported*: Iterating classes' fields
+✓		| *Supported*: Iterating classes' static fields
+✓		| *Supported*: Iterating classes' methods
+✓		| *Supported*: Iterating classes' static methods
+✓		| *Supported*: Getting a class field / method / statics by name
+✓		| *Supported*: Iterating enum values
+✓		| *Supported*: Get vector of enum values
+✓		| *Supported*: Get vector of enum string names
+✓		| *Supported*: Converting enum <-> string
+⌛		| *Soon*: Get classes through registry
+⌛		| *Soon*: Get function's / method's argument names & types
+⌛		| *Soon*: Get function's / method's return type
+⌛		| *Soon*: Overloaded class methods
+⌛		| *Soon*: Construct classes through reflection
+⌛		| *Soon*: Find types by regex
+⌛		| *Soon*: Respect functions / methods default values
+⌛		| *Soon*: Support for operators
+✕		| *Not supported*: `template` classes / functions
+✕		| *Not supported*: Functions taking non-const reference arguments (yet?)
+✕		| *Not supported*: Functions taking rvalue references arguments
+✕		| *Not supported*: Private methods / fields
+✕		| *Not supported*: Anything in anonymous namespace
 
 ## Bugs, pull requests, feedback
 Please check this section later.
 
-## Donations
+## Kind Words & Donations
 Please check this section later.
