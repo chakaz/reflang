@@ -23,14 +23,12 @@ namespace
 	CXTranslationUnit Parse(
 			CXIndex& index, const string& file, int argc, char* argv[])
 	{
-		CXTranslationUnit unit;
-		auto error = clang_parseTranslationUnit2(
+		CXTranslationUnit unit = clang_parseTranslationUnit(
 				index,
 				file.c_str(), argv, argc,
 				nullptr, 0,
-				CXTranslationUnit_None,
-				&unit);
-		if (error != 0)
+				CXTranslationUnit_None);
+		if (unit == nullptr)
 		{
 			cerr << "Unable to parse translation unit. Quitting." << endl;
 			exit(-1);
