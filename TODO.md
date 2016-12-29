@@ -18,7 +18,6 @@ This file is used by Reflang author.
 * Get method parameter names and types, return value type
 * Get through registry
 * Constructors (construct by name with arguments)
-* Sub-classes
 
 ## Registry
 * Find all types by regex
