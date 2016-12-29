@@ -8,7 +8,47 @@
 using namespace reflang;
 using namespace std;
 
-int main(int argc, char *argv[])
+namespace
+{
+	vector<string> GetFilesToProcess(CmdArgs& cmd_args, int& argc, char**& argv)
+	{
+		vector<string> files;
+		bool wtf = false;
+		try
+		{
+			--argc;
+			++argv;
+			files = cmd_args.Consume(argc, argv);
+			if (files.empty())
+			{
+				cerr << "No input files specified." << endl;
+				wtf = true;
+			}
+		}
+		catch (const CmdArgs::Exception& error)
+		{
+			cerr << "Error: " << error.GetError() << endl;
+			wtf = true;
+		}
+
+		if (wtf)
+		{
+			cout << "Reflang tool to generate reflection metadata.\n";
+			cout << "\n";
+			cout << "Usage: reflang [reflang_flags] -- [clang_flags]\n";
+			cout << "Where [reflang_flags] are any of the below, and [clang_flags] "
+				"are any flags supported by the libclang version installed\n";
+			cout << "\n";
+			cout << "Supported flags:\n";
+			cmd_args.PrintHelp();
+			exit(-1);
+		}
+
+		return files;
+	}
+}
+
+int main(int argc, char** argv)
 {
 	CmdArgs cmd_args;
 	auto list_only = cmd_args.Register<bool>(
@@ -38,35 +78,7 @@ int main(int argc, char *argv[])
 			"used.",
 			"");
 
-	bool wtf = false;
-	int consumed = 0;
-	try
-	{
-		--argc;
-		++argv;
-		consumed = cmd_args.Consume(argc, argv);
-	}
-	catch (const CmdArgs::Exception& error)
-	{
-		cerr << "Error: " << error.GetError() << endl;
-		wtf = true;
-	}
-
-	if (wtf || consumed == 0)
-	{
-		cout << "Reflang tool to generate reflection metadata.\n";
-		cout << "\n";
-		cout << "Usage: reflang [reflang_flags] -- [clang_flags]\n";
-		cout << "Where [reflang_flags] are any of the below, and [clang_flags] "
-			"are any flags supported by the libclang version installed\n";
-		cout << "\n";
-		cout << "Supported flags:\n";
-		cmd_args.PrintHelp();
-		exit(-1);
-	}
-
-	int clang_argc = argc - consumed;
-	char** clang_argv = &argv[consumed];
+	vector<string> files = GetFilesToProcess(cmd_args, argc, argv);
 
 	parser::Options options;
 	options.include = "^(" + filter_include->Get() + ")$";
@@ -74,8 +86,7 @@ int main(int argc, char *argv[])
 
 	if (list_only->Get())
 	{
-		auto names = parser::GetSupportedTypeNames(
-				clang_argc, clang_argv, options);
+		auto names = parser::GetSupportedTypeNames(files, argc, argv, options);
 		for (const auto& it : names)
 		{
 			cout << it << endl;
@@ -83,7 +94,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		auto types = parser::GetTypes(clang_argc, clang_argv, options);
+		auto types = parser::GetTypes(files, argc, argv, options);
 		serializer::Options options;
 		options.include_path = reflang_include->Get();
 		options.out_hpp_path = out_hpp->Get();

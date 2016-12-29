@@ -20,11 +20,16 @@ namespace
 		return s;
 	}
 
-	CXTranslationUnit Parse(CXIndex& index, int argc, char* argv[])
+	CXTranslationUnit Parse(
+			CXIndex& index, const string& file, int argc, char* argv[])
 	{
 		CXTranslationUnit unit;
 		auto error = clang_parseTranslationUnit2(
-				index, 0, argv, argc, 0, 0, CXTranslationUnit_None, &unit);
+				index,
+				file.c_str(), argv, argc,
+				nullptr, 0,
+				CXTranslationUnit_None,
+				&unit);
 		if (error != 0)
 		{
 			cerr << "Unable to parse translation unit. Quitting." << endl;
@@ -90,9 +95,11 @@ namespace
 }  // namespace
 
 vector<string> parser::GetSupportedTypeNames(
-		int argc, char* argv[], const Options& options)
+		const std::vector<std::string>& files,
+		int argc, char* argv[],
+		const Options& options)
 {
-	auto types = GetTypes(argc, argv, options);
+	auto types = GetTypes(files, argc, argv, options);
 
 	vector<string> names;
 	names.reserve(types.size());
@@ -104,18 +111,23 @@ vector<string> parser::GetSupportedTypeNames(
 }
 
 vector<unique_ptr<TypeBase>> parser::GetTypes(
-		int argc, char* argv[], const Options& options)
+		const std::vector<std::string>& files,
+		int argc, char* argv[],
+		const Options& options)
 {
-	CXIndex index = clang_createIndex(0, 0);
-	CXTranslationUnit unit = Parse(index, argc, argv);
-
-	auto cursor = clang_getTranslationUnitCursor(unit);
-
 	vector<unique_ptr<TypeBase>> results;
-	GetTypesStruct data = { &results, &options };
-	clang_visitChildren(cursor, GetTypesVisitor, &data);
+	for (const auto& file : files)
+	{
+		CXIndex index = clang_createIndex(0, 0);
+		CXTranslationUnit unit = Parse(index, file, argc, argv);
 
-	clang_disposeTranslationUnit(unit);
-	clang_disposeIndex(index);
+		auto cursor = clang_getTranslationUnitCursor(unit);
+
+		GetTypesStruct data = { &results, &options };
+		clang_visitChildren(cursor, GetTypesVisitor, &data);
+
+		clang_disposeTranslationUnit(unit);
+		clang_disposeIndex(index);
+	}
 	return results;
 }

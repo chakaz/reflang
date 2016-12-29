@@ -5,6 +5,15 @@
 using namespace reflang;
 using namespace std;
 
+namespace
+{
+	void IncrementArgcArgv(int& argc, char**& argv)
+	{
+		--argc;
+		++argv;
+	}
+}
+
 CmdArgs::Exception::Exception(const string& error)
 :	error_(error)
 {
@@ -15,16 +24,23 @@ string CmdArgs::Exception::GetError() const
 	return error_;
 }
 
-int CmdArgs::Consume(int argc, char** argv)
+vector<string> CmdArgs::Consume(int& argc, char**& argv)
 {
-	int consumed = 0;
+	vector<string> results;
 
-	while (consumed < argc)
+	while (argc > 0)
 	{
-		const string arg = argv[consumed];
+		const string arg = *argv;
+		if (arg[0] != '-')
+		{
+			results.push_back(arg);
+			IncrementArgcArgv(argc, argv);
+			continue;
+		}
+
 		if (arg == "--")
 		{
-			++consumed;
+			IncrementArgcArgv(argc, argv);
 			break;
 		}
 
@@ -35,18 +51,20 @@ int CmdArgs::Consume(int argc, char** argv)
 					"Unknown argument " + arg + " - did you forget '--'?");
 		}
 
-		if (consumed+1 >= argc)
+		if (argc == 1)
 		{
 			throw Exception("No value provided for " + arg);
 		}
 
-		const string value = argv[consumed+1];
+		const string value = argv[1];
 		it->second.setter(value);
 
-		consumed += 2;
+		// Increment twice - 1 for param name and 1 for param value.
+		IncrementArgcArgv(argc, argv);
+		IncrementArgcArgv(argc, argv);
 	}
 
-	return consumed;
+	return results;
 }
 
 void CmdArgs::PrintHelp() const

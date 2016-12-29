@@ -187,19 +187,22 @@ Examples of running the tool:
 $ ./reflang
 
 # generate code for test.hpp, write both hpp and cpp to stdout
-$ ./reflang -- test.hpp
+$ ./reflang test.hpp
 
 # specify output files
-$ ./reflang --out-cpp test.reflang.cpp --out-hpp test.reflang.hpp -- test.hpp
+$ ./reflang --out-cpp test.reflang.cpp --out-hpp test.reflang.hpp test.hpp
 
 # only list classes, functions, etc available for generation
-$ ./reflang --list-only true -- test.hpp
+$ ./reflang --list-only true test.hpp
 
 # only generate code for classes, functions, etc not in std::
-$ ./reflang --exclude "std::.*" -- test.hpp
+$ ./reflang --exclude "std::.*" test.hpp
 
 # only generate code for classes, functions, etc beginning with My
-$ ./reflang --include "My.*" -- test.hpp
+$ ./reflang --include "My.*" test.hpp
+
+# pass flags supported by libclang
+$ ./reflang test.hpp -- -std=c++14 -DSOMETHING -I./include/
 ```
 
 ## Supported Features & Limitations

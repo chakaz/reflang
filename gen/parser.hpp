@@ -19,10 +19,14 @@ namespace reflang
 		};
 
 		std::vector<std::string> GetSupportedTypeNames(
-				int argc, char* argv[], const Options& options = Options());
+				const std::vector<std::string>& files,
+				int argc, char* argv[],
+				const Options& options = Options());
 
 		std::vector<std::unique_ptr<TypeBase>> GetTypes(
-				int argc, char* argv[], const Options& options = Options());
+				const std::vector<std::string>& files,
+				int argc, char* argv[],
+				const Options& options = Options());
 	};
 }
 

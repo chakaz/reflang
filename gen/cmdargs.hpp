@@ -4,7 +4,9 @@
 #include <functional>
 #include <memory>
 #include <sstream>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace reflang
 {
@@ -55,6 +57,11 @@ namespace reflang
 				const std::string& help,
 				T default_value)
 		{
+			if (cmd.empty() || cmd[0] != '-')
+			{
+				throw Exception("Invalid argument " + cmd + ".");
+			}
+
 			auto arg = std::make_shared<Arg<T>>(Arg<T>(default_value));
 			if (args_.find(cmd) != args_.end())
 			{
@@ -69,9 +76,9 @@ namespace reflang
 			return std::move(arg);
 		}
 
-		// Consumes arguments until "--".
-		// Returns how many arguments were consumed.
-		int Consume(int argc, char** argv);
+		// Consumes arguments until after "--", while updating argv and argc to
+		// the position after "--" if any. Returns list of non-flag args.
+		std::vector<std::string> Consume(int& argc, char**& argv);
 
 		void PrintHelp() const;
 
