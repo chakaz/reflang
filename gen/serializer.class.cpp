@@ -126,7 +126,8 @@ int Method<decltype(%pointer%), %pointer%>::GetParameterCount() const
 	return %param_count%;
 }
 
-Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(%pointer%), %pointer%>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != %param_count%)
 	{
@@ -183,13 +184,21 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 		return tmpl.str();
 	}
 
-	string GetMethodImpl(const Class& c)
+	map<string, vector<Function>> GetMethodsByName(
+			const Class::MethodList& methods)
 	{
 		map<string, vector<Function>> methods_by_name;
-		for (const auto& method : c.Methods)
+		for (const auto& method : methods)
 		{
 			methods_by_name[method.Name].push_back(method);
 		}
+		return methods_by_name;
+	}
+
+	string GetMethodImpl(const Class& c)
+	{
+		map<string, vector<Function>> methods_by_name = GetMethodsByName(
+				c.Methods);
 
 		stringstream tmpl;
 		bool first = true;
@@ -209,7 +218,39 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 			for (const auto& method : methods.second)
 			{
 				string name = "&" + c.GetFullName() + "::" + methods.first;
-				tmpl << "		results.push_back(std::make_unique<Method<decltype(" << name << "), " << name << ">>());\n";
+				tmpl << "		results.push_back(std::make_unique<Method<decltype("
+					<< name << "), " << name << ">>());\n";
+			}
+			tmpl << "	}\n";
+		}
+		return tmpl.str();
+	}
+
+	string GetStaticMethodImpl(const Class& c)
+	{
+		map<string, vector<Function>> methods_by_name = GetMethodsByName(
+				c.StaticMethods);
+
+		stringstream tmpl;
+		bool first = true;
+		for (const auto& methods : methods_by_name)
+		{
+			tmpl << "	";
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				tmpl << "else ";
+			}
+			tmpl << "if (name == \"" << methods.first << "\")\n";
+			tmpl << "	{\n";
+			for (const auto& method : methods.second)
+			{
+				string name = c.GetFullName() + "::" + methods.first;
+				tmpl << "		results.push_back(std::make_unique<Function<decltype("
+					<< name << "), " << name << ">>());\n";
 			}
 			tmpl << "	}\n";
 		}
@@ -231,7 +272,8 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 			serializer::SerializeFunctionSources(tmpl, method);
 		}
 
-		tmpl << "// End of " << c.GetFullName() << " static methods definitions.\n";
+		tmpl << "// End of " << c.GetFullName()
+			<< " static methods definitions.\n";
 
 		return tmpl.str();
 	}
@@ -266,15 +308,19 @@ public:
 	static const constexpr int StaticMethodCount = %static_method_count%;
 
 	int GetFieldCount() const override;
-	Reference GetField(const Reference& o, const std::string& name) const override;
+	Reference GetField(
+			const Reference& o, const std::string& name) const override;
 
 	int GetStaticFieldCount() const override;
 	Reference GetStaticField(const std::string& name) const override;
 
 	int GetMethodCount() const override;
-	std::vector<std::unique_ptr<IMethod>> GetMethod(const std::string& name) const override;
+	std::vector<std::unique_ptr<IMethod>> GetMethod(
+			const std::string& name) const override;
 
 	int GetStaticMethodCount() const override;
+	std::vector<std::unique_ptr<IFunction>> GetStaticMethod(
+			const std::string& name) const override;
 
 	const std::string& GetName() const override;
 
@@ -386,6 +432,14 @@ int Class<%name%>::GetStaticMethodCount() const
 	return StaticMethodCount;
 }
 
+std::vector<std::unique_ptr<IFunction>> Class<%name%>::GetStaticMethod(
+		const std::string& name) const
+{
+	std::vector<std::unique_ptr<IFunction>> results;
+%get_static_method_impl%
+	return results;
+}
+
 static const std::string %escaped_name%_name = "%name%";
 
 const std::string& Class<%name%>::GetName() const
@@ -408,6 +462,7 @@ const std::string& Class<%name%>::GetName() const
 				{"%escaped_name%", GetNameWithoutColons(c.GetFullName())},
 				{"%method_definitions%", MethodsDefinitions(c)},
 				{"%get_method_impl%", GetMethodImpl(c)},
-				{"%static_method_definitions%", StaticMethodsDefinitions(c)}
+				{"%static_method_definitions%", StaticMethodsDefinitions(c)},
+				{"%get_static_method_impl%", GetStaticMethodImpl(c)}
 			});
 }

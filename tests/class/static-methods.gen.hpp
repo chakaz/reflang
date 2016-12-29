@@ -23,15 +23,19 @@ public:
 	static const constexpr int StaticMethodCount = 4;
 
 	int GetFieldCount() const override;
-	Reference GetField(const Reference& o, const std::string& name) const override;
+	Reference GetField(
+			const Reference& o, const std::string& name) const override;
 
 	int GetStaticFieldCount() const override;
 	Reference GetStaticField(const std::string& name) const override;
 
 	int GetMethodCount() const override;
-	std::vector<std::unique_ptr<IMethod>> GetMethod(const std::string& name) const override;
+	std::vector<std::unique_ptr<IMethod>> GetMethod(
+			const std::string& name) const override;
 
 	int GetStaticMethodCount() const override;
+	std::vector<std::unique_ptr<IFunction>> GetStaticMethod(
+			const std::string& name) const override;
 
 	const std::string& GetName() const override;
 

@@ -54,6 +54,30 @@ int Class<MyClass>::GetStaticMethodCount() const
 	return StaticMethodCount;
 }
 
+std::vector<std::unique_ptr<IFunction>> Class<MyClass>::GetStaticMethod(
+		const std::string& name) const
+{
+	std::vector<std::unique_ptr<IFunction>> results;
+	if (name == "Method0")
+	{
+		results.push_back(std::make_unique<Function<decltype(MyClass::Method0), MyClass::Method0>>());
+	}
+	else if (name == "Method1")
+	{
+		results.push_back(std::make_unique<Function<decltype(MyClass::Method1), MyClass::Method1>>());
+	}
+	else if (name == "RMethod0")
+	{
+		results.push_back(std::make_unique<Function<decltype(MyClass::RMethod0), MyClass::RMethod0>>());
+	}
+	else if (name == "RMethod1")
+	{
+		results.push_back(std::make_unique<Function<decltype(MyClass::RMethod1), MyClass::RMethod1>>());
+	}
+
+	return results;
+}
+
 static const std::string MyClass_name = "MyClass";
 
 const std::string& Class<MyClass>::GetName() const

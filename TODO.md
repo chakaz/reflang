@@ -16,7 +16,7 @@ This file is used by Reflang author.
 ## Classes
 * Overloaded methods
 * Get method parameter names and types, return value type
-* IClass API
+* Get through registry
 * Constructors (construct by name with arguments)
 * Sub-classes
 

@@ -80,6 +80,18 @@ namespace reflang
 		virtual const std::string& GetName() const = 0;
 	};
 
+	class IFunction : public IType
+	{
+	public:
+		virtual int GetParameterCount() const = 0;
+
+		// Syntactic sugar for calling Invoke().
+		template <typename... Ts>
+		Object operator()(Ts&&... ts);
+
+		virtual Object Invoke(const std::vector<Object>& args) = 0;
+	};
+
 	class IMethod : public IType
 	{
 	public:
@@ -89,7 +101,8 @@ namespace reflang
 		template <typename... Ts>
 		Object operator()(const Reference& o, Ts&&... ts);
 
-		virtual Object Invoke(const Reference& o, const std::vector<Object>& args) = 0;
+		virtual Object Invoke(
+				const Reference& o, const std::vector<Object>& args) = 0;
 	};
 
 	class IClass : public IType
@@ -103,10 +116,12 @@ namespace reflang
 		virtual Reference GetStaticField(const std::string& name) const = 0;
 
 		virtual int GetMethodCount() const = 0;
-		virtual std::vector<std::unique_ptr<IMethod>> GetMethod(const std::string& name) const = 0;
+		virtual std::vector<std::unique_ptr<IMethod>> GetMethod(
+				const std::string& name) const = 0;
 
 		virtual int GetStaticMethodCount() const = 0;
-		//virtual std::vector<std::unique_ptr<IFunction>> GetStaticMethod(const std::string& name) const = 0;
+		virtual std::vector<std::unique_ptr<IFunction>> GetStaticMethod(
+				const std::string& name) const = 0;
 	};
 
 	class IEnum : public IType
@@ -116,18 +131,6 @@ namespace reflang
 		virtual std::vector<int> GetIntValues() const = 0;
 		virtual bool TryTranslate(const std::string& value, int& out) = 0;
 		virtual bool TryTranslate(int value, std::string& out) = 0;
-	};
-
-	class IFunction : public IType
-	{
-	public:
-		virtual int GetParameterCount() const = 0;
-
-		// Syntactic sugar for calling Invoke().
-		template <typename... Ts>
-		Object operator()(Ts&&... ts);
-
-		virtual Object Invoke(const std::vector<Object>& args) = 0;
 	};
 
 	namespace registry

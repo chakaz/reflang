@@ -94,6 +94,14 @@ int Class<MyClass>::GetStaticMethodCount() const
 	return StaticMethodCount;
 }
 
+std::vector<std::unique_ptr<IFunction>> Class<MyClass>::GetStaticMethod(
+		const std::string& name) const
+{
+	std::vector<std::unique_ptr<IFunction>> results;
+
+	return results;
+}
+
 static const std::string MyClass_name = "MyClass";
 
 const std::string& Class<MyClass>::GetName() const
@@ -114,7 +122,8 @@ int Method<decltype(&MyClass::Method0), &MyClass::Method0>::GetParameterCount() 
 	return 0;
 }
 
-Object Method<decltype(&MyClass::Method0), &MyClass::Method0>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::Method0), &MyClass::Method0>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -136,7 +145,8 @@ int Method<decltype(&MyClass::Method1), &MyClass::Method1>::GetParameterCount() 
 	return 2;
 }
 
-Object Method<decltype(&MyClass::Method1), &MyClass::Method1>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::Method1), &MyClass::Method1>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 2)
 	{
@@ -158,7 +168,8 @@ int Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::GetParameterCount(
 	return 0;
 }
 
-Object Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -179,7 +190,8 @@ int Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::GetParameterCount(
 	return 2;
 }
 
-Object Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 2)
 	{
@@ -200,7 +212,8 @@ int Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::GetParam
 	return 0;
 }
 
-Object Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -222,7 +235,8 @@ int Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::GetParameter
 	return 0;
 }
 
-Object Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -244,7 +258,8 @@ int Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>
 	return 1;
 }
 
-Object Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -266,7 +281,8 @@ int Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointer
 	return 1;
 }
 
-Object Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointerArg>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointerArg>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -288,7 +304,8 @@ int Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWit
 	return 1;
 }
 
-Object Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWithConstReferenceArg0>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWithConstReferenceArg0>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -310,7 +327,8 @@ int Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWit
 	return 1;
 }
 
-Object Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWithConstReferenceArg1>::Invoke(const Reference& o, const std::vector<Object>& args)
+Object Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWithConstReferenceArg1>::Invoke(
+		const Reference& o, const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{

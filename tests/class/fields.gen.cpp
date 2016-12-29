@@ -178,6 +178,14 @@ int Class<MyClass>::GetStaticMethodCount() const
 	return StaticMethodCount;
 }
 
+std::vector<std::unique_ptr<IFunction>> Class<MyClass>::GetStaticMethod(
+		const std::string& name) const
+{
+	std::vector<std::unique_ptr<IFunction>> results;
+
+	return results;
+}
+
 static const std::string MyClass_name = "MyClass";
 
 const std::string& Class<MyClass>::GetName() const

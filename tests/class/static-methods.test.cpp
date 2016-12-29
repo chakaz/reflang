@@ -72,3 +72,16 @@ TEST_CASE("with-registry")
 	REQUIRE(global_int == 123);
 	REQUIRE(result.GetT<bool>() == true);
 }
+
+TEST_CASE("get-static-method")
+{
+	Class<MyClass> metadata;
+	REQUIRE(metadata.GetStaticMethod("nonexisting").empty());
+	auto functions = metadata.GetStaticMethod("Method0");
+	REQUIRE(functions.size() == 1);
+	auto& func = *(functions[0].get());
+
+	global_int = 0;
+	func();
+	REQUIRE(global_int == 1);
+}
