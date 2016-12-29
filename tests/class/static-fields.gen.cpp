@@ -24,26 +24,77 @@ int Class<MyClass>::GetFieldCount() const
 
 Reference Class<MyClass>::GetField(const Reference& r, const std::string& name) const
 {
-	if (r.IsT<MyClass>())
-	{
-		MyClass& o = r.GetT<MyClass>();
-		(void)o;
-	}
-	else if (r.IsT<const MyClass>())
-	{
-		const MyClass& o = r.GetT<const MyClass>();
-		(void)o;
-	}
-	else
-	{
-		throw Exception("Invalid Reference passed to GetField().");
-	}
-	throw Exception("Invalid nam passed to GetField().");
+	throw Exception("Invalid name passed to GetField().");
 }
 
 int Class<MyClass>::GetStaticFieldCount() const
 {
 	return StaticFieldCount;
+}
+
+Reference Class<MyClass>::GetStaticField(const std::string& name) const
+{
+		if (name == "var")
+		{
+			return Reference(MyClass::var);
+		}
+		if (name == "const_var")
+		{
+			return Reference(MyClass::const_var);
+		}
+		if (name == "pointer_var")
+		{
+			return Reference(MyClass::pointer_var);
+		}
+		if (name == "const_pointer_var")
+		{
+			return Reference(MyClass::const_pointer_var);
+		}
+		if (name == "const_pointer_const_var")
+		{
+			return Reference(MyClass::const_pointer_const_var);
+		}
+		if (name == "ref_var")
+		{
+			return Reference(MyClass::ref_var);
+		}
+		if (name == "const_ref_var")
+		{
+			return Reference(MyClass::const_ref_var);
+		}
+		if (name == "constexpr_var")
+		{
+			return Reference(MyClass::constexpr_var);
+		}
+		if (name == "complex")
+		{
+			return Reference(MyClass::complex);
+		}
+		if (name == "const_complex")
+		{
+			return Reference(MyClass::const_complex);
+		}
+		if (name == "pointer_complex")
+		{
+			return Reference(MyClass::pointer_complex);
+		}
+		if (name == "const_pointer_complex")
+		{
+			return Reference(MyClass::const_pointer_complex);
+		}
+		if (name == "const_pointer_const_complex")
+		{
+			return Reference(MyClass::const_pointer_const_complex);
+		}
+		if (name == "ref_complex")
+		{
+			return Reference(MyClass::ref_complex);
+		}
+		if (name == "const_ref_complex")
+		{
+			return Reference(MyClass::const_ref_complex);
+		}
+	throw Exception("Invalid name passed to GetStaticField().");
 }
 
 int Class<MyClass>::GetMethodCount() const

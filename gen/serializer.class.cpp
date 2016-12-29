@@ -99,7 +99,8 @@ public:
 		stringstream tmpl;
 		for (size_t i = 0; i < m.Arguments.size(); ++i)
 		{
-			tmpl << "args[" << i << "].GetT<std::decay_t<" << m.Arguments[i].Type << ">>()";
+			tmpl << "args[" << i << "].GetT<std::decay_t<"
+				<< m.Arguments[i].Type << ">>()";
 			if (i != m.Arguments.size() - 1)
 			{
 				tmpl << ", ";
@@ -147,12 +148,15 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 		return serializer::ReplaceAll(
 			tmpl.str(),
 			{
-				{ "%class_name%", c.GetFullName() },
-				{ "%pointer%", "&" + c.GetFullName() + "::" + m.Name },
-				{ "%name%", m.Name },
-				{ "%escaped_name%", serializer::GetNameWithoutColons(c.GetFullName()) + "_" + m.Name },
-				{ "%param_count%", to_string(m.Arguments.size()) },
-				{ "%call_args%", GetCallArgs(m) }
+				{"%class_name%", c.GetFullName()},
+				{"%pointer%", "&" + c.GetFullName() + "::" + m.Name},
+				{"%name%", m.Name},
+				{
+					"%escaped_name%",
+					serializer::GetNameWithoutColons(
+							c.GetFullName()) + "_" + m.Name},
+				{"%param_count%", to_string(m.Arguments.size())},
+				{"%call_args%", GetCallArgs(m)}
 			});
 	}
 
@@ -196,19 +200,17 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 		return tmpl.str();
 	}
 
-	string GetFieldImpl(const Class& c)
+	string GetFieldImpl(
+			const Class::FieldList& fields, const string& field_prefix)
 	{
 		stringstream tmpl;
-		for (const auto& field : c.Fields)
+		for (const auto& field : fields)
 		{
 			tmpl << "		if (name == \"" << field.Name << "\")\n";
 			tmpl << "		{\n";
-			tmpl << "			return Reference(o." << field.Name << ");\n";
+			tmpl << "			return Reference("
+				<< field_prefix << field.Name << ");\n";
 			tmpl << "		}\n";
-		}
-		if (tmpl.str().empty())
-		{
-			tmpl << "		(void)o;\n";
 		}
 		return tmpl.str();
 	}
@@ -231,6 +233,8 @@ public:
 	Reference GetField(const Reference& o, const std::string& name) const override;
 
 	int GetStaticFieldCount() const override;
+	Reference GetStaticField(const std::string& name) const override;
+
 	int GetMethodCount() const override;
 	int GetStaticMethodCount() const override;
 
@@ -296,25 +300,35 @@ int Class<%name%>::GetFieldCount() const
 }
 
 Reference Class<%name%>::GetField(const Reference& r, const std::string& name) const
-{
+{)";
+	if (!c.Fields.empty())
+	{
+		tmpl << R"(
 	if (r.IsT<%name%>())
 	{
 		%name%& o = r.GetT<%name%>();
-%get_ref_field_impl%	}
+%get_field_impl%	}
 	else if (r.IsT<const %name%>())
 	{
 		const %name%& o = r.GetT<const %name%>();
-%get_ref_field_impl%	}
+%get_field_impl%	}
 	else
 	{
 		throw Exception("Invalid Reference passed to GetField().");
+	})";
 	}
-	throw Exception("Invalid nam passed to GetField().");
+	tmpl << R"(
+	throw Exception("Invalid name passed to GetField().");
 }
 
 int Class<%name%>::GetStaticFieldCount() const
 {
 	return StaticFieldCount;
+}
+
+Reference Class<%name%>::GetStaticField(const std::string& name) const
+{
+%get_static_field_impl%	throw Exception("Invalid name passed to GetStaticField().");
 }
 
 int Class<%name%>::GetMethodCount() const
@@ -340,8 +354,10 @@ const std::string& Class<%name%>::GetName() const
 			tmpl.str(),
 			{
 				{"%name%", c.GetFullName()},
-				{"%get_ref_field_impl%", GetFieldImpl(c)},
-				{"%get_obj_field_impl%", GetFieldImpl(c)},
+				{"%get_field_impl%", GetFieldImpl(c.Fields, "o.")},
+				{
+					"%get_static_field_impl%",
+					GetFieldImpl(c.StaticFields, c.GetFullName() + "::")},
 				{"%field_count%", to_string(c.Fields.size())},
 				{"%escaped_name%", GetNameWithoutColons(c.GetFullName())},
 				{"%method_definitions%", MethodsDefinitions(c)},

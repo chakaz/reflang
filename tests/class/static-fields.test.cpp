@@ -59,3 +59,16 @@ TEST_CASE("iterate-static-fields")
 
 	REQUIRE(fields == 0);
 }
+
+TEST_CASE("get-static-field")
+{
+	Class<MyClass> metadata;
+	Reference field = metadata.GetStaticField("var");
+
+	MyClass::var = 1;
+	REQUIRE(field.GetT<int>() == 1);
+	field.GetT<int>() = 2;
+	REQUIRE(MyClass::var == 2);
+
+	REQUIRE_THROWS(metadata.GetStaticField("non-existing"));
+}

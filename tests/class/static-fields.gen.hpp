@@ -26,6 +26,8 @@ public:
 	Reference GetField(const Reference& o, const std::string& name) const override;
 
 	int GetStaticFieldCount() const override;
+	Reference GetStaticField(const std::string& name) const override;
+
 	int GetMethodCount() const override;
 	int GetStaticMethodCount() const override;
 

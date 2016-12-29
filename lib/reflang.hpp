@@ -100,7 +100,7 @@ namespace reflang
 				const Reference& o, const std::string& name) const = 0;
 
 		virtual int GetStaticFieldCount() const = 0;
-		//virtual Reference GetStaticField(const std::string& name) const = 0;
+		virtual Reference GetStaticField(const std::string& name) const = 0;
 
 		virtual int GetMethodCount() const = 0;
 		//virtual std::vector<IMethod*> GetMethods(const std::string& name) const = 0;
