@@ -10,7 +10,7 @@ if (MSVC)
 	set(CLANG_INCLUDEDIR "C:/Program Files (x86)/LLVM/include")
 	set(CLANG_LIBDIR "C:/Program Files (x86)/LLVM/lib")
 else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++14 -stdlib=libc++")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
