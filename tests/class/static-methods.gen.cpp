@@ -42,6 +42,13 @@ int Class<MyClass>::GetMethodCount() const
 	return MethodCount;
 }
 
+std::vector<std::unique_ptr<IMethod>> Class<MyClass>::GetMethod(const std::string& name) const
+{
+	std::vector<std::unique_ptr<IMethod>> results;
+
+	return results;
+}
+
 int Class<MyClass>::GetStaticMethodCount() const
 {
 	return StaticMethodCount;

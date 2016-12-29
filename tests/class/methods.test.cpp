@@ -127,3 +127,18 @@ TEST_CASE("const-ref-argument")
 	REQUIRE(result.IsVoid());
 	REQUIRE(global_int == 456);
 }
+
+TEST_CASE("get-method")
+{
+	MyClass c;
+	Class<MyClass> metadata;
+
+	REQUIRE(metadata.GetMethod("non-existing").empty());
+
+	auto methods = metadata.GetMethod("Method0");
+	REQUIRE(methods.size() == 1);
+	global_int = 0;
+	auto& method = *(methods[0].get());
+	method(c);
+	REQUIRE(global_int == 1);
+}

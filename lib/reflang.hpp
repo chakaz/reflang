@@ -103,10 +103,10 @@ namespace reflang
 		virtual Reference GetStaticField(const std::string& name) const = 0;
 
 		virtual int GetMethodCount() const = 0;
-		//virtual std::vector<IMethod*> GetMethods(const std::string& name) const = 0;
+		virtual std::vector<std::unique_ptr<IMethod>> GetMethod(const std::string& name) const = 0;
 
 		virtual int GetStaticMethodCount() const = 0;
-		//virtual std::vector<IFunction*> GetStaticMethods(const std::string& name) const = 0;
+		//virtual std::vector<std::unique_ptr<IFunction>> GetStaticMethod(const std::string& name) const = 0;
 	};
 
 	class IEnum : public IType

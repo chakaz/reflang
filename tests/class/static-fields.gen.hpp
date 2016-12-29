@@ -29,6 +29,8 @@ public:
 	Reference GetStaticField(const std::string& name) const override;
 
 	int GetMethodCount() const override;
+	std::vector<std::unique_ptr<IMethod>> GetMethod(const std::string& name) const override;
+
 	int GetStaticMethodCount() const override;
 
 	const std::string& GetName() const override;

@@ -42,6 +42,53 @@ int Class<MyClass>::GetMethodCount() const
 	return MethodCount;
 }
 
+std::vector<std::unique_ptr<IMethod>> Class<MyClass>::GetMethod(const std::string& name) const
+{
+	std::vector<std::unique_ptr<IMethod>> results;
+	if (name == "ConstMethod")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::ConstMethod), &MyClass::ConstMethod>>());
+	}
+	else if (name == "Method0")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::Method0), &MyClass::Method0>>());
+	}
+	else if (name == "Method1")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::Method1), &MyClass::Method1>>());
+	}
+	else if (name == "MethodWithClassArg")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::MethodWithClassArg), &MyClass::MethodWithClassArg>>());
+	}
+	else if (name == "MethodWithConstReferenceArg0")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::MethodWithConstReferenceArg0), &MyClass::MethodWithConstReferenceArg0>>());
+	}
+	else if (name == "MethodWithConstReferenceArg1")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::MethodWithConstReferenceArg1), &MyClass::MethodWithConstReferenceArg1>>());
+	}
+	else if (name == "MethodWithPointerArg")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::MethodWithPointerArg), &MyClass::MethodWithPointerArg>>());
+	}
+	else if (name == "RMethod0")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::RMethod0), &MyClass::RMethod0>>());
+	}
+	else if (name == "RMethod1")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::RMethod1), &MyClass::RMethod1>>());
+	}
+	else if (name == "VirtualMethod")
+	{
+		results.push_back(std::make_unique<Method<decltype(&MyClass::VirtualMethod), &MyClass::VirtualMethod>>());
+	}
+
+	return results;
+}
+
 int Class<MyClass>::GetStaticMethodCount() const
 {
 	return StaticMethodCount;

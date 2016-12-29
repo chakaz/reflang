@@ -1,6 +1,8 @@
 #include "serializer.class.hpp"
 
+#include <map>
 #include <sstream>
+#include <vector>
 
 #include "serializer.function.hpp"
 #include "serializer.util.hpp"
@@ -154,7 +156,8 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 				{
 					"%escaped_name%",
 					serializer::GetNameWithoutColons(
-							c.GetFullName()) + "_" + m.Name},
+							c.GetFullName()) + "_" + m.Name
+				},
 				{"%param_count%", to_string(m.Arguments.size())},
 				{"%call_args%", GetCallArgs(m)}
 			});
@@ -177,6 +180,39 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(const Reference& o, const 
 
 		tmpl << "// End of " << c.GetFullName() << " methods definitions.\n";
 
+		return tmpl.str();
+	}
+
+	string GetMethodImpl(const Class& c)
+	{
+		map<string, vector<Function>> methods_by_name;
+		for (const auto& method : c.Methods)
+		{
+			methods_by_name[method.Name].push_back(method);
+		}
+
+		stringstream tmpl;
+		bool first = true;
+		for (const auto& methods : methods_by_name)
+		{
+			tmpl << "	";
+			if (first)
+			{
+				first = false;
+			}
+			else
+			{
+				tmpl << "else ";
+			}
+			tmpl << "if (name == \"" << methods.first << "\")\n";
+			tmpl << "	{\n";
+			for (const auto& method : methods.second)
+			{
+				string name = "&" + c.GetFullName() + "::" + methods.first;
+				tmpl << "		results.push_back(std::make_unique<Method<decltype(" << name << "), " << name << ">>());\n";
+			}
+			tmpl << "	}\n";
+		}
 		return tmpl.str();
 	}
 
@@ -236,6 +272,8 @@ public:
 	Reference GetStaticField(const std::string& name) const override;
 
 	int GetMethodCount() const override;
+	std::vector<std::unique_ptr<IMethod>> GetMethod(const std::string& name) const override;
+
 	int GetStaticMethodCount() const override;
 
 	const std::string& GetName() const override;
@@ -336,6 +374,13 @@ int Class<%name%>::GetMethodCount() const
 	return MethodCount;
 }
 
+std::vector<std::unique_ptr<IMethod>> Class<%name%>::GetMethod(const std::string& name) const
+{
+	std::vector<std::unique_ptr<IMethod>> results;
+%get_method_impl%
+	return results;
+}
+
 int Class<%name%>::GetStaticMethodCount() const
 {
 	return StaticMethodCount;
@@ -357,10 +402,12 @@ const std::string& Class<%name%>::GetName() const
 				{"%get_field_impl%", GetFieldImpl(c.Fields, "o.")},
 				{
 					"%get_static_field_impl%",
-					GetFieldImpl(c.StaticFields, c.GetFullName() + "::")},
+					GetFieldImpl(c.StaticFields, c.GetFullName() + "::")
+				},
 				{"%field_count%", to_string(c.Fields.size())},
 				{"%escaped_name%", GetNameWithoutColons(c.GetFullName())},
 				{"%method_definitions%", MethodsDefinitions(c)},
+				{"%get_method_impl%", GetMethodImpl(c)},
 				{"%static_method_definitions%", StaticMethodsDefinitions(c)}
 			});
 }
