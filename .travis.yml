@@ -1,8 +1,16 @@
+language: cpp
+
 sudo: required
 dist: trusty
-language: cpp
-script:
-    - mkdir build && cd build && cmake .. && make && make test
+
 compiler:
     - clang
     - gcc
+
+before_install:
+  - sudo apt-get update -qq
+  - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libc++; fi
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-5; fi
+
+script:
+    - mkdir build && cd build && cmake .. && make && make test
