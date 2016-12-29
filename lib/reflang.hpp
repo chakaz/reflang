@@ -96,10 +96,11 @@ namespace reflang
 	{
 	public:
 		virtual int GetFieldCount() const = 0;
-		//virtual Object GetField(const std::string& name) const = 0;
+		virtual Reference GetField(
+				const Reference& o, const std::string& name) const = 0;
 
 		virtual int GetStaticFieldCount() const = 0;
-		//virtual Object GetStaticField(const std::string& name) const = 0;
+		//virtual Reference GetStaticField(const std::string& name) const = 0;
 
 		virtual int GetMethodCount() const = 0;
 		//virtual std::vector<IMethod*> GetMethods(const std::string& name) const = 0;
@@ -202,8 +203,8 @@ const T& reflang::Object::GetT() const
 
 template <typename T>
 reflang::Reference::Reference(T& t)
-:	id_(GetTypeId<std::decay_t<T>>())
-,	data_(new std::decay_t<T>(std::forward<T>(t)))
+:	id_(GetTypeId<std::remove_reference_t<T>>())
+,	data_((void*)&t)  // C-style cast avoids issues with possible constness.
 {
 }
 

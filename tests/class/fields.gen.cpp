@@ -22,6 +22,135 @@ int Class<MyClass>::GetFieldCount() const
 	return FieldCount;
 }
 
+Reference Class<MyClass>::GetField(const Reference& r, const std::string& name) const
+{
+	if (r.IsT<MyClass>())
+	{
+		MyClass& o = r.GetT<MyClass>();
+		if (name == "field")
+		{
+			return Reference(o.field);
+		}
+		if (name == "const_field")
+		{
+			return Reference(o.const_field);
+		}
+		if (name == "pointer_field")
+		{
+			return Reference(o.pointer_field);
+		}
+		if (name == "const_pointer_field")
+		{
+			return Reference(o.const_pointer_field);
+		}
+		if (name == "const_pointer_const_field")
+		{
+			return Reference(o.const_pointer_const_field);
+		}
+		if (name == "ref_field")
+		{
+			return Reference(o.ref_field);
+		}
+		if (name == "const_ref_field")
+		{
+			return Reference(o.const_ref_field);
+		}
+		if (name == "complex")
+		{
+			return Reference(o.complex);
+		}
+		if (name == "const_complex")
+		{
+			return Reference(o.const_complex);
+		}
+		if (name == "pointer_complex")
+		{
+			return Reference(o.pointer_complex);
+		}
+		if (name == "const_pointer_complex")
+		{
+			return Reference(o.const_pointer_complex);
+		}
+		if (name == "const_pointer_const_complex")
+		{
+			return Reference(o.const_pointer_const_complex);
+		}
+		if (name == "ref_complex")
+		{
+			return Reference(o.ref_complex);
+		}
+		if (name == "const_ref_complex")
+		{
+			return Reference(o.const_ref_complex);
+		}
+	}
+	else if (r.IsT<const MyClass>())
+	{
+		const MyClass& o = r.GetT<const MyClass>();
+		if (name == "field")
+		{
+			return Reference(o.field);
+		}
+		if (name == "const_field")
+		{
+			return Reference(o.const_field);
+		}
+		if (name == "pointer_field")
+		{
+			return Reference(o.pointer_field);
+		}
+		if (name == "const_pointer_field")
+		{
+			return Reference(o.const_pointer_field);
+		}
+		if (name == "const_pointer_const_field")
+		{
+			return Reference(o.const_pointer_const_field);
+		}
+		if (name == "ref_field")
+		{
+			return Reference(o.ref_field);
+		}
+		if (name == "const_ref_field")
+		{
+			return Reference(o.const_ref_field);
+		}
+		if (name == "complex")
+		{
+			return Reference(o.complex);
+		}
+		if (name == "const_complex")
+		{
+			return Reference(o.const_complex);
+		}
+		if (name == "pointer_complex")
+		{
+			return Reference(o.pointer_complex);
+		}
+		if (name == "const_pointer_complex")
+		{
+			return Reference(o.const_pointer_complex);
+		}
+		if (name == "const_pointer_const_complex")
+		{
+			return Reference(o.const_pointer_const_complex);
+		}
+		if (name == "ref_complex")
+		{
+			return Reference(o.ref_complex);
+		}
+		if (name == "const_ref_complex")
+		{
+			return Reference(o.const_ref_complex);
+		}
+	}
+	else
+	{
+		throw Exception("Invalid Reference passed to GetField().");
+	}
+	throw Exception("Invalid nam passed to GetField().");
+}
+
 int Class<MyClass>::GetStaticFieldCount() const
 {
 	return StaticFieldCount;

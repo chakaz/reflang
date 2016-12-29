@@ -57,3 +57,24 @@ TEST_CASE("iterate-fields")
 
 	REQUIRE(fields == Class<MyClass>::FieldCount);
 }
+
+TEST_CASE("get-field-ref")
+{
+	Class<MyClass> metadata;
+
+	MyClass instance(123);
+	Reference field = metadata.GetField(instance, "field");
+	REQUIRE(field.GetT<int>() == 123);
+	field.GetT<int>() = 100;
+	REQUIRE(instance.field == 100);
+}
+
+TEST_CASE("get-field-const-ref")
+{
+	Class<MyClass> metadata;
+
+	MyClass instance(123);
+	const MyClass& const_ref = instance;
+	Reference field = metadata.GetField(const_ref, "field");
+	REQUIRE(field.GetT<const int>() == 123);
+}

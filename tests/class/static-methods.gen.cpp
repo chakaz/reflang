@@ -22,6 +22,25 @@ int Class<MyClass>::GetFieldCount() const
 	return FieldCount;
 }
 
+Reference Class<MyClass>::GetField(const Reference& r, const std::string& name) const
+{
+	if (r.IsT<MyClass>())
+	{
+		MyClass& o = r.GetT<MyClass>();
+		(void)o;
+	}
+	else if (r.IsT<const MyClass>())
+	{
+		const MyClass& o = r.GetT<const MyClass>();
+		(void)o;
+	}
+	else
+	{
+		throw Exception("Invalid Reference passed to GetField().");
+	}
+	throw Exception("Invalid nam passed to GetField().");
+}
+
 int Class<MyClass>::GetStaticFieldCount() const
 {
 	return StaticFieldCount;

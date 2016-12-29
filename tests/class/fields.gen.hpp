@@ -23,6 +23,8 @@ public:
 	static const constexpr int StaticMethodCount = 0;
 
 	int GetFieldCount() const override;
+	Reference GetField(const Reference& o, const std::string& name) const override;
+
 	int GetStaticFieldCount() const override;
 	int GetMethodCount() const override;
 	int GetStaticMethodCount() const override;

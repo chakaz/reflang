@@ -7,3 +7,4 @@ macro(reflang_lib_test TEST)
 endmacro()
 
 reflang_lib_test(object.test)
+reflang_lib_test(reference.test)
