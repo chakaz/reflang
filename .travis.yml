@@ -41,6 +41,7 @@ matrix:
 
 before_install:
   - sudo apt-get update -qq
+  - sudo apt-get install -y libclang-dev
 script:
   - mkdir build
   - cd build
