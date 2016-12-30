@@ -21,4 +21,5 @@ before_install:
 script:
   - mkdir build
   - cd build
-  - cmake -DCMAKE_CXX_COMPILER=$COMPILER .. && make clean && make && make test
+  - cmake -DCMAKE_CXX_COMPILER=$COMPILER .. && make clean && make
+  - CTEST_OUTPUT_ON_FAILURE=1 ctest -V
