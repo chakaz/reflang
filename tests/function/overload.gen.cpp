@@ -12,19 +12,19 @@ namespace reflang
 {
 
 
-int Function<void(), Func>::GetParameterCount() const
+int Function<void(*)(), Func>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string Func_name = "Func";
 
-const std::string& Function<void(), Func>::GetName() const
+const std::string& Function<void(*)(), Func>::GetName() const
 {
 	return Func_name;
 }
 
-Object Function<void(), Func>::Invoke(const std::vector<Object>& args)
+Object Function<void(*)(), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -43,26 +43,26 @@ namespace
 		Func_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<void(), Func>>());
+					std::make_unique<Function<void(*)(), Func>>());
 		}
 	} Func_instance;
 }
 
 
 
-int Function<void(int), Func>::GetParameterCount() const
+int Function<void(*)(int), Func>::GetParameterCount() const
 {
 	return 1;
 }
 
 static const std::string Func_1_name = "Func";
 
-const std::string& Function<void(int), Func>::GetName() const
+const std::string& Function<void(*)(int), Func>::GetName() const
 {
 	return Func_1_name;
 }
 
-Object Function<void(int), Func>::Invoke(const std::vector<Object>& args)
+Object Function<void(*)(int), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -81,26 +81,26 @@ namespace
 		Func_1_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<void(int), Func>>());
+					std::make_unique<Function<void(*)(int), Func>>());
 		}
 	} Func_1_instance;
 }
 
 
 
-int Function<void(float), Func>::GetParameterCount() const
+int Function<void(*)(float), Func>::GetParameterCount() const
 {
 	return 1;
 }
 
 static const std::string Func_2_name = "Func";
 
-const std::string& Function<void(float), Func>::GetName() const
+const std::string& Function<void(*)(float), Func>::GetName() const
 {
 	return Func_2_name;
 }
 
-Object Function<void(float), Func>::Invoke(const std::vector<Object>& args)
+Object Function<void(*)(float), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -119,26 +119,26 @@ namespace
 		Func_2_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<void(float), Func>>());
+					std::make_unique<Function<void(*)(float), Func>>());
 		}
 	} Func_2_instance;
 }
 
 
 
-int Function<bool(const char &), Func>::GetParameterCount() const
+int Function<bool(*)(const char &), Func>::GetParameterCount() const
 {
 	return 1;
 }
 
 static const std::string Func_3_name = "Func";
 
-const std::string& Function<bool(const char &), Func>::GetName() const
+const std::string& Function<bool(*)(const char &), Func>::GetName() const
 {
 	return Func_3_name;
 }
 
-Object Function<bool(const char &), Func>::Invoke(const std::vector<Object>& args)
+Object Function<bool(*)(const char &), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -156,7 +156,7 @@ namespace
 		Func_3_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<bool(const char &), Func>>());
+					std::make_unique<Function<bool(*)(const char &), Func>>());
 		}
 	} Func_3_instance;
 }

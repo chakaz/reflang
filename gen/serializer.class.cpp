@@ -249,8 +249,9 @@ Object Method<decltype(%pointer%), %pointer%>::Invoke(
 			for (const auto& method : methods.second)
 			{
 				string name = c.GetFullName() + "::" + methods.first;
-				tmpl << "		results.push_back(std::make_unique<Function<decltype("
-					<< name << "), " << name << ">>());\n";
+				tmpl << "		results.push_back(std::make_unique<Function<"
+					<< serializer::GetFunctionSignature(method) << ", " << name
+					<< ">>());\n";
 			}
 			tmpl << "	}\n";
 		}

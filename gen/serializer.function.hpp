@@ -10,6 +10,7 @@ namespace reflang
 {
 	namespace serializer
 	{
+		std::string GetFunctionSignature(const Function& f);
 		void SerializeFunctionHeader(std::ostream& o, const Function& c);
 		void SerializeFunctionSources(std::ostream& o, const Function& c);
 	}

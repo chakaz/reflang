@@ -88,7 +88,7 @@ std::vector<std::unique_ptr<IFunction>> Class<MyClass::Subclass>::GetStaticMetho
 	std::vector<std::unique_ptr<IFunction>> results;
 	if (name == "static_method")
 	{
-		results.push_back(std::make_unique<Function<decltype(MyClass::Subclass::static_method), MyClass::Subclass::static_method>>());
+		results.push_back(std::make_unique<Function<void(*)(), MyClass::Subclass::static_method>>());
 	}
 
 	return results;
@@ -128,19 +128,19 @@ Object Method<decltype(&MyClass::Subclass::method), &MyClass::Subclass::method>:
 // End of MyClass::Subclass methods definitions.
 // MyClass::Subclass static methods definitions.
 
-int Function<void(), MyClass::Subclass::static_method>::GetParameterCount() const
+int Function<void(*)(), MyClass::Subclass::static_method>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string MyClass__Subclass__static_method_name = "MyClass::Subclass::static_method";
 
-const std::string& Function<void(), MyClass::Subclass::static_method>::GetName() const
+const std::string& Function<void(*)(), MyClass::Subclass::static_method>::GetName() const
 {
 	return MyClass__Subclass__static_method_name;
 }
 
-Object Function<void(), MyClass::Subclass::static_method>::Invoke(const std::vector<Object>& args)
+Object Function<void(*)(), MyClass::Subclass::static_method>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -159,7 +159,7 @@ namespace
 		MyClass__Subclass__static_method_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<void(), MyClass::Subclass::static_method>>());
+					std::make_unique<Function<void(*)(), MyClass::Subclass::static_method>>());
 		}
 	} MyClass__Subclass__static_method_instance;
 }

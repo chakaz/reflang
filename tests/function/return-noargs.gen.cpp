@@ -12,19 +12,19 @@ namespace reflang
 {
 
 
-int Function<const char *(), ns::NamespacedFunction>::GetParameterCount() const
+int Function<const char *(*)(), ns::NamespacedFunction>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string ns__NamespacedFunction_name = "ns::NamespacedFunction";
 
-const std::string& Function<const char *(), ns::NamespacedFunction>::GetName() const
+const std::string& Function<const char *(*)(), ns::NamespacedFunction>::GetName() const
 {
 	return ns__NamespacedFunction_name;
 }
 
-Object Function<const char *(), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
+Object Function<const char *(*)(), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -42,26 +42,26 @@ namespace
 		ns__NamespacedFunction_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<const char *(), ns::NamespacedFunction>>());
+					std::make_unique<Function<const char *(*)(), ns::NamespacedFunction>>());
 		}
 	} ns__NamespacedFunction_instance;
 }
 
 
 
-int Function<const char *(), GlobalFunction>::GetParameterCount() const
+int Function<const char *(*)(), GlobalFunction>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string GlobalFunction_name = "GlobalFunction";
 
-const std::string& Function<const char *(), GlobalFunction>::GetName() const
+const std::string& Function<const char *(*)(), GlobalFunction>::GetName() const
 {
 	return GlobalFunction_name;
 }
 
-Object Function<const char *(), GlobalFunction>::Invoke(const std::vector<Object>& args)
+Object Function<const char *(*)(), GlobalFunction>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -79,26 +79,26 @@ namespace
 		GlobalFunction_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<const char *(), GlobalFunction>>());
+					std::make_unique<Function<const char *(*)(), GlobalFunction>>());
 		}
 	} GlobalFunction_instance;
 }
 
 
 
-int Function<DummyClass(), ReturnByValue>::GetParameterCount() const
+int Function<DummyClass(*)(), ReturnByValue>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string ReturnByValue_name = "ReturnByValue";
 
-const std::string& Function<DummyClass(), ReturnByValue>::GetName() const
+const std::string& Function<DummyClass(*)(), ReturnByValue>::GetName() const
 {
 	return ReturnByValue_name;
 }
 
-Object Function<DummyClass(), ReturnByValue>::Invoke(const std::vector<Object>& args)
+Object Function<DummyClass(*)(), ReturnByValue>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -116,26 +116,26 @@ namespace
 		ReturnByValue_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<DummyClass(), ReturnByValue>>());
+					std::make_unique<Function<DummyClass(*)(), ReturnByValue>>());
 		}
 	} ReturnByValue_instance;
 }
 
 
 
-int Function<const DummyClass &(), ReturnByReference>::GetParameterCount() const
+int Function<const DummyClass &(*)(), ReturnByReference>::GetParameterCount() const
 {
 	return 0;
 }
 
 static const std::string ReturnByReference_name = "ReturnByReference";
 
-const std::string& Function<const DummyClass &(), ReturnByReference>::GetName() const
+const std::string& Function<const DummyClass &(*)(), ReturnByReference>::GetName() const
 {
 	return ReturnByReference_name;
 }
 
-Object Function<const DummyClass &(), ReturnByReference>::Invoke(const std::vector<Object>& args)
+Object Function<const DummyClass &(*)(), ReturnByReference>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 0)
 	{
@@ -153,7 +153,7 @@ namespace
 		ReturnByReference_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<const DummyClass &(), ReturnByReference>>());
+					std::make_unique<Function<const DummyClass &(*)(), ReturnByReference>>());
 		}
 	} ReturnByReference_instance;
 }

@@ -9,7 +9,7 @@ using namespace std;
 
 namespace
 {
-	void NoOp() {}
+	void NoOp(void*) {}
 
 	unordered_multimap<string, unique_ptr<IFunction>>& GetFunctionsMap()
 	{
@@ -52,7 +52,7 @@ Object::Object()
 
 Object::~Object()
 {
-	deleter_();
+	deleter_(data_);
 }
 
 Object::Object(Object&& o)
@@ -64,7 +64,7 @@ Object::Object(Object&& o)
 Object& Object::operator=(Object&& o)
 {
 	// Release existing resource if any.
-	deleter_();
+	deleter_(data_);
 
 	id_ = o.id_;
 	data_ = o.data_;

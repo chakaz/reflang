@@ -14,7 +14,7 @@ namespace reflang
 
 
 template <>
-class Function<void(), ns::NamespacedFunction> : public IFunction
+class Function<void(*)(), ns::NamespacedFunction> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -26,7 +26,7 @@ class Function<void(), ns::NamespacedFunction> : public IFunction
 
 
 template <>
-class Function<void(), GlobalFunction> : public IFunction
+class Function<void(*)(), GlobalFunction> : public IFunction
 {
 	int GetParameterCount() const override;
 

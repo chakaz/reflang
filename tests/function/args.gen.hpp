@@ -14,7 +14,7 @@ namespace reflang
 
 
 template <>
-class Function<void(int), Func> : public IFunction
+class Function<void(*)(int), Func> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -26,7 +26,7 @@ class Function<void(int), Func> : public IFunction
 
 
 template <>
-class Function<bool(int, float), Func2> : public IFunction
+class Function<bool(*)(int, float), Func2> : public IFunction
 {
 	int GetParameterCount() const override;
 
@@ -38,7 +38,7 @@ class Function<bool(int, float), Func2> : public IFunction
 
 
 template <>
-class Function<bool(const int &), Func3> : public IFunction
+class Function<bool(*)(const int &), Func3> : public IFunction
 {
 	int GetParameterCount() const override;
 

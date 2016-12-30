@@ -12,19 +12,19 @@ namespace reflang
 {
 
 
-int Function<void(int), Func>::GetParameterCount() const
+int Function<void(*)(int), Func>::GetParameterCount() const
 {
 	return 1;
 }
 
 static const std::string Func_name = "Func";
 
-const std::string& Function<void(int), Func>::GetName() const
+const std::string& Function<void(*)(int), Func>::GetName() const
 {
 	return Func_name;
 }
 
-Object Function<void(int), Func>::Invoke(const std::vector<Object>& args)
+Object Function<void(*)(int), Func>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -43,26 +43,26 @@ namespace
 		Func_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<void(int), Func>>());
+					std::make_unique<Function<void(*)(int), Func>>());
 		}
 	} Func_instance;
 }
 
 
 
-int Function<bool(int, float), Func2>::GetParameterCount() const
+int Function<bool(*)(int, float), Func2>::GetParameterCount() const
 {
 	return 2;
 }
 
 static const std::string Func2_name = "Func2";
 
-const std::string& Function<bool(int, float), Func2>::GetName() const
+const std::string& Function<bool(*)(int, float), Func2>::GetName() const
 {
 	return Func2_name;
 }
 
-Object Function<bool(int, float), Func2>::Invoke(const std::vector<Object>& args)
+Object Function<bool(*)(int, float), Func2>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 2)
 	{
@@ -80,26 +80,26 @@ namespace
 		Func2_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<bool(int, float), Func2>>());
+					std::make_unique<Function<bool(*)(int, float), Func2>>());
 		}
 	} Func2_instance;
 }
 
 
 
-int Function<bool(const int &), Func3>::GetParameterCount() const
+int Function<bool(*)(const int &), Func3>::GetParameterCount() const
 {
 	return 1;
 }
 
 static const std::string Func3_name = "Func3";
 
-const std::string& Function<bool(const int &), Func3>::GetName() const
+const std::string& Function<bool(*)(const int &), Func3>::GetName() const
 {
 	return Func3_name;
 }
 
-Object Function<bool(const int &), Func3>::Invoke(const std::vector<Object>& args)
+Object Function<bool(*)(const int &), Func3>::Invoke(const std::vector<Object>& args)
 {
 	if (args.size() != 1)
 	{
@@ -117,7 +117,7 @@ namespace
 		Func3_registrar()
 		{
 			::reflang::registry::internal::Register(
-					std::make_unique<Function<bool(const int &), Func3>>());
+					std::make_unique<Function<bool(*)(const int &), Func3>>());
 		}
 	} Func3_instance;
 }

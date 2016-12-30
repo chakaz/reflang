@@ -24,7 +24,7 @@ bool MyClass::RMethod1(bool b, int i) {
 TEST_CASE("Method0")
 {
 	global_int = 0;
-	Function<decltype(MyClass::Method0), MyClass::Method0> m0;
+	Function<void (*)(), MyClass::Method0> m0;
 	m0();
 	REQUIRE(global_int == 1);
 }
@@ -32,7 +32,7 @@ TEST_CASE("Method0")
 TEST_CASE("Method1")
 {
 	global_int = 0;
-	Function<decltype(MyClass::Method1), MyClass::Method1> m1;
+	Function<void (*)(int), MyClass::Method1> m1;
 	m1(123);
 	REQUIRE(global_int == 123);
 }
@@ -40,7 +40,7 @@ TEST_CASE("Method1")
 TEST_CASE("RMethod0")
 {
 	global_int = 0;
-	Function<decltype(MyClass::RMethod0), MyClass::RMethod0> rm0;
+	Function<bool (*)(), MyClass::RMethod0> rm0;
 	Object result = rm0();
 	REQUIRE(global_int == 1);
 	REQUIRE(result.GetT<bool>() == true);
@@ -49,7 +49,7 @@ TEST_CASE("RMethod0")
 TEST_CASE("RMethod1")
 {
 	global_int = 0;
-	Function<decltype(MyClass::RMethod1), MyClass::RMethod1> rm1;
+	Function<bool (*)(bool, int), MyClass::RMethod1> rm1;
 	Object result = rm1(false, 123);
 	REQUIRE(global_int == 0);
 	REQUIRE(result.GetT<bool>() == false);

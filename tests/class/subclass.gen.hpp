@@ -83,7 +83,7 @@ public:
 // MyClass::Subclass static methods metadata.
 
 template <>
-class Function<void(), MyClass::Subclass::static_method> : public IFunction
+class Function<void(*)(), MyClass::Subclass::static_method> : public IFunction
 {
 	int GetParameterCount() const override;
 

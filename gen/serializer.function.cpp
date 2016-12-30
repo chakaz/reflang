@@ -28,22 +28,6 @@ namespace
 		return s.str();
 	}
 
-	string GetSignature(const Function& f)
-	{
-		stringstream s;
-		s << f.ReturnType << "(";
-		for (size_t i = 0; i < f.Arguments.size(); ++i)
-		{
-			s << f.Arguments[i].Type;
-			if (i != f.Arguments.size() - 1)
-			{
-				s << ", ";
-			}
-		}
-		s << ")";
-		return s.str();
-	}
-
 	// Returns a different string for equal names. This is useful for overload
 	// disambiguation. For example, first time called with "foo" it will return
 	// "", second time will return "_1", third time will return "_2", etc.
@@ -60,6 +44,22 @@ namespace
 		}
 		return unique_id;
 	}
+}
+
+string serializer::GetFunctionSignature(const Function& f)
+{
+	stringstream s;
+	s << f.ReturnType << "(*)(";
+	for (size_t i = 0; i < f.Arguments.size(); ++i)
+	{
+		s << f.Arguments[i].Type;
+		if (i != f.Arguments.size() - 1)
+		{
+			s << ", ";
+		}
+	}
+	s << ")";
+	return s.str();
 }
 
 void serializer::SerializeFunctionHeader(ostream& o, const Function& f)
@@ -81,7 +81,7 @@ class Function<%signature%, %name%> : public IFunction
 			tmpl.str(),
 			{
 				{"%name%", f.GetFullName()},
-				{"%signature%", GetSignature(f)}
+				{"%signature%", serializer::GetFunctionSignature(f)}
 			});
 }
 
@@ -141,7 +141,7 @@ namespace
 			tmpl.str(),
 			{
 				{"%name%", f.GetFullName()},
-				{"%signature%", GetSignature(f)},
+				{"%signature%", GetFunctionSignature(f)},
 				{"%arg_count%", to_string(f.Arguments.size())},
 				{"%call_function%", CallFunction(f)},
 				{"%escaped_name%", GetNameWithoutColons(f.GetFullName())},

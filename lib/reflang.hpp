@@ -42,7 +42,7 @@ namespace reflang
 	private:
 		int id_;
 		void* data_ = nullptr;
-		std::function<void()> deleter_;
+		std::function<void(void*)> deleter_;
 	};
 
 	// Reference is a non-const, type erased wrapper around any object.
@@ -164,6 +164,11 @@ namespace reflang
 	template <typename T> class Class;
 	template <typename T, T t> class Function;
 	template <typename T, T t> class Method;
+
+	template <>
+	Object IFunction::operator()<>();
+	template <>
+	Object IMethod::operator()<>(const Reference& o);
 }
 
 // Implementation and specializations
@@ -184,9 +189,9 @@ reflang::Object::Object(T&& t)
 {
 	// This is not part of the initializer list because it
 	// doesn't compile on VC.
-	deleter_ = [this]()
+	deleter_ = [](void* data)
 	{
-		delete static_cast<std::decay_t<T>*>(data_);
+		delete static_cast<std::decay_t<T>*>(data);
 	};
 }
 
@@ -228,11 +233,6 @@ T& reflang::Reference::GetT() const
 	}
 	return *static_cast<T*>(data_);
 }
-
-template <>
-reflang::Object reflang::IFunction::operator()<>();
-template <>
-reflang::Object reflang::IMethod::operator()<>(const Reference& o);
 
 template <typename... Ts>
 reflang::Object reflang::IMethod::operator()(const Reference& o, Ts&&... ts)
