@@ -25,7 +25,6 @@ matrix:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install libc++-dev libclang-dev
-  - sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.7 100
 
 script:
   - mkdir build
