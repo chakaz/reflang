@@ -4,6 +4,14 @@ language: cpp
 
 matrix:
   include:
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env: COMPILER=g++-5
     - compiler: clang
       addons:
         apt:
@@ -16,6 +24,7 @@ matrix:
 
 before_install:
   - sudo apt-get update -qq
+  - sudo apt-get install libc++-dev libclang-dev
   - sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-3.7 100
 
 script:
