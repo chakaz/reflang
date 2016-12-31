@@ -133,6 +133,24 @@ int Function<void(*)(), MyClass::Subclass::static_method>::GetParameterCount() c
 	return 0;
 }
 
+Parameter Function<void(*)(), MyClass::Subclass::static_method>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(), MyClass::Subclass::static_method>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string MyClass__Subclass__static_method_name = "MyClass::Subclass::static_method";
 
 const std::string& Function<void(*)(), MyClass::Subclass::static_method>::GetName() const
@@ -142,7 +160,7 @@ const std::string& Function<void(*)(), MyClass::Subclass::static_method>::GetNam
 
 Object Function<void(*)(), MyClass::Subclass::static_method>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}

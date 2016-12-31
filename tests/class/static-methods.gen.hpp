@@ -72,6 +72,8 @@ template <>
 class Function<void(*)(), MyClass::Method0> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 
@@ -82,6 +84,8 @@ template <>
 class Function<void(*)(int), MyClass::Method1> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 
@@ -92,6 +96,8 @@ template <>
 class Function<bool(*)(), MyClass::RMethod0> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 
@@ -102,6 +108,8 @@ template <>
 class Function<bool(*)(bool, int), MyClass::RMethod1> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 

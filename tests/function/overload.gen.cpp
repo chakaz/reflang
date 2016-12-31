@@ -17,6 +17,24 @@ int Function<void(*)(), Func>::GetParameterCount() const
 	return 0;
 }
 
+Parameter Function<void(*)(), Func>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(), Func>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string Func_name = "Func";
 
 const std::string& Function<void(*)(), Func>::GetName() const
@@ -26,7 +44,7 @@ const std::string& Function<void(*)(), Func>::GetName() const
 
 Object Function<void(*)(), Func>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -55,6 +73,34 @@ int Function<void(*)(int), Func>::GetParameterCount() const
 	return 1;
 }
 
+Parameter Function<void(*)(int), Func>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(int), Func>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+
+	switch (i)
+	{
+	case 0:
+		result.Name = "i";
+		result.Type = "int";
+		break;
+	default:
+		break;
+	}
+	return result;
+}
+
 static const std::string Func_1_name = "Func";
 
 const std::string& Function<void(*)(int), Func>::GetName() const
@@ -64,7 +110,7 @@ const std::string& Function<void(*)(int), Func>::GetName() const
 
 Object Function<void(*)(int), Func>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 1)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -93,6 +139,34 @@ int Function<void(*)(float), Func>::GetParameterCount() const
 	return 1;
 }
 
+Parameter Function<void(*)(float), Func>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(float), Func>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+
+	switch (i)
+	{
+	case 0:
+		result.Name = "f";
+		result.Type = "float";
+		break;
+	default:
+		break;
+	}
+	return result;
+}
+
 static const std::string Func_2_name = "Func";
 
 const std::string& Function<void(*)(float), Func>::GetName() const
@@ -102,7 +176,7 @@ const std::string& Function<void(*)(float), Func>::GetName() const
 
 Object Function<void(*)(float), Func>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 1)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -131,6 +205,34 @@ int Function<bool(*)(const char &), Func>::GetParameterCount() const
 	return 1;
 }
 
+Parameter Function<bool(*)(const char &), Func>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "bool";
+	return result;
+}
+
+Parameter Function<bool(*)(const char &), Func>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+
+	switch (i)
+	{
+	case 0:
+		result.Name = "c";
+		result.Type = "const char &";
+		break;
+	default:
+		break;
+	}
+	return result;
+}
+
 static const std::string Func_3_name = "Func";
 
 const std::string& Function<bool(*)(const char &), Func>::GetName() const
@@ -140,7 +242,7 @@ const std::string& Function<bool(*)(const char &), Func>::GetName() const
 
 Object Function<bool(*)(const char &), Func>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 1)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}

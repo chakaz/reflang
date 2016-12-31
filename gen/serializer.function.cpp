@@ -70,6 +70,8 @@ template <>
 class Function<%signature%, %name%> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 
@@ -94,6 +96,44 @@ int Function<%signature%, %name%>::GetParameterCount() const
 	return %arg_count%;
 }
 
+Parameter Function<%signature%, %name%>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "%return_type%";
+	return result;
+}
+
+Parameter Function<%signature%, %name%>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+)";
+	if (!f.Arguments.empty())
+	{
+		tmpl << R"(
+	switch (i)
+	{
+)";
+		for (size_t i = 0; i < f.Arguments.size(); ++i)
+		{
+			tmpl << "	case " << i << ":\n";
+			tmpl << "		result.Name = \"" << f.Arguments[i].Name << "\";\n";
+			tmpl << "		result.Type = \"" << f.Arguments[i].Type << "\";\n";
+			tmpl << "		break;\n";
+		}
+		tmpl << R"(	default:
+		break;
+	}
+
+)";
+	}
+	tmpl << R"(	return result;
+}
+
 static const std::string %escaped_name%%unique_id%_name = "%name%";
 
 const std::string& Function<%signature%, %name%>::GetName() const
@@ -103,7 +143,7 @@ const std::string& Function<%signature%, %name%>::GetName() const
 
 Object Function<%signature%, %name%>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != %arg_count%)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -143,6 +183,7 @@ namespace
 				{"%name%", f.GetFullName()},
 				{"%signature%", GetFunctionSignature(f)},
 				{"%arg_count%", to_string(f.Arguments.size())},
+				{"%return_type%", f.ReturnType},
 				{"%call_function%", CallFunction(f)},
 				{"%escaped_name%", GetNameWithoutColons(f.GetFullName())},
 				{"%unique_id%", GetUniqueSuffixForString(f.GetFullName())}

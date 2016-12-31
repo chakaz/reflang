@@ -80,10 +80,18 @@ namespace reflang
 		virtual const std::string& GetName() const = 0;
 	};
 
+	struct Parameter
+	{
+		std::string Name;
+		std::string Type;
+	};
+
 	class IFunction : public IType
 	{
 	public:
 		virtual int GetParameterCount() const = 0;
+		virtual Parameter GetReturnType() const = 0;
+		virtual Parameter GetParameter(int i) const = 0;
 
 		// Syntactic sugar for calling Invoke().
 		template <typename... Ts>

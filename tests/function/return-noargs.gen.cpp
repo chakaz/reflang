@@ -17,6 +17,24 @@ int Function<const char *(*)(), ns::NamespacedFunction>::GetParameterCount() con
 	return 0;
 }
 
+Parameter Function<const char *(*)(), ns::NamespacedFunction>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "const char *";
+	return result;
+}
+
+Parameter Function<const char *(*)(), ns::NamespacedFunction>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string ns__NamespacedFunction_name = "ns::NamespacedFunction";
 
 const std::string& Function<const char *(*)(), ns::NamespacedFunction>::GetName() const
@@ -26,7 +44,7 @@ const std::string& Function<const char *(*)(), ns::NamespacedFunction>::GetName(
 
 Object Function<const char *(*)(), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -54,6 +72,24 @@ int Function<const char *(*)(), GlobalFunction>::GetParameterCount() const
 	return 0;
 }
 
+Parameter Function<const char *(*)(), GlobalFunction>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "const char *";
+	return result;
+}
+
+Parameter Function<const char *(*)(), GlobalFunction>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string GlobalFunction_name = "GlobalFunction";
 
 const std::string& Function<const char *(*)(), GlobalFunction>::GetName() const
@@ -63,7 +99,7 @@ const std::string& Function<const char *(*)(), GlobalFunction>::GetName() const
 
 Object Function<const char *(*)(), GlobalFunction>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -91,6 +127,24 @@ int Function<DummyClass(*)(), ReturnByValue>::GetParameterCount() const
 	return 0;
 }
 
+Parameter Function<DummyClass(*)(), ReturnByValue>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "DummyClass";
+	return result;
+}
+
+Parameter Function<DummyClass(*)(), ReturnByValue>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string ReturnByValue_name = "ReturnByValue";
 
 const std::string& Function<DummyClass(*)(), ReturnByValue>::GetName() const
@@ -100,7 +154,7 @@ const std::string& Function<DummyClass(*)(), ReturnByValue>::GetName() const
 
 Object Function<DummyClass(*)(), ReturnByValue>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -128,6 +182,24 @@ int Function<const DummyClass &(*)(), ReturnByReference>::GetParameterCount() co
 	return 0;
 }
 
+Parameter Function<const DummyClass &(*)(), ReturnByReference>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "const DummyClass &";
+	return result;
+}
+
+Parameter Function<const DummyClass &(*)(), ReturnByReference>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string ReturnByReference_name = "ReturnByReference";
 
 const std::string& Function<const DummyClass &(*)(), ReturnByReference>::GetName() const
@@ -137,7 +209,7 @@ const std::string& Function<const DummyClass &(*)(), ReturnByReference>::GetName
 
 Object Function<const DummyClass &(*)(), ReturnByReference>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}

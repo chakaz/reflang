@@ -86,6 +86,8 @@ template <>
 class Function<void(*)(), MyClass::Subclass::static_method> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 

@@ -17,6 +17,8 @@ template <>
 class Function<const char *(*)(), ns::NamespacedFunction> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 
@@ -29,6 +31,8 @@ template <>
 class Function<const char *(*)(), GlobalFunction> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 
@@ -41,6 +45,8 @@ template <>
 class Function<DummyClass(*)(), ReturnByValue> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 
@@ -53,6 +59,8 @@ template <>
 class Function<const DummyClass &(*)(), ReturnByReference> : public IFunction
 {
 	int GetParameterCount() const override;
+	Parameter GetReturnType() const override;
+	Parameter GetParameter(int i) const override;
 
 	const std::string& GetName() const override;
 

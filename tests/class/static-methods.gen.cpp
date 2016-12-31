@@ -92,6 +92,24 @@ int Function<void(*)(), MyClass::Method0>::GetParameterCount() const
 	return 0;
 }
 
+Parameter Function<void(*)(), MyClass::Method0>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(), MyClass::Method0>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string MyClass__Method0_name = "MyClass::Method0";
 
 const std::string& Function<void(*)(), MyClass::Method0>::GetName() const
@@ -101,7 +119,7 @@ const std::string& Function<void(*)(), MyClass::Method0>::GetName() const
 
 Object Function<void(*)(), MyClass::Method0>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -128,6 +146,34 @@ int Function<void(*)(int), MyClass::Method1>::GetParameterCount() const
 	return 1;
 }
 
+Parameter Function<void(*)(int), MyClass::Method1>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(int), MyClass::Method1>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+
+	switch (i)
+	{
+	case 0:
+		result.Name = "i";
+		result.Type = "int";
+		break;
+	default:
+		break;
+	}
+	return result;
+}
+
 static const std::string MyClass__Method1_name = "MyClass::Method1";
 
 const std::string& Function<void(*)(int), MyClass::Method1>::GetName() const
@@ -137,7 +183,7 @@ const std::string& Function<void(*)(int), MyClass::Method1>::GetName() const
 
 Object Function<void(*)(int), MyClass::Method1>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 1)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -164,6 +210,24 @@ int Function<bool(*)(), MyClass::RMethod0>::GetParameterCount() const
 	return 0;
 }
 
+Parameter Function<bool(*)(), MyClass::RMethod0>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "bool";
+	return result;
+}
+
+Parameter Function<bool(*)(), MyClass::RMethod0>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string MyClass__RMethod0_name = "MyClass::RMethod0";
 
 const std::string& Function<bool(*)(), MyClass::RMethod0>::GetName() const
@@ -173,7 +237,7 @@ const std::string& Function<bool(*)(), MyClass::RMethod0>::GetName() const
 
 Object Function<bool(*)(), MyClass::RMethod0>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -199,6 +263,38 @@ int Function<bool(*)(bool, int), MyClass::RMethod1>::GetParameterCount() const
 	return 2;
 }
 
+Parameter Function<bool(*)(bool, int), MyClass::RMethod1>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "bool";
+	return result;
+}
+
+Parameter Function<bool(*)(bool, int), MyClass::RMethod1>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+
+	switch (i)
+	{
+	case 0:
+		result.Name = "b";
+		result.Type = "bool";
+		break;
+	case 1:
+		result.Name = "i";
+		result.Type = "int";
+		break;
+	default:
+		break;
+	}
+	return result;
+}
+
 static const std::string MyClass__RMethod1_name = "MyClass::RMethod1";
 
 const std::string& Function<bool(*)(bool, int), MyClass::RMethod1>::GetName() const
@@ -208,7 +304,7 @@ const std::string& Function<bool(*)(bool, int), MyClass::RMethod1>::GetName() co
 
 Object Function<bool(*)(bool, int), MyClass::RMethod1>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 2)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}

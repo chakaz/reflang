@@ -17,6 +17,24 @@ int Function<void(*)(), ns::NamespacedFunction>::GetParameterCount() const
 	return 0;
 }
 
+Parameter Function<void(*)(), ns::NamespacedFunction>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(), ns::NamespacedFunction>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string ns__NamespacedFunction_name = "ns::NamespacedFunction";
 
 const std::string& Function<void(*)(), ns::NamespacedFunction>::GetName() const
@@ -26,7 +44,7 @@ const std::string& Function<void(*)(), ns::NamespacedFunction>::GetName() const
 
 Object Function<void(*)(), ns::NamespacedFunction>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
@@ -55,6 +73,24 @@ int Function<void(*)(), GlobalFunction>::GetParameterCount() const
 	return 0;
 }
 
+Parameter Function<void(*)(), GlobalFunction>::GetReturnType() const
+{
+	Parameter result;
+	result.Type = "void";
+	return result;
+}
+
+Parameter Function<void(*)(), GlobalFunction>::GetParameter(int i) const
+{
+	if (i < 0 || i >= GetParameterCount())
+	{
+		throw Exception("Argument out of range.");
+	}
+
+	Parameter result;
+	return result;
+}
+
 static const std::string GlobalFunction_name = "GlobalFunction";
 
 const std::string& Function<void(*)(), GlobalFunction>::GetName() const
@@ -64,7 +100,7 @@ const std::string& Function<void(*)(), GlobalFunction>::GetName() const
 
 Object Function<void(*)(), GlobalFunction>::Invoke(const std::vector<Object>& args)
 {
-	if (args.size() != 0)
+	if (args.size() != GetParameterCount())
 	{
 		throw Exception("Invoke(): bad argument count.");
 	}
