@@ -1,5 +1,7 @@
 # Reflang - Modern C++ reflection using libclang
 
+[![Build Status](https://travis-ci.org/chakaz/reflang.svg?branch=master)](https://travis-ci.org/chakaz/reflang)
+
 ## TL;DR
 **Reflang is a reflection library & tool for modern C++.**
 
