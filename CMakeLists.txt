@@ -19,6 +19,7 @@ find_package(LibClang REQUIRED)
 include_directories(${CLANG_INCLUDEDIR})
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 add_library(libreflang STATIC lib/reflang.hpp lib/reflang.cpp)
 
